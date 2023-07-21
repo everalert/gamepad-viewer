@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	/*background-color: theme('colors.gray.950');*/
+	color: theme('colors.white');
+	font-family: 'Roboto', sans-serif;
+}
+
