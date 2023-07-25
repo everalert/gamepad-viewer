@@ -1,4 +1,4 @@
-import { rc2s, rc2rad } from '../helpers/math'
+import { rc2s, rc2rad, rc2deg } from '../helpers/math'
 
 
 interface TriggerProps {
@@ -12,7 +12,7 @@ interface TriggerProps {
 	class?: string;
 }
 
-const MARK_VSCALE = 3/5
+const MARK_VSCALE = 4/7
 
 
 const Trigger = (props: TriggerProps) => <svg
@@ -36,26 +36,34 @@ const Trigger = (props: TriggerProps) => <svg
 		d={`M ${props.line+rc2s(props.trigR,props.trigH)+props.markW/2} ${props.line+props.markW/2}
 			a ${props.trigR} ${props.trigR} 0  0 0  0 ${props.trigH}`}
 	/>
-	<rect
-		class='fill-black'
-		x={props.line-props.line*MARK_VSCALE+props.trigR*(1-Math.cos(rc2rad(props.trigR,props.trigH)*(props.trigger-0.5)))}
-		y={props.line-props.line*MARK_VSCALE+props.markW/2+props.trigH/2-
+	<svg
+		x={props.line/2-props.line*MARK_VSCALE+props.trigR*(1-Math.cos(rc2rad(props.trigR,props.trigH)*(props.trigger-0.5)))}
+		y={props.line/2-props.line*MARK_VSCALE+props.trigH/2-
 			props.trigR*(Math.sin(rc2rad(props.trigR,props.trigH)*(props.trigger-0.5)))}
-		rx={props.markW*MARK_VSCALE/2+props.line*MARK_VSCALE}
-		ry={props.markW*MARK_VSCALE/2+props.line*MARK_VSCALE}
-		width={props.markW+props.line*MARK_VSCALE*2}
-		height={props.markW*MARK_VSCALE+props.line*MARK_VSCALE*2}
-	/>
-	<rect
-		class='fill-white'
-		x={props.line+props.trigR*(1-Math.cos(rc2rad(props.trigR,props.trigH)*(props.trigger-0.5)))}
-		y={props.line+props.markW/2+props.trigH/2-
-			props.trigR*(Math.sin(rc2rad(props.trigR,props.trigH)*(props.trigger-0.5)))}
-		rx={props.markW*MARK_VSCALE/2}
-		ry={props.markW*MARK_VSCALE/2}
-		width={props.markW}
-		height={props.markW*MARK_VSCALE}
-	/>
+		width={props.markW+(props.line+props.line*MARK_VSCALE)*2}
+		height={props.markW+(props.line+props.line*MARK_VSCALE)*2}
+		>
+		<rect
+			class='fill-black'
+			transform={`rotate(${rc2deg(props.trigR,props.trigH)*(props.trigger-0.5)} ${props.markW/2+(props.line*MARK_VSCALE)} ${props.markW/2+(props.line*MARK_VSCALE)})`}
+			x={props.line-props.line*MARK_VSCALE}
+			y={props.line-props.line*MARK_VSCALE+(props.markW-props.markW*MARK_VSCALE)/2}
+			rx={props.markW*MARK_VSCALE**2+props.line*MARK_VSCALE}
+			ry={props.markW*MARK_VSCALE**2+props.line*MARK_VSCALE}
+			width={props.line*MARK_VSCALE*2+props.markW}
+			height={props.line*MARK_VSCALE*2+props.markW*MARK_VSCALE}
+		/>
+		<rect
+			class='fill-white'
+			transform={`rotate(${rc2deg(props.trigR,props.trigH)*(props.trigger-0.5)} ${props.markW/2+(props.line*MARK_VSCALE)} ${props.markW/2+(props.line*MARK_VSCALE)})`}
+			x={props.line}
+			y={props.line+(props.markW-props.markW*MARK_VSCALE)/2}
+			rx={props.markW*MARK_VSCALE**2}
+			ry={props.markW*MARK_VSCALE**2}
+			width={props.markW}
+			height={props.markW*MARK_VSCALE}
+		/>
+	</svg>
 </svg>
 
 export default Trigger;
