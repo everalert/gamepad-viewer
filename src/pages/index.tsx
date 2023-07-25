@@ -19,20 +19,21 @@ const Index: Component = () => {
 	return <div class='flex gap-8 justify-center p-[32px] min-h-screen select-none bg-black'>
 		<div class='flex flex-col gap-1 justify-start'>
 			<div class='font-semibold'>options</div>
-			<For each={Object.keys(params())}>{p => (
+			<For each={Object.keys(params())}>{p => <div>
 				<label class={ params()[p] ? 'text-gray-200' : 'text-gray-400'}>
 					<input type='checkbox' checked={params()[p]}
 						onclick={()=>{setParams({...params(),[p]:!params()[p]})}} /> {p}</label>
-			)}</For>
+			</div>}</For>
 		</div>
 		<div class='flex flex-col gap-1 justify-start'>
 			<div class='font-semibold'>layouts</div>
-			<For each={PAGES}>{p => <A
-				class='px-2 font-bold text-blue-300 bg-blue-950 rounded
-				hover:text-blue-100 hover:bg-blue-900'
-				href={urigen(`/${p}`, params())}>
-				{p}	
-			</A>}</For>
+			<For each={PAGES}>{p => <div>
+				<A
+					class='px-2 py-0.5 font-bold text-blue-300 bg-blue-950 rounded
+					hover:text-blue-100 hover:bg-blue-900'
+					href={urigen(`/${p}`, params())}
+				>{p}</A>
+			</div>}</For>
 		</div>
 	</div>
 }
