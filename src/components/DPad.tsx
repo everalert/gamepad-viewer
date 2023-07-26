@@ -16,6 +16,11 @@ interface DPadProps {
 }
 
 
+const genUniqueStr = (b:string, v1:number, v2:number, v3:number) => {
+	return `${b}_${v1}_${v2}_${v3}`
+}
+
+
 const DPad = (props: DPadProps) => <svg
 	version='1.1' xmlns='http://www.w3.org/2000/svg'
 	width={props.length+props.line*2}
@@ -26,7 +31,8 @@ const DPad = (props: DPadProps) => <svg
 			${props.style||''}`}
 	>
 	<defs>
-		<clipPath id='DPadClipU'>
+
+		<clipPath id={genUniqueStr('DPadClipU',props.length,props.thickness,props.line)}>
 			<rect
 				x={(props.length-props.thickness)/2+props.line}
 				y={props.line}
@@ -34,7 +40,7 @@ const DPad = (props: DPadProps) => <svg
 				height={props.length-(props.length+props.thickness)/2}
 			/>
 		</clipPath>
-		<clipPath id='DPadClipL'>
+		<clipPath id={genUniqueStr('DPadClipL',props.length,props.thickness,props.line)}>
 			<rect
 				x={props.line}
 				y={(props.length-props.thickness)/2+props.line}
@@ -42,7 +48,7 @@ const DPad = (props: DPadProps) => <svg
 				height={props.thickness}
 			/>
 		</clipPath>
-		<clipPath id='DPadClipD'>
+		<clipPath id={genUniqueStr('DPadClipD',props.length,props.thickness,props.line)}>
 			<rect
 				x={(props.length-props.thickness)/2+props.line}
 				y={(props.length+props.thickness)/2+props.line}
@@ -50,7 +56,7 @@ const DPad = (props: DPadProps) => <svg
 				height={props.length-(props.length+props.thickness)/2}
 			/>
 		</clipPath>
-		<clipPath id='DPadClipR'>
+		<clipPath id={genUniqueStr('DPadClipR',props.length,props.thickness,props.line)}>
 			<rect
 				x={(props.length+props.thickness)/2+props.line}
 				y={(props.length-props.thickness)/2+props.line}
@@ -58,7 +64,7 @@ const DPad = (props: DPadProps) => <svg
 				height={props.thickness}
 			/>
 		</clipPath>
-		<symbol id='DPadBaseShape'>
+		<symbol id={genUniqueStr('DPadBaseShape',props.length,props.thickness,props.line)}>
 			<path d={`M ${(props.length-props.thickness)/2+props.r+props.line} ${props.line}
 				h ${(props.thickness-props.r*2)}
 				q ${props.r} ${0}, ${props.r} ${props.r} 
@@ -83,7 +89,7 @@ const DPad = (props: DPadProps) => <svg
 				Z
 			`} />
 		</symbol>
-		<symbol id='DPadBaseShapeThicc'>
+		<symbol id={genUniqueStr('DPadBaseShapeThicc',props.length,props.thickness,props.line)}>
 			<path d={`M ${props.line+(props.length-props.thickness)/2+props.r} 0
 				h ${(props.thickness-props.r*2)}
 				q ${props.r+props.line} ${0}, ${props.r+props.line} ${props.r+props.line} 
@@ -112,22 +118,26 @@ const DPad = (props: DPadProps) => <svg
 	
 	<use
 		class='fill-black/[0.5]'
-		href='#DPadBaseShapeThicc'
+		href={genUniqueStr('#DPadBaseShapeThicc',props.length,props.thickness,props.line)}
 	/>
 	<g class='fill-transparent'>
 		<use class={props.up?'fill-white':''}
-			href='#DPadBaseShape' clip-path='url(#DPadClipU)' />
+			href={genUniqueStr('#DPadBaseShape',props.length,props.thickness,props.line)}
+			clip-path={`url(#${genUniqueStr('DPadClipU',props.length,props.thickness,props.line)})`} />
 		<use class={props.down?'fill-white':''}
-			href='#DPadBaseShape' clip-path='url(#DPadClipD)' />
+			href={genUniqueStr('#DPadBaseShape',props.length,props.thickness,props.line)}
+			clip-path={`url(#${genUniqueStr('DPadClipD',props.length,props.thickness,props.line)})`} />
 		<use class={props.left?'fill-white':''}
-			href='#DPadBaseShape' clip-path='url(#DPadClipL)' />
+			href={genUniqueStr('#DPadBaseShape',props.length,props.thickness,props.line)}
+			clip-path={`url(#${genUniqueStr('DPadClipL',props.length,props.thickness,props.line)})`} />
 		<use class={props.right?'fill-white':''}
-			href='#DPadBaseShape' clip-path='url(#DPadClipR)' />
+			href={genUniqueStr('#DPadBaseShape',props.length,props.thickness,props.line)}
+			clip-path={`url(#${genUniqueStr('DPadClipR',props.length,props.thickness,props.line)})`} />
 	</g>
 	<use
 		class='stroke-gray-300 fill-transparent'
 		stroke-width={props.line}
-		href='#DPadBaseShape'
+			href={genUniqueStr('#DPadBaseShape',props.length,props.thickness,props.line)}
 	/>
 </svg>
 
