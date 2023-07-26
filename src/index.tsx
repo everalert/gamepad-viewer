@@ -8,6 +8,7 @@ import XBoxPage from './pages/xbox'
 import PSxPage from './pages/psx'
 import WiiUPage from './pages/wiiu'
 import MinimalPage from './pages/minimal'
+import CustomPage from './pages/custom'
 
 const root = document.getElementById('root');
 
@@ -28,6 +29,8 @@ render(
 				<Route path='/psx' component={PSxPage} />
 				<Route path='/wiiu' component={WiiUPage} />
 				<Route path='/minimal' component={MinimalPage} />
+				<Route path='/custom' component={CustomPage} />
+				<Route path='/custom/edit' component={CustomPage} />
 			</Routes>
 		</Router>
 	}, 

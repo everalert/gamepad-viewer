@@ -1,3 +1,6 @@
+import type { JSXElement } from 'solid-js'
+import { Widget, WidgetProps } from './Widget'
+
 interface StickProps {
 	x: number;
 	y: number;
@@ -81,5 +84,17 @@ const Stick = (props: StickProps) => <svg
 		r={props.r2}
 	/>
 </svg>
+
+export const WStick = (props: WidgetProps): JSXElement => <Widget
+	widget={props.def} container={props.container}>
+	<Stick
+		x={props.pad?.axes[props.def.ax[0]]||0}
+		y={props.pad?.axes[props.def.ax[1]]||0}
+		button={props.pad?.buttonPress[props.def.bt[0]]||false}
+		r1={props.def.val[0]||48}
+		r2={props.def.val[1]||5}
+		line={props.container.line||3}
+	/>	
+</Widget>
 
 export default Stick;

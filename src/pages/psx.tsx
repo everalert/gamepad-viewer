@@ -2,10 +2,10 @@ import type { Component } from 'solid-js';
 import { createSignal } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
 import type { GamepadState } from '../types/gamepad'
-import { Gamepad, Stick, StickText,
-	Button2, Button4, DPad,
-	Trigger, TriggerText } from '../components'
-import { PSxAxis, PSxButton } from '../types/psx'
+import { Gamepad, StickText, TriggerText } from '../components'
+import { PSxAxis as PSA, PSxButton as PSB } from '../types/psx'
+import { WidgetType, WidgetDef, WidgetContainerDef } from '../components/Widget'
+import { WidgetContainer } from '../components/WidgetContainer'
 
 
 const PSx: Component = () => {
@@ -16,127 +16,71 @@ const PSx: Component = () => {
 	const NOTEXT		= params.notext !== undefined
 	const NOIMAGE		= params.noimage !== undefined
 	const MODE_COMPACT	= params.compact !== undefined
-	const FULL_W		= MODE_COMPACT ? 396 : 512	// 460 / 572
-	const FULL_H		= MODE_COMPACT ? 80 : 128	// 144 / 192
-	const INNER_XOFF	= MODE_COMPACT ? 46 : 64
-	const INNER_YOFF	= MODE_COMPACT ? 0 : 24
-	const OUTER_XOFF	= MODE_COMPACT ? 140 : 172
-	const OUTER_YOFF	= MODE_COMPACT ? 0 : -24
-	const MID_YOFF		= MODE_COMPACT ? -40 : -48
-	const END_YOFF		= 0
-	const LINE_W		= 3
-	const STICK_R		= MODE_COMPACT ? 40 : 48
-	const TRIGGER_H		= MODE_COMPACT ? 64 : 96
-	const BTN2_R1		= MODE_COMPACT ? 100 : 32
-	const BTN2_R2		= MODE_COMPACT ? 10 : 12
-	const BTN4_R1		= MODE_COMPACT ? 24 : 28
-	const BTN4_R2		= MODE_COMPACT ? 13 : 16
-	const DPAD_L		= MODE_COMPACT ? 72 : 80
-	const DPAD_T		= MODE_COMPACT ? 24 : 28
+	const INNER_X	= MODE_COMPACT ? 46 : 64
+	const INNER_Y	= MODE_COMPACT ? 0 : 24
+	const OUTER_X	= MODE_COMPACT ? 140 : 172
+	const OUTER_Y	= MODE_COMPACT ? 0 : -24
+	const MID_Y		= MODE_COMPACT ? -40 : -48
+	const ST_R		= MODE_COMPACT ? 40 : 48
+	const TR_H		= MODE_COMPACT ? 64 : 96
+	const B2_R1		= MODE_COMPACT ? 100 : 32
+	const B2_R2		= MODE_COMPACT ? 10 : 12
+	const B4_R1		= MODE_COMPACT ? 24 : 28
+	const B4_R2		= MODE_COMPACT ? 13 : 16
+	const DP_L		= MODE_COMPACT ? 72 : 80
+	const DP_T		= MODE_COMPACT ? 24 : 28
+	
+	const container: WidgetContainerDef = {
+		w: MODE_COMPACT ? 396 : 512,
+		h: MODE_COMPACT ? 80 : 144,
+		m: 32,
+		line: 3,
+	}
+
+	const widgets: WidgetDef[] = [
+		{ type:WidgetType.Stick, x:-INNER_X, y:INNER_Y,
+			ax:[PSA.LSx,PSA.LSy], bt:[PSB.L3], val:[ST_R,5] },
+		{ type:WidgetType.Stick, x:INNER_X, y:INNER_Y,
+			ax:[PSA.RSx,PSA.RSy], bt:[PSB.R3], val:[ST_R,5] },
+		{ type:WidgetType.Btn2, x:0, y:MID_Y,
+			ax:[], bt:[PSB.Select,PSB.Start], val:[B2_R1,B2_R2] },
+		{ type:WidgetType.DPad, x:-OUTER_X, y:OUTER_Y,
+			ax:[], bt:[PSB.DD,PSB.DR,PSB.DL,PSB.DU], val:[DP_L,DP_T,8] },
+		{ type:WidgetType.Btn4, x:OUTER_X, y:OUTER_Y,
+			ax:[], bt:[PSB.Cr,PSB.Ci,PSB.Sq,PSB.Tr], val:[B4_R1,B4_R2] },
+		{ type:WidgetType.TrBm, x:-container.w/2, y:0,
+			ax:[], bt:[PSB.L2,PSB.L1], val:[TR_H,256,8] },
+		{ type:WidgetType.TrBm, x:container.w/2, y:0,
+			ax:[], bt:[PSB.R2,PSB.R1], val:[TR_H,256,8], fx:true },
+	]
 
 	return <>
 		<Gamepad padIndex={padIndex} onUpdate={setPad} />
 		<div
-			class='py-[32px]'
-			style={`width:${FULL_W+64}px;`}
-			>
+			class={`flex flex-col`}
+			style={`
+width:${container.w+container.m*2}px;
+padding:${container.m}px;
+gap:${container.m/2}px;
+`}>
 			{ NOTEXT || <div
-				class='mx-[32px] mb-[32px] flex justify-center gap-4 text-lg'
-				style={`width:${FULL_W}px;`}
+				class={`flex justify-center gap-4 text-lg`}
+				style={`width:${container.w}px;`}
 				>
 				<StickText
-					x={pad()?.axes[PSxAxis.LSx]||0}
-					y={pad()?.axes[PSxAxis.LSy]||0}
+					x={pad()?.axes[PSA.LSx]||0}
+					y={pad()?.axes[PSA.LSy]||0}
 				/>
 				<StickText
-					x={pad()?.axes[PSxAxis.RSx]||0}
-					y={pad()?.axes[PSxAxis.RSy]||0}
+					x={pad()?.axes[PSA.RSx]||0}
+					y={pad()?.axes[PSA.RSy]||0}
 				/>
 				<TriggerText
-					left={pad()?.buttonValue[PSxButton.L2]||0}
-					right={pad()?.buttonValue[PSxButton.R2]||0}
+					left={pad()?.buttonValue[PSB.L2]||0}
+					right={pad()?.buttonValue[PSB.R2]||0}
 				/>
 			</div> }
-			{ NOIMAGE || <div
-				class='mx-[32px] relative'
-				style={`width:${FULL_W}px; height:${FULL_H}px;`}
-				>
-				<Trigger
-					bumper={pad()?.buttonPress[PSxButton.L1]||false}
-					trigger={pad()?.buttonValue[PSxButton.L2]||0}
-					trigH={TRIGGER_H}
-					trigR={256}
-					markW={8}
-					class={`absolute`}
-					style={`top:${FULL_H/2+END_YOFF}px; left:${0};`}
-					line={LINE_W}
-				/>
-				<DPad
-					down={pad()?.buttonPress[PSxButton.DD]||false}
-					right={pad()?.buttonPress[PSxButton.DR]||false}
-					left={pad()?.buttonPress[PSxButton.DL]||false}
-					up={pad()?.buttonPress[PSxButton.DU]||false}
-					length={DPAD_L}
-					thickness={DPAD_T}
-					r={8}
-					class={`absolute`}
-					style={`top:${FULL_H/2+OUTER_YOFF}px; left:${FULL_W/2-OUTER_XOFF};`}
-					line={LINE_W}
-				/>
-				<Stick
-					x={pad()?.axes[PSxAxis.LSx]||0}
-					y={pad()?.axes[PSxAxis.LSy]||0}
-					button={pad()?.buttonPress[PSxButton.L3]||false}
-					r1={STICK_R}
-					r2={5}
-					class={`absolute`}
-					style={`top:${FULL_H/2+INNER_YOFF}px; left:${FULL_W/2-INNER_XOFF};`}
-					line={LINE_W}
-				/>
-				<Button2
-					right={pad()?.buttonPress[PSxButton.Start]||false}
-					left={pad()?.buttonPress[PSxButton.Select]||false}
-					r1={BTN2_R1}
-					r2={BTN2_R2}
-					class={`absolute`}
-					style={`top:${FULL_H/2+MID_YOFF}px; left:${FULL_W/2};`}
-					line={LINE_W}
-				/>
-				<Stick
-					x={pad()?.axes[PSxAxis.RSx]||0}
-					y={pad()?.axes[PSxAxis.RSy]||0}
-					button={pad()?.buttonPress[PSxButton.R3]||false}
-					r1={STICK_R}
-					r2={5}
-					class={`absolute`}
-					style={`top:${FULL_H/2+INNER_YOFF}px; left:${FULL_W/2+INNER_XOFF};`}
-					line={LINE_W}
-				/>
-				<Button4
-					down={pad()?.buttonPress[PSxButton.Cro]||false}
-					right={pad()?.buttonPress[PSxButton.Cir]||false}
-					left={pad()?.buttonPress[PSxButton.Squ]||false}
-					up={pad()?.buttonPress[PSxButton.Tri]||false}
-					r1={BTN4_R1}
-					r2={BTN4_R2}
-					class={`absolute`}
-					style={`top:${FULL_H/2+OUTER_YOFF}px; left:${FULL_W/2+OUTER_XOFF};`}
-					line={LINE_W}
-				/>
-				<div
-					class={`absolute -scale-x-100`}
-					style={`top:${FULL_H/2+END_YOFF}px; right:${0};`}
-					>
-					<Trigger
-						bumper={pad()?.buttonPress[PSxButton.R1]||false}
-						trigger={pad()?.buttonValue[PSxButton.R2]||0}
-						trigH={TRIGGER_H}
-						trigR={256}
-						markW={8}
-						line={LINE_W}
-					/>
-				</div>
-			</div> }
+			{ NOIMAGE || <WidgetContainer def={container} widgets={widgets} pad={pad()} /> }
 		</div>
 	</>
 }

@@ -1,3 +1,6 @@
+import type { JSXElement } from 'solid-js'
+import { Widget, WidgetProps } from './Widget'
+
 interface ButtonInlineProps {
 	x: number;
 	y: number;
@@ -48,5 +51,14 @@ const Button = (props: ButtonProps) => <svg
 		w={props.line}
 	/>
 </svg>
+
+export const WButton = (props: WidgetProps): JSXElement => <Widget
+	widget={props.def} container={props.container}>
+	<Button
+		on=		{props.pad?.buttonPress[props.def.bt[0]]||false}
+		r=		{props.def.val[0]||12}
+		line=	{props.container.line||3}
+	/>
+</Widget>
 
 export default Button;

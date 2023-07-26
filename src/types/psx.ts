@@ -2,13 +2,13 @@
 
 export enum PSxButton {
 	Cross =		0,
-	Cro =		0,
+	Cr =		0,
 	Circle =	1,
-	Cir =		1,
+	Ci =		1,
 	Square =	2,
-	Squ =		2,
+	Sq =		2,
 	Triangle =	3,
-	Tri =		3,
+	Tr =		3,
 	L1 =		4,
 	R1 =		5,
 	L2 =		6,

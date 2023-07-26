@@ -1,3 +1,7 @@
+import type { JSXElement } from 'solid-js'
+import { Widget, WidgetProps } from './Widget'
+
+
 interface DPadProps {
 	down: boolean;
 	right: boolean;
@@ -126,5 +130,19 @@ const DPad = (props: DPadProps) => <svg
 		href='#DPadBaseShape'
 	/>
 </svg>
+
+export const WDPad = (props: WidgetProps): JSXElement => <Widget
+	widget={props.def} container={props.container}>
+	<DPad
+		down=		{props.pad?.buttonPress[props.def.bt[0]]||false}
+		right=		{props.pad?.buttonPress[props.def.bt[1]]||false}
+		left=		{props.pad?.buttonPress[props.def.bt[2]]||false}
+		up=			{props.pad?.buttonPress[props.def.bt[3]]||false}
+		length=		{props.def.val[0]||80}
+		thickness=	{props.def.val[1]||28}
+		r=			{props.def.val[2]||8}
+		line=		{props.container.line||3}
+	/>
+</Widget>
 
 export default DPad;

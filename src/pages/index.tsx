@@ -3,7 +3,7 @@ import { createSignal, For } from 'solid-js';
 import { A } from '@solidjs/router';
 
 
-const PAGES: string[] = ['xbox', 'psx', 'wiiu']
+const PAGES: string[] = ['xbox', 'psx', 'wiiu', 'custom/edit']
 const PARAMS: string[] = ['notext', 'noimage', 'compact', 'lesstext']
 
 const urigen = (uri:string, params:{[key:string]:boolean}) => {
