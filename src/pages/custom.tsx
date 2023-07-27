@@ -7,11 +7,10 @@ import { XBoxButton as XBB } from '../types/xbox'
 import { WidgetType, WidgetDef, parseWidgetStr, genWidgetStr } from '../components/Widget'
 import { WidgetContainer, WidgetContainerDef, parseContainerStr, genContainerStr } from '../components/WidgetContainer'
 import { A } from '@solidjs/router';
-
+import { filterParams } from '../helpers/formatting'
 
 
 const Custom: Component = () => {
-	
 	const [params] = useSearchParams();
 	const location = useLocation();
 	const [pad, setPad] = createSignal<GamepadState>()
@@ -152,7 +151,10 @@ gap:${container().m/2}px;
 						hover:text-red-100 hover:bg-red-900 cursor-pointer'
 					/>
 					<A
-						href={`/custom${location.search===''?'?':`${location.search}&`}settings=${genContainerStr(container())}|${genWidgetStr(widgets())}`}
+						href={`/custom${filterParams(
+							location.search,
+							`settings=${genContainerStr(container())}|${genWidgetStr(widgets())}`
+						)}`}
 						class='px-2 py-0.5 font-bold text-green-300 bg-green-950 rounded
 						hover:text-green-100 hover:bg-green-900'
 					>confirm</A>
