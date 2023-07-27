@@ -54,7 +54,7 @@ export const WidgetContainer = (props: WidgetContainerProps) => <div
 		<Switch fallback={<Widget widget={w} container={props.def}>
 			no {WidgetType[w.type]} widget
 		</Widget>}>
-			<Match when={w.type===WidgetType.Stick}>
+			<Match when={w.type===WidgetType.Stk}>
 				<WStick pad={props.pad} def={w} container={props.def} />
 			</Match>
 			<Match when={w.type===WidgetType.Btn}>
@@ -66,10 +66,10 @@ export const WidgetContainer = (props: WidgetContainerProps) => <div
 			<Match when={w.type===WidgetType.Btn4}>
 				<WButton4 pad={props.pad} def={w} container={props.def} />
 			</Match>
-			<Match when={w.type===WidgetType.DPad}>
+			<Match when={w.type===WidgetType.DPd}>
 				<WDPad pad={props.pad} def={w} container={props.def} />
 			</Match>
-			<Match when={w.type===WidgetType.TrBm}>
+			<Match when={w.type===WidgetType.Trg}>
 				<WTrigger pad={props.pad} def={w} container={props.def} />
 			</Match>
 		</Switch>

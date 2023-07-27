@@ -37,7 +37,7 @@ gap:${container().m/2}px;
 			{ NOTEXT || <div
 				class={`flex justify-center gap-4 text-lg ${!MODE_EDIT||'bg-gray-900'}`}
 				>
-				<For each={widgets().filter(w=>w.type===WidgetType.Stick)}>
+				<For each={widgets().filter(w=>w.type===WidgetType.Stk)}>
 					{s => <StickText
 						x={pad()?.axes[s.ax[0]]||0}
 						y={pad()?.axes[s.ax[1]]||0}

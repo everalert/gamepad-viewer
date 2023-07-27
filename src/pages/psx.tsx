@@ -1,11 +1,11 @@
 import type { Component } from 'solid-js';
-import { createSignal } from 'solid-js';
+import { createSignal, For } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
 import type { GamepadState } from '../types/gamepad'
 import { Gamepad, StickText, TriggerText } from '../components'
 import { PSxAxis as PSA, PSxButton as PSB } from '../types/psx'
-import { WidgetType, WidgetDef, WidgetContainerDef } from '../components/Widget'
-import { WidgetContainer } from '../components/WidgetContainer'
+import { WidgetType, WidgetDef } from '../components/Widget'
+import { WidgetContainer, WidgetContainerDef } from '../components/WidgetContainer'
 
 
 const PSx: Component = () => {
@@ -38,19 +38,19 @@ const PSx: Component = () => {
 	}
 
 	const widgets: WidgetDef[] = [
-		{ type:WidgetType.Stick, x:-INNER_X, y:INNER_Y,
+		{ type:WidgetType.Stk, x:-INNER_X, y:INNER_Y,
 			ax:[PSA.LSx,PSA.LSy], bt:[PSB.L3], val:[ST_R,5] },
-		{ type:WidgetType.Stick, x:INNER_X, y:INNER_Y,
+		{ type:WidgetType.Stk, x:INNER_X, y:INNER_Y,
 			ax:[PSA.RSx,PSA.RSy], bt:[PSB.R3], val:[ST_R,5] },
 		{ type:WidgetType.Btn2, x:0, y:MID_Y,
 			ax:[], bt:[PSB.Select,PSB.Start], val:[B2_R1,B2_R2] },
-		{ type:WidgetType.DPad, x:-OUTER_X, y:OUTER_Y,
+		{ type:WidgetType.DPd, x:-OUTER_X, y:OUTER_Y,
 			ax:[], bt:[PSB.DD,PSB.DR,PSB.DL,PSB.DU], val:[DP_L,DP_T,8] },
 		{ type:WidgetType.Btn4, x:OUTER_X, y:OUTER_Y,
 			ax:[], bt:[PSB.Cr,PSB.Ci,PSB.Sq,PSB.Tr], val:[B4_R1,B4_R2] },
-		{ type:WidgetType.TrBm, x:-container.w/2, y:0,
+		{ type:WidgetType.Trg, x:-container.w/2, y:0,
 			ax:[], bt:[PSB.L2,PSB.L1], val:[TR_H,256,8] },
-		{ type:WidgetType.TrBm, x:container.w/2, y:0,
+		{ type:WidgetType.Trg, x:container.w/2, y:0,
 			ax:[], bt:[PSB.R2,PSB.R1], val:[TR_H,256,8], fx:true },
 	]
 
@@ -67,14 +67,12 @@ gap:${container.m/2}px;
 				class={`flex justify-center gap-4 text-lg`}
 				style={`width:${container.w}px;`}
 				>
-				<StickText
-					x={pad()?.axes[PSA.LSx]||0}
-					y={pad()?.axes[PSA.LSy]||0}
-				/>
-				<StickText
-					x={pad()?.axes[PSA.RSx]||0}
-					y={pad()?.axes[PSA.RSy]||0}
-				/>
+				<For each={widgets.filter(w=>w.type===WidgetType.Stk)}>
+					{s => <StickText
+						x={pad()?.axes[s.ax[0]]||0}
+						y={pad()?.axes[s.ax[1]]||0}
+					/>}
+				</For>
 				<TriggerText
 					left={pad()?.buttonValue[PSB.L2]||0}
 					right={pad()?.buttonValue[PSB.R2]||0}

@@ -1,11 +1,11 @@
 import type { Component } from 'solid-js';
-import { createSignal } from 'solid-js';
+import { createSignal, For } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
 import type { GamepadState } from '../types/gamepad'
 import { Gamepad, StickText } from '../components'
 import { WiiUAxis as WUA, WiiUButton as WUB } from '../types/wiiu'
-import { WidgetType, WidgetDef, WidgetContainerDef } from '../components/Widget'
-import { WidgetContainer } from '../components/WidgetContainer'
+import { WidgetType, WidgetDef } from '../components/Widget'
+import { WidgetContainer, WidgetContainerDef } from '../components/WidgetContainer'
 
 
 const WiiU: Component = () => {
@@ -38,19 +38,19 @@ const WiiU: Component = () => {
 	}
 
 	const widgets: WidgetDef[] = [
-		{ type:WidgetType.Stick, x:-OUTER_X, y:OUTER_Y,
+		{ type:WidgetType.Stk, x:-OUTER_X, y:OUTER_Y,
 			ax:[WUA.LSx,WUA.LSy], bt:[WUB.LSB], val:[ST_R,5] },
-		{ type:WidgetType.Stick, x:OUTER_X, y:OUTER_Y,
+		{ type:WidgetType.Stk, x:OUTER_X, y:OUTER_Y,
 			ax:[WUA.RSx,WUA.RSy], bt:[WUB.RSB], val:[ST_R,5] },
 		{ type:WidgetType.Btn2, x:0, y:MID_Y,
 			ax:[], bt:[WUB.Select,WUB.Start], val:[B2_R1,B2_R2] },
-		{ type:WidgetType.DPad, x:-INNER_X, y:INNER_Y,
+		{ type:WidgetType.DPd, x:-INNER_X, y:INNER_Y,
 			ax:[], bt:[WUB.DD,WUB.DR,WUB.DL,WUB.DU], val:[DP_L,DP_T,8] },
 		{ type:WidgetType.Btn4, x:INNER_X, y:INNER_Y,
 			ax:[], bt:[WUB.B,WUB.A,WUB.Y,WUB.X], val:[B4_R1,B4_R2] },
-		{ type:WidgetType.TrBm, x:-container.w/2, y:0,
+		{ type:WidgetType.Trg, x:-container.w/2, y:0,
 			ax:[], bt:[WUB.ZL,WUB.L], val:[TR_H,256,8] },
-		{ type:WidgetType.TrBm, x:container.w/2, y:0,
+		{ type:WidgetType.Trg, x:container.w/2, y:0,
 			ax:[], bt:[WUB.ZR,WUB.R], val:[TR_H,256,8], fx:true },
 	]
 
@@ -67,14 +67,12 @@ gap:${container.m/2}px;
 				class={`flex justify-center gap-4 text-lg`}
 				style={`width:${container.w}px;`}
 				>
-				<StickText
-					x={pad()?.axes[WUA.LSx]||0}
-					y={pad()?.axes[WUA.LSy]||0}
-				/>
-				<StickText
-					x={pad()?.axes[WUA.RSx]||0}
-					y={pad()?.axes[WUA.RSy]||0}
-				/>
+				<For each={widgets.filter(w=>w.type===WidgetType.Stk)}>
+					{s => <StickText
+						x={pad()?.axes[s.ax[0]]||0}
+						y={pad()?.axes[s.ax[1]]||0}
+					/>}
+				</For>
 			</div> }
 			{ NOIMAGE || <WidgetContainer def={container} widgets={widgets} pad={pad()} /> }
 		</div>

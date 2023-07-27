@@ -1,11 +1,11 @@
 import type { Component } from 'solid-js';
-import { createSignal } from 'solid-js';
+import { createSignal, For } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
 import type { GamepadState } from '../types/gamepad'
 import { Gamepad, StickText, TriggerText } from '../components'
 import { XBoxAxis as XBA, XBoxButton as XBB } from '../types/xbox'
-import { WidgetType, WidgetDef, WidgetContainerDef } from '../components/Widget'
-import { WidgetContainer } from '../components/WidgetContainer'
+import { WidgetType, WidgetDef } from '../components/Widget'
+import { WidgetContainer, WidgetContainerDef } from '../components/WidgetContainer'
 
 
 const XBox: Component = () => {
@@ -38,19 +38,19 @@ const XBox: Component = () => {
 	}
 
 	const widgets: WidgetDef[] = [
-		{ type:WidgetType.Stick, x:-OUTER_X, y:OUTER_Y,
+		{ type:WidgetType.Stk, x:-OUTER_X, y:OUTER_Y,
 			ax:[XBA.LSx,XBA.LSy], bt:[XBB.LSB], val:[ST_R,5] },
-		{ type:WidgetType.Stick, x:INNER_X, y:INNER_Y,
+		{ type:WidgetType.Stk, x:INNER_X, y:INNER_Y,
 			ax:[XBA.RSx,XBA.RSy], bt:[XBB.RSB], val:[ST_R,5] },
 		{ type:WidgetType.Btn2, x:0, y:MID_Y,
 			ax:[], bt:[XBB.Back,XBB.Start], val:[B2_R1,B2_R2] },
-		{ type:WidgetType.DPad, x:-INNER_X, y:INNER_Y,
+		{ type:WidgetType.DPd, x:-INNER_X, y:INNER_Y,
 			ax:[], bt:[XBB.DD,XBB.DR,XBB.DL,XBB.DU], val:[DP_L,DP_T,8] },
 		{ type:WidgetType.Btn4, x:OUTER_X, y:OUTER_Y,
 			ax:[], bt:[XBB.A,XBB.B,XBB.X,XBB.Y], val:[B4_R1,B4_R2] },
-		{ type:WidgetType.TrBm, x:-container.w/2, y:0,
+		{ type:WidgetType.Trg, x:-container.w/2, y:0,
 			ax:[], bt:[XBB.LT,XBB.LB], val:[TR_H,256,8] },
-		{ type:WidgetType.TrBm, x:container.w/2, y:0,
+		{ type:WidgetType.Trg, x:container.w/2, y:0,
 			ax:[], bt:[XBB.RT,XBB.RB], val:[TR_H,256,8], fx:true },
 	]
 
@@ -67,14 +67,12 @@ gap:${container.m/2}px;
 				class={`flex justify-center gap-4 text-lg`}
 				style={`width:${container.w}px;`}
 				>
-				<StickText
-					x={pad()?.axes[XBA.LSx]||0}
-					y={pad()?.axes[XBA.LSy]||0}
-				/>
-				<StickText
-					x={pad()?.axes[XBA.RSx]||0}
-					y={pad()?.axes[XBA.RSy]||0}
-				/>
+				<For each={widgets.filter(w=>w.type===WidgetType.Stk)}>
+					{s => <StickText
+						x={pad()?.axes[s.ax[0]]||0}
+						y={pad()?.axes[s.ax[1]]||0}
+					/>}
+				</For>
 				<TriggerText
 					left={pad()?.buttonValue[XBB.LT]||0}
 					right={pad()?.buttonValue[XBB.RT]||0}
