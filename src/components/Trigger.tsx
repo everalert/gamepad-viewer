@@ -1,4 +1,4 @@
-import { rc2s, rc2rad, rc2deg } from '../helpers/math'
+import { clamp, rc2s, rc2rad, rc2deg } from '../helpers/math'
 import type { JSXElement } from 'solid-js'
 import { Widget, WidgetProps } from './Widget'
 
@@ -71,8 +71,10 @@ const Trigger = (props: TriggerProps) => <svg
 export const WTrigger = (props: WidgetProps): JSXElement => <Widget
 	widget={props.def} container={props.container}>
 	<Trigger
-		bumper={props.pad?.buttonPress[props.def.bt[1]]||false}
-		trigger={props.pad?.buttonValue[props.def.bt[0]]||0}
+		trigger={clamp(props.pad?.axes[props.def.ax[0]]*(props.def.val[3]>=1?-1:1),0,1)
+			||props.pad?.buttonValue[props.def.bt[0]]||0}
+		bumper={props.pad?.buttonPress[props.def.bt[props.def.ax[0]===undefined?1:0]]
+			||false}
 		trigH={props.def.val[0]||64}
 		trigR={props.def.val[1]||256}
 		markW={props.def.val[2]||8}
