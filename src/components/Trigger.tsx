@@ -8,7 +8,6 @@ interface TriggerProps {
 	bumper: boolean;
 	trigR: number;
 	trigH: number;
-	markW: number;
 	line: number;
 	style?: string;
 	class?: string;
@@ -20,17 +19,16 @@ const MARK_RSCALE = 1/3
 
 
 const Trigger = (props: TriggerProps) => {
-	const m = () => props.line*MARK_HSCALE
+	const m = () => props.line*2
 	const rad = () => rc2rad(props.trigR,props.trigH)
 	const deg = () => rc2deg(props.trigR,props.trigH)
 	const markL = () => props.line*MARK_VSCALE
-	const markW = () => markL()+m()
-	const markH = () => markL()+m()*MARK_VSCALE
+	const markW = () => markL()+props.line*MARK_HSCALE
+	const markH = () => markL()+props.line*MARK_HSCALE*MARK_VSCALE
 	const markR = () => markW()*MARK_RSCALE
 	const markContW = () => Math.sqrt(markW()**2+markW()**2)
 	const trig = () => props.trigger-0.5
 	const linerad = () => rad()+(props.line/4)/(2*props.trigR*Math.PI)*(180/Math.PI)
-
 	return <svg
 		version='1.1' xmlns='http://www.w3.org/2000/svg'
 		width={rc2s(props.trigR,props.trigH) + m()*2}
@@ -83,13 +81,12 @@ ${props.style||''}`}
 export const WTrigger = (props: WidgetProps): JSXElement => <Widget
 	widget={props.def} container={props.container}>
 	<Trigger
-		trigger={clamp(props.pad?.axes[props.def.ax[0]]*(props.def.val[3]>=1?-1:1),0,1)
+		trigger={clamp(props.pad?.axes[props.def.ax[0]]*(props.def.val[2]>=1?-1:1),0,1)
 			||props.pad?.buttonValue[props.def.bt[0]]||0}
 		bumper={props.pad?.buttonPress[props.def.bt[props.def.ax[0]===undefined?1:0]]
 			||false}
-		trigH={props.def.val[0]||64}
-		trigR={props.def.val[1]||256}
-		markW={props.def.val[2]||8}
+		trigH={props.def.val[0]>=0?props.def.val[0]:64}
+		trigR={props.def.val[1]>=0?props.def.val[1]:256}
 		line={props.container.line||3}
 	/>	
 </Widget>

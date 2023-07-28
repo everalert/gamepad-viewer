@@ -49,9 +49,9 @@ const WiiU: Component = () => {
 		{ type:WidgetType.Btn4, x:INNER_X, y:INNER_Y,
 			ax:[], bt:[WUB.B,WUB.A,WUB.Y,WUB.X], val:[B4_R1,B4_R2] },
 		{ type:WidgetType.Trg, x:-container.w/2, y:0,
-			ax:[], bt:[WUB.ZL,WUB.L], val:[TR_H,256,8] },
+			ax:[], bt:[WUB.ZL,WUB.L], val:[TR_H,256] },
 		{ type:WidgetType.Trg, x:container.w/2, y:0,
-			ax:[], bt:[WUB.ZR,WUB.R], val:[TR_H,256,8], fx:true },
+			ax:[], bt:[WUB.ZR,WUB.R], val:[TR_H,256], fx:true },
 	]
 
 	return <>

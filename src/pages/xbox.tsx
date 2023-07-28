@@ -49,9 +49,9 @@ const XBox: Component = () => {
 		{ type:WidgetType.Btn4, x:OUTER_X, y:OUTER_Y,
 			ax:[], bt:[XBB.A,XBB.B,XBB.X,XBB.Y], val:[B4_R1,B4_R2] },
 		{ type:WidgetType.Trg, x:-container.w/2, y:0,
-			ax:[], bt:[XBB.LT,XBB.LB], val:[TR_H,256,8] },
+			ax:[], bt:[XBB.LT,XBB.LB], val:[TR_H,256] },
 		{ type:WidgetType.Trg, x:container.w/2, y:0,
-			ax:[], bt:[XBB.RT,XBB.RB], val:[TR_H,256,8], fx:true },
+			ax:[], bt:[XBB.RT,XBB.RB], val:[TR_H,256], fx:true },
 	]
 
 	return <>

@@ -49,9 +49,9 @@ const PSx: Component = () => {
 		{ type:WidgetType.Btn4, x:OUTER_X, y:OUTER_Y,
 			ax:[], bt:[PSB.Cr,PSB.Ci,PSB.Sq,PSB.Tr], val:[B4_R1,B4_R2] },
 		{ type:WidgetType.Trg, x:-container.w/2, y:0,
-			ax:[], bt:[PSB.L2,PSB.L1], val:[TR_H,256,8] },
+			ax:[], bt:[PSB.L2,PSB.L1], val:[TR_H,256] },
 		{ type:WidgetType.Trg, x:container.w/2, y:0,
-			ax:[], bt:[PSB.R2,PSB.R1], val:[TR_H,256,8], fx:true },
+			ax:[], bt:[PSB.R2,PSB.R1], val:[TR_H,256], fx:true },
 	]
 
 	return <>
