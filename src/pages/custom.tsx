@@ -27,14 +27,14 @@ const Custom: Component = () => {
 	return <>
 		<Gamepad padIndex={padIndex} onUpdate={setPad} />
 		<div
-			class={`flex flex-col items-center ${!MODE_EDIT||'bg-gray-950 min-w-full min-h-screen'}`}
+			class={`flex flex-col items-center ${!MODE_EDIT||'bg-black min-w-full min-h-screen'}`}
 			style={`
 width:${container().w+container().m*2}px;
 padding:${container().m}px;
 gap:${container().m/2}px;
 `}>
 			{ NOTEXT || <div
-				class={`flex justify-center gap-4 text-lg ${!MODE_EDIT||'bg-gray-900'}`}
+				class={`flex justify-center gap-4 text-lg ${!MODE_EDIT||'outline outline-[4px] outline-gray-950/[0.85]'}`}
 				>
 				<For each={widgets().filter(w=>w.type===WidgetType.Stk)}>
 					{s => <StickText
@@ -49,10 +49,10 @@ gap:${container().m/2}px;
 			</div> }
 			{ NOIMAGE || <WidgetContainer
 				def={container()} widgets={widgets()} pad={pad()}
-				class={`${!MODE_EDIT||'bg-gray-900'}`}
+				class={`${!MODE_EDIT||'outline outline-[4px] outline-gray-950/[0.85]'}`}
 			/> }
-			{ !MODE_EDIT || <div class='flex flex-col items-baseline gap-2'>
-				<div class='mt-3 font-semibold'>global</div>
+			{ !MODE_EDIT || <div class='flex flex-col items-baseline'>
+				<div class='mt-3 mb-1 font-semibold'>global</div>
 				<div class='flex gap-3'>
 					<Index each={Object.keys(container())}>{c=>{
 					return <div>{c()} <input value={container()[c()]}
@@ -61,8 +61,8 @@ gap:${container().m/2}px;
 							class='w-14 px-1.5 pt-0.5 bg-gray-800 rounded' /></div>
 					}}</Index>
 				</div>
-				<div class='mt-3 font-semibold'>widgets</div>
-				<div>x and y offset from center</div>
+				<div class='mt-4 font-semibold'>widgets</div>
+				<div class='text-gray-400'>x and y offset from center</div>
 				<div class='grid grid-cols-[max-content_max-content_max-content_max-content_max-content_max-content_max-content_max-content_max-content] items-baseline gap-y-1 gap-x-2'>
 					<div></div>
 					<div class='px-1'>x</div>
