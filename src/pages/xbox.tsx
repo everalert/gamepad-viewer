@@ -45,7 +45,7 @@ const XBox: Component = () => {
 		{ type:WidgetType.Btn2, x:0, y:MID_Y,
 			ax:[], bt:[XBB.Back,XBB.Start], val:[B2_R1,B2_R2] },
 		{ type:WidgetType.DPd, x:-INNER_X, y:INNER_Y,
-			ax:[], bt:[XBB.DD,XBB.DR,XBB.DL,XBB.DU], val:[DP_L,DP_T,8] },
+			ax:[], bt:[XBB.DD,XBB.DR,XBB.DL,XBB.DU], val:[DP_L,DP_T] },
 		{ type:WidgetType.Btn4, x:OUTER_X, y:OUTER_Y,
 			ax:[], bt:[XBB.A,XBB.B,XBB.X,XBB.Y], val:[B4_R1,B4_R2] },
 		{ type:WidgetType.Trg, x:-container.w/2, y:0,

@@ -16,7 +16,7 @@ const Custom: Component = () => {
 	const [pad, setPad] = createSignal<GamepadState>()
 	const padIndex = 0
 
-	const SETTINGS = params.settings ? params.settings : 'Gw512h144m32l3W0x-172y-24a0a1b10v48v5W0x64y24a2a3b11v48v5W2x0y-48b8b9v32v12W4x-64y24b13b15b14b12v80v28v8W3x172y-24b0b1b2b3v28v16W5x-256y0b6b4v96v256v8W5x256y0b7b5v96v256v8fx'
+	const SETTINGS = params.settings ? params.settings : 'Gw512h144m32l3W0x-172y-24a0a1b10v48v5W0x64y24a2a3b11v48v5W2x0y-48b8b9v32v12W4x-64y24b13b15b14b12v80v28W3x172y-24b0b1b2b3v28v16W5x-256y0b6b4v96v256v8W5x256y0b7b5v96v256v8fx'
 	const MODE_EDIT		= location.pathname.slice(-5) === '/edit'
 	const NOTEXT		= params.notext !== undefined
 	const NOIMAGE		= params.noimage !== undefined

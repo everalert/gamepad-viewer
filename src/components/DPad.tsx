@@ -9,137 +9,135 @@ interface DPadProps {
 	up: boolean;
 	length: number;
 	thickness: number;
-	r: number;
 	line: number;
 	class?: string;
 	style?: string;
 }
 
+const RADIUS_FACTOR = 0.30  // original design = 8px/28px = 0.285
 
-const genUniqueStr = (b:string, v1:number, v2:number, v3:number) => {
-	return `${b}_${v1}_${v2}_${v3}`
+
+const DPad = (props: DPadProps) => {
+	const genUniqueStr = (b:string) => `${b}_${props.length}_${props.thickness}_${props.line}`
+	const rad = () => props.thickness*RADIUS_FACTOR
+	const line = () => props.line
+	const iEdge = () => (props.length-props.thickness)/2
+	const iEdgeR = () => (props.length-props.thickness)/2-rad()
+	const iEdgeLng = () => (props.length+props.thickness)/2
+	const oEdge = () => props.thickness
+	const oEdgeR = () => props.thickness-rad()*2
+
+	return <svg
+		version='1.1' xmlns='http://www.w3.org/2000/svg'
+		width={props.length+line()*2}
+		height={props.length+line()*2}
+		class={`inline-block ${props.class||''}`}
+		style={`margin-left:-${(props.length)/2+line()}px;
+margin-top:-${(props.length)/2+line()}px;
+${props.style||''}`}
+		>
+		<defs>
+			<clipPath id={genUniqueStr('DPadClipU')}>
+				<rect
+					x={iEdge()+line()} y={line()}
+					width={oEdge()} height={props.length-iEdgeLng()}
+				/>
+			</clipPath>
+			<clipPath id={genUniqueStr('DPadClipL')}>
+				<rect
+					x={line()} y={iEdge()+line()}
+					width={props.length-iEdgeLng()} height={oEdge()}
+				/>
+			</clipPath>
+			<clipPath id={genUniqueStr('DPadClipD')}>
+				<rect
+					x={iEdge()+line()} y={iEdgeLng()+line()}
+					width={oEdge()} height={props.length-iEdgeLng()}
+				/>
+			</clipPath>
+			<clipPath id={genUniqueStr('DPadClipR')}>
+				<rect
+					x={iEdgeLng()+line()} y={iEdge()+line()}
+					width={props.length-iEdgeLng()} height={oEdge()}
+				/>
+			</clipPath>
+			<symbol id={genUniqueStr('DPadBaseShape')}>
+				<path d={`M ${line()+iEdge()+rad()} ${line()}
+h ${oEdgeR()}
+q ${rad()} ${0}, ${rad()} ${rad()} 
+v ${iEdgeR()}
+h ${iEdgeR()}
+q ${rad()} ${0}, ${rad()} ${rad()} 
+v ${oEdgeR()}
+q ${0} ${rad()}, ${-rad()} ${rad()} 
+h ${-iEdgeR()}
+v ${iEdgeR()}
+q ${0} ${rad()}, ${-rad()} ${rad()} 
+h ${-oEdgeR()}
+q ${-rad()} ${0}, ${-rad()} ${-rad()} 
+v ${-iEdgeR()}
+h ${-iEdgeR()}
+q ${-rad()} ${0}, ${-rad()} ${-rad()} 
+v ${-oEdgeR()}
+q ${0} ${-rad()}, ${rad()} ${-rad()} 
+h ${iEdgeR()}
+v ${-iEdgeR()}
+q ${0} ${-rad()}, ${rad()} ${-rad()} 
+Z
+				`} />
+			</symbol>
+			<symbol id={genUniqueStr('DPadBaseShapeThicc')}>
+				<path d={`M ${line()+iEdge()+rad()} ${0}
+h ${oEdgeR()}
+q ${rad()+line()} ${0}, ${rad()+line()} ${rad()+line()} 
+v ${iEdgeR()-line()}
+h ${iEdgeR()-line()}
+q ${rad()+line()} ${0}, ${rad()+line()} ${rad()+line()} 
+v ${oEdgeR()}
+q ${0} ${rad()+line()}, ${-rad()-line()} ${rad()+line()} 
+h ${-iEdgeR()+line()}
+v ${iEdgeR()-line()}
+q ${0} ${rad()+line()}, ${-rad()-line()} ${rad()+line()} 
+h ${-oEdgeR()}
+q ${-rad()-line()} ${0}, ${-rad()-line()} ${-rad()-line()} 
+v ${-iEdgeR()+line()}
+h ${-iEdgeR()+line()}
+q ${-rad()-line()} ${0}, ${-rad()-line()} ${-rad()-line()} 
+v ${-oEdgeR()}
+q ${0} ${-rad()-line()}, ${rad()+line()} ${-rad()-line()} 
+h ${iEdgeR()-line()}
+v ${-iEdgeR()+line()}
+q ${0} ${-rad()-line()}, ${rad()+line()} ${-rad()-line()} 
+Z
+				`} />
+			</symbol>
+		</defs>
+
+		<use
+			class='fill-black/[0.5]'
+			href={genUniqueStr('#DPadBaseShapeThicc')}
+		/>
+		<g class='fill-transparent'>
+			<use class={props.up?'fill-white':''}
+				href={genUniqueStr('#DPadBaseShape')}
+				clip-path={`url(${genUniqueStr('#DPadClipU')})`} />
+			<use class={props.down?'fill-white':''}
+				href={genUniqueStr('#DPadBaseShape')}
+				clip-path={`url(${genUniqueStr('#DPadClipD')})`} />
+			<use class={props.left?'fill-white':''}
+				href={genUniqueStr('#DPadBaseShape')}
+				clip-path={`url(${genUniqueStr('#DPadClipL')})`} />
+			<use class={props.right?'fill-white':''}
+				href={genUniqueStr('#DPadBaseShape')}
+				clip-path={`url(${genUniqueStr('#DPadClipR')})`} />
+		</g>
+		<use
+			class='stroke-gray-300 fill-transparent'
+			stroke-width={line()}
+			href={genUniqueStr('#DPadBaseShape')}
+		/>
+	</svg>
 }
-
-
-const DPad = (props: DPadProps) => <svg
-	version='1.1' xmlns='http://www.w3.org/2000/svg'
-	width={props.length+props.line*2}
-	height={props.length+props.line*2}
-	class={`inline-block ${props.class||''}`}
-	style={`margin-left:-${(props.length)/2+props.line}px;
-			margin-top:-${(props.length)/2+props.line}px;
-			${props.style||''}`}
-	>
-	<defs>
-
-		<clipPath id={genUniqueStr('DPadClipU',props.length,props.thickness,props.line)}>
-			<rect
-				x={(props.length-props.thickness)/2+props.line}
-				y={props.line}
-				width={props.thickness}
-				height={props.length-(props.length+props.thickness)/2}
-			/>
-		</clipPath>
-		<clipPath id={genUniqueStr('DPadClipL',props.length,props.thickness,props.line)}>
-			<rect
-				x={props.line}
-				y={(props.length-props.thickness)/2+props.line}
-				width={props.length-(props.length+props.thickness)/2}
-				height={props.thickness}
-			/>
-		</clipPath>
-		<clipPath id={genUniqueStr('DPadClipD',props.length,props.thickness,props.line)}>
-			<rect
-				x={(props.length-props.thickness)/2+props.line}
-				y={(props.length+props.thickness)/2+props.line}
-				width={props.thickness}
-				height={props.length-(props.length+props.thickness)/2}
-			/>
-		</clipPath>
-		<clipPath id={genUniqueStr('DPadClipR',props.length,props.thickness,props.line)}>
-			<rect
-				x={(props.length+props.thickness)/2+props.line}
-				y={(props.length-props.thickness)/2+props.line}
-				width={props.length-(props.length+props.thickness)/2}
-				height={props.thickness}
-			/>
-		</clipPath>
-		<symbol id={genUniqueStr('DPadBaseShape',props.length,props.thickness,props.line)}>
-			<path d={`M ${(props.length-props.thickness)/2+props.r+props.line} ${props.line}
-				h ${(props.thickness-props.r*2)}
-				q ${props.r} ${0}, ${props.r} ${props.r} 
-				v ${((props.length-props.thickness)/2-props.r)}
-				h ${((props.length-props.thickness)/2-props.r)}
-				q ${props.r} ${0}, ${props.r} ${props.r} 
-				v ${(props.thickness-props.r*2)}
-				q ${0} ${props.r}, ${-props.r} ${props.r} 
-				h ${-((props.length-props.thickness)/2-props.r)}
-				v ${((props.length-props.thickness)/2-props.r)}
-				q ${0} ${props.r}, ${-props.r} ${props.r} 
-				h ${-(props.thickness-props.r*2)}
-				q ${-props.r} ${0}, ${-props.r} ${-props.r} 
-				v ${-((props.length-props.thickness)/2-props.r)}
-				h ${-((props.length-props.thickness)/2-props.r)}
-				q ${-props.r} ${0}, ${-props.r} ${-props.r} 
-				v ${-(props.thickness-props.r*2)}
-				q ${0} ${-props.r}, ${props.r} ${-props.r} 
-				h ${((props.length-props.thickness)/2-props.r)}
-				v ${-((props.length-props.thickness)/2-props.r)}
-				q ${0} ${-props.r}, ${props.r} ${-props.r} 
-				Z
-			`} />
-		</symbol>
-		<symbol id={genUniqueStr('DPadBaseShapeThicc',props.length,props.thickness,props.line)}>
-			<path d={`M ${props.line+(props.length-props.thickness)/2+props.r} 0
-				h ${(props.thickness-props.r*2)}
-				q ${props.r+props.line} ${0}, ${props.r+props.line} ${props.r+props.line} 
-				v ${((props.length-props.thickness)/2-props.r-props.line)}
-				h ${((props.length-props.thickness)/2-props.r-props.line)}
-				q ${props.r+props.line} ${0}, ${props.r+props.line} ${props.r+props.line} 
-				v ${(props.thickness-props.r*2)}
-				q ${0} ${props.r+props.line}, ${-props.r-props.line} ${props.r+props.line} 
-				h ${-((props.length-props.thickness)/2-props.r-props.line)}
-				v ${((props.length-props.thickness)/2-props.r-props.line)}
-				q ${0} ${props.r+props.line}, ${-props.r-props.line} ${props.r+props.line} 
-				h ${-(props.thickness-props.r*2)}
-				q ${-props.r-props.line} ${0}, ${-props.r-props.line} ${-props.r-props.line} 
-				v ${-((props.length-props.thickness)/2-props.r-props.line)}
-				h ${-((props.length-props.thickness)/2-props.r-props.line)}
-				q ${-props.r-props.line} ${0}, ${-props.r-props.line} ${-props.r-props.line} 
-				v ${-(props.thickness-props.r*2)}
-				q ${0} ${-props.r-props.line}, ${props.r+props.line} ${-props.r-props.line} 
-				h ${((props.length-props.thickness)/2-props.r-props.line)}
-				v ${-((props.length-props.thickness)/2-props.r-props.line)}
-				q ${0} ${-props.r-props.line}, ${props.r+props.line} ${-props.r-props.line} 
-				Z
-			`} />
-		</symbol>
-	</defs>
-	
-	<use
-		class='fill-black/[0.5]'
-		href={genUniqueStr('#DPadBaseShapeThicc',props.length,props.thickness,props.line)}
-	/>
-	<g class='fill-transparent'>
-		<use class={props.up?'fill-white':''}
-			href={genUniqueStr('#DPadBaseShape',props.length,props.thickness,props.line)}
-			clip-path={`url(#${genUniqueStr('DPadClipU',props.length,props.thickness,props.line)})`} />
-		<use class={props.down?'fill-white':''}
-			href={genUniqueStr('#DPadBaseShape',props.length,props.thickness,props.line)}
-			clip-path={`url(#${genUniqueStr('DPadClipD',props.length,props.thickness,props.line)})`} />
-		<use class={props.left?'fill-white':''}
-			href={genUniqueStr('#DPadBaseShape',props.length,props.thickness,props.line)}
-			clip-path={`url(#${genUniqueStr('DPadClipL',props.length,props.thickness,props.line)})`} />
-		<use class={props.right?'fill-white':''}
-			href={genUniqueStr('#DPadBaseShape',props.length,props.thickness,props.line)}
-			clip-path={`url(#${genUniqueStr('DPadClipR',props.length,props.thickness,props.line)})`} />
-	</g>
-	<use
-		class='stroke-gray-300 fill-transparent'
-		stroke-width={props.line}
-			href={genUniqueStr('#DPadBaseShape',props.length,props.thickness,props.line)}
-	/>
-</svg>
 
 export const WDPad = (props: WidgetProps): JSXElement => <Widget
 	widget={props.def} container={props.container}>
@@ -150,7 +148,6 @@ export const WDPad = (props: WidgetProps): JSXElement => <Widget
 		up=			{props.pad?.buttonPress[props.def.bt[3]]||false}
 		length=		{props.def.val[0]||80}
 		thickness=	{props.def.val[1]||28}
-		r=			{props.def.val[2]||8}
 		line=		{props.container.line||3}
 	/>
 </Widget>
