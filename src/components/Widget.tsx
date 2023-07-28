@@ -4,15 +4,15 @@ import type { WidgetContainerDef } from './WidgetContainer'
 
 
 export enum WidgetType {
-	Stk		= 0,
-	Btn		= 1,
-	Btn2	= 2,
-	Btn4	= 3,
-	DPd		= 4,
-	Trg		= 5,
+	Stick		= 0,
+	Button		= 1,
+	Button2		= 2,
+	Button4		= 3,
+	DPad		= 4,
+	Trigger		= 5,
 	//Bmp,
 	//Bmp2,
-	StkO	= 6,
+	StickOct	= 6,
 	//StkR,
 	MAX
 }

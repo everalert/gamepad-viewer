@@ -38,19 +38,19 @@ const PSx: Component = () => {
 	}
 
 	const widgets: WidgetDef[] = [
-		{ type:WidgetType.Stk, x:-INNER_X, y:INNER_Y,
+		{ type:WidgetType.Stick, x:-INNER_X, y:INNER_Y,
 			ax:[PSA.LSx,PSA.LSy], bt:[PSB.L3], val:[ST_R,5] },
-		{ type:WidgetType.Stk, x:INNER_X, y:INNER_Y,
+		{ type:WidgetType.Stick, x:INNER_X, y:INNER_Y,
 			ax:[PSA.RSx,PSA.RSy], bt:[PSB.R3], val:[ST_R,5] },
-		{ type:WidgetType.Btn2, x:0, y:MID_Y,
+		{ type:WidgetType.Button2, x:0, y:MID_Y,
 			ax:[], bt:[PSB.Select,PSB.Start], val:[B2_R1,B2_R2] },
-		{ type:WidgetType.DPd, x:-OUTER_X, y:OUTER_Y,
+		{ type:WidgetType.DPad, x:-OUTER_X, y:OUTER_Y,
 			ax:[], bt:[PSB.DD,PSB.DR,PSB.DL,PSB.DU], val:[DP_L,DP_T] },
-		{ type:WidgetType.Btn4, x:OUTER_X, y:OUTER_Y,
+		{ type:WidgetType.Button4, x:OUTER_X, y:OUTER_Y,
 			ax:[], bt:[PSB.Cr,PSB.Ci,PSB.Sq,PSB.Tr], val:[B4_R1,B4_R2] },
-		{ type:WidgetType.Trg, x:-container.w/2, y:0,
+		{ type:WidgetType.Trigger, x:-container.w/2, y:0,
 			ax:[], bt:[PSB.L2,PSB.L1], val:[TR_H,256] },
-		{ type:WidgetType.Trg, x:container.w/2, y:0,
+		{ type:WidgetType.Trigger, x:container.w/2, y:0,
 			ax:[], bt:[PSB.R2,PSB.R1], val:[TR_H,256], fx:true },
 	]
 
@@ -67,7 +67,7 @@ gap:${container.m/2}px;
 				class={`flex justify-center gap-4 text-lg`}
 				style={`width:${container.w}px;`}
 				>
-				<For each={widgets.filter(w=>w.type===WidgetType.Stk)}>
+				<For each={widgets.filter(w=>w.type===WidgetType.Stick)}>
 					{s => <StickText
 						x={pad()?.axes[s.ax[0]]||0}
 						y={pad()?.axes[s.ax[1]]||0}

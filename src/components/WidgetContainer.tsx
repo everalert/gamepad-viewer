@@ -54,25 +54,25 @@ export const WidgetContainer = (props: WidgetContainerProps) => <div
 		<Switch fallback={<Widget widget={w} container={props.def}>
 			no {WidgetType[w.type]} widget
 		</Widget>}>
-			<Match when={w.type===WidgetType.Stk}>
+			<Match when={w.type===WidgetType.Stick}>
 				<WStick pad={props.pad} def={w} container={props.def} />
 			</Match>
-			<Match when={w.type===WidgetType.StkO}>
+			<Match when={w.type===WidgetType.StickOct}>
 				<WStickO pad={props.pad} def={w} container={props.def} />
 			</Match>
-			<Match when={w.type===WidgetType.Btn}>
+			<Match when={w.type===WidgetType.Button}>
 				<WButton pad={props.pad} def={w} container={props.def} />
 			</Match>
-			<Match when={w.type===WidgetType.Btn2}>
+			<Match when={w.type===WidgetType.Button2}>
 				<WButton2 pad={props.pad} def={w} container={props.def} />
 			</Match>
-			<Match when={w.type===WidgetType.Btn4}>
+			<Match when={w.type===WidgetType.Button4}>
 				<WButton4 pad={props.pad} def={w} container={props.def} />
 			</Match>
-			<Match when={w.type===WidgetType.DPd}>
+			<Match when={w.type===WidgetType.DPad}>
 				<WDPad pad={props.pad} def={w} container={props.def} />
 			</Match>
-			<Match when={w.type===WidgetType.Trg}>
+			<Match when={w.type===WidgetType.Trigger}>
 				<WTrigger pad={props.pad} def={w} container={props.def} />
 			</Match>
 		</Switch>

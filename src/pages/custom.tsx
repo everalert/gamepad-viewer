@@ -36,7 +36,7 @@ gap:${container().m/2}px;
 			{ NOTEXT || <div
 				class={`flex justify-center gap-4 text-lg ${!MODE_EDIT||'outline outline-[4px] outline-gray-950/[0.85]'}`}
 				>
-				<For each={widgets().filter(w=>w.type===WidgetType.Stk)}>
+				<For each={widgets().filter(w=>w.type===WidgetType.Stick)}>
 					{s => <StickText
 						x={pad()?.axes[s.ax[0]]||0}
 						y={pad()?.axes[s.ax[1]]||0}
@@ -88,7 +88,8 @@ gap:${container().m/2}px;
 									class='px-1 py-0.5 font-semibold bg-gray-800 rounded'
 									>
 									<For each={Object.keys(WidgetType)
-										.filter(k=>parseInt(k)<WidgetType.MAX)}>{
+										.filter(k=>parseInt(k)<WidgetType.MAX)
+										.sort((a,b)=>WidgetType[a]>WidgetType[b]?1:(WidgetType[a]<WidgetType[b]?-1:0))}>{
 											t => <option value={t}>{WidgetType[t]}</option>
 									}</For>
 								</select>

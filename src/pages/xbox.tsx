@@ -38,19 +38,19 @@ const XBox: Component = () => {
 	}
 
 	const widgets: WidgetDef[] = [
-		{ type:WidgetType.Stk, x:-OUTER_X, y:OUTER_Y,
+		{ type:WidgetType.Stick, x:-OUTER_X, y:OUTER_Y,
 			ax:[XBA.LSx,XBA.LSy], bt:[XBB.LSB], val:[ST_R,5] },
-		{ type:WidgetType.Stk, x:INNER_X, y:INNER_Y,
+		{ type:WidgetType.Stick, x:INNER_X, y:INNER_Y,
 			ax:[XBA.RSx,XBA.RSy], bt:[XBB.RSB], val:[ST_R,5] },
-		{ type:WidgetType.Btn2, x:0, y:MID_Y,
+		{ type:WidgetType.Button2, x:0, y:MID_Y,
 			ax:[], bt:[XBB.Back,XBB.Start], val:[B2_R1,B2_R2] },
-		{ type:WidgetType.DPd, x:-INNER_X, y:INNER_Y,
+		{ type:WidgetType.DPad, x:-INNER_X, y:INNER_Y,
 			ax:[], bt:[XBB.DD,XBB.DR,XBB.DL,XBB.DU], val:[DP_L,DP_T] },
-		{ type:WidgetType.Btn4, x:OUTER_X, y:OUTER_Y,
+		{ type:WidgetType.Button4, x:OUTER_X, y:OUTER_Y,
 			ax:[], bt:[XBB.A,XBB.B,XBB.X,XBB.Y], val:[B4_R1,B4_R2] },
-		{ type:WidgetType.Trg, x:-container.w/2, y:0,
+		{ type:WidgetType.Trigger, x:-container.w/2, y:0,
 			ax:[], bt:[XBB.LT,XBB.LB], val:[TR_H,256] },
-		{ type:WidgetType.Trg, x:container.w/2, y:0,
+		{ type:WidgetType.Trigger, x:container.w/2, y:0,
 			ax:[], bt:[XBB.RT,XBB.RB], val:[TR_H,256], fx:true },
 	]
 
@@ -67,7 +67,7 @@ gap:${container.m/2}px;
 				class={`flex justify-center gap-4 text-lg`}
 				style={`width:${container.w}px;`}
 				>
-				<For each={widgets.filter(w=>w.type===WidgetType.Stk)}>
+				<For each={widgets.filter(w=>w.type===WidgetType.Stick)}>
 					{s => <StickText
 						x={pad()?.axes[s.ax[0]]||0}
 						y={pad()?.axes[s.ax[1]]||0}
