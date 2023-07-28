@@ -28,8 +28,6 @@ export const obj2ps = (params:{[key:string]:string}) => {
 }
 
 export const filterParams = (params:string, incl:string, excl?:string[]) => {
-	if (!params.startsWith('?'))
-		return ''
 	let p = ps2obj(params)
 	p = Object.keys(p)
 		.filter(k => !excl?.includes(k))
