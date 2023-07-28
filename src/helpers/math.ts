@@ -1,7 +1,27 @@
 export const clamp = (n:number, min:number, max:number) => Math.min(Math.max(n,min),max)
 
-export const ang = (x:number, y:number) => Math.atan2(y, x) * 180 / Math.PI
+
+export const deg2rad = (d:number) => d * Math.PI / 180
+export const rad2deg = (r:number) => r * 180 / Math.PI
+
+
+// x/y-axis conversion
+export const ang = (x:number, y:number) => rad2deg(Math.atan2(y, x))
 export const mag = (x:number, y:number) => Math.sqrt(x**2 + y**2)
+
+
+// triangles
+export const AbC2a = (A:number, b:number, C:number) =>
+	(Math.sin(deg2rad(A))*b)/Math.sin(deg2rad(180-A-C))
+
+export const AbC2c = (A:number, b:number, C:number) =>
+	(Math.sin(deg2rad(C))*b)/Math.sin(deg2rad(180-A-C))
+
+export const AbC2area = (A:number, b:number, C:number) =>
+	0.5 * AbC2a(A,b,C) * b * Math.sin(deg2rad(C))
+
+export const AbC2h = (A:number, b:number, C:number) => 2*(AbC2area(A,b,C)/b)
+
 
 // chord length, sagitta, radius
 // https://en.wikipedia.org/wiki/Sagitta_(geometry)

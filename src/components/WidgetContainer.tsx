@@ -1,7 +1,7 @@
 import { For, Switch, Match } from 'solid-js';
 import { WidgetType, WidgetDef, Widget} from '../components/Widget'
 import type { GamepadState } from '../types/gamepad'
-import { WStick, WButton, WButton2, WButton4, WDPad, WTrigger } from './'
+import { WStick, WStickO, WButton, WButton2, WButton4, WDPad, WTrigger } from './'
 
 
 export interface WidgetContainerDef {
@@ -56,6 +56,9 @@ export const WidgetContainer = (props: WidgetContainerProps) => <div
 		</Widget>}>
 			<Match when={w.type===WidgetType.Stk}>
 				<WStick pad={props.pad} def={w} container={props.def} />
+			</Match>
+			<Match when={w.type===WidgetType.StkO}>
+				<WStickO pad={props.pad} def={w} container={props.def} />
 			</Match>
 			<Match when={w.type===WidgetType.Btn}>
 				<WButton pad={props.pad} def={w} container={props.def} />

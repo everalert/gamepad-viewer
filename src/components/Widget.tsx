@@ -12,7 +12,7 @@ export enum WidgetType {
 	Trg		= 5,
 	//Bmp,
 	//Bmp2,
-	//StkO,
+	StkO	= 6,
 	//StkR,
 	MAX
 }
