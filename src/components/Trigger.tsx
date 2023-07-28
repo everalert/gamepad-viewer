@@ -21,7 +21,7 @@ const Trigger = (props: TriggerProps) => <svg
 	version='1.1' xmlns='http://www.w3.org/2000/svg'
 	width={rc2s(props.trigR,props.trigH) + props.markW + props.line*2}
 	height={props.trigH + props.markW + props.line*2}
-	class={`inline-block ${props.class||''}`}
+	class={`${props.class||''}`}
 	style={`margin-left:-${(props.line*2+props.markW)/2}px;
 		margin-top:-${(props.line*2+props.markW+props.trigH)/2}px;
 		${props.style||''}`}

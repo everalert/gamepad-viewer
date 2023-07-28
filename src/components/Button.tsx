@@ -38,7 +38,7 @@ const Button = (props: ButtonProps) => <svg
 	version='1.1' xmlns='http://www.w3.org/2000/svg'
 	width={(props.r+props.line)*2}
 	height={(props.r+props.line)*2}
-	class={`inline-block ${props.class||''}`}
+	class={`${props.class||''}`}
 	style={`margin-left:-${(props.r+props.line)}px;
 			margin-top:-${(props.r+props.line)}px;
 			${props.style||''}`}

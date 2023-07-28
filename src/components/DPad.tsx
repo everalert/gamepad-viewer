@@ -31,7 +31,7 @@ const DPad = (props: DPadProps) => {
 		version='1.1' xmlns='http://www.w3.org/2000/svg'
 		width={props.length+line()*2}
 		height={props.length+line()*2}
-		class={`inline-block ${props.class||''}`}
+		class={`${props.class||''}`}
 		style={`margin-left:-${(props.length)/2+line()}px;
 margin-top:-${(props.length)/2+line()}px;
 ${props.style||''}`}

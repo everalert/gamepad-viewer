@@ -18,9 +18,9 @@ const Button2 = (props: Button2Props) => <svg
 	version='1.1' xmlns='http://www.w3.org/2000/svg'
 	width={(props.r1+props.r2+props.line)*2}
 	height={(props.r2+props.line)*2}
-	class={`inline-block ${props.class||''}`}
+	class={`${props.class||''}`}
 	style={`margin-left:-${props.r1+props.r2+props.line}px;
-			margin-top:-${props.r2+props.line}px;
+			margin-top:-${(props.r2+props.line)}px;
 			${props.style||''}`}
 	>
 	<ButtonInline
