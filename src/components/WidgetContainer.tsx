@@ -47,8 +47,8 @@ export interface WidgetContainerProps {
 }
 
 export const WidgetContainer = (props: WidgetContainerProps) => <div
-	class={`relative ${props.class}`}
-	style={`width:${props.def.w}px; height:${props.def.h}px; ${props.style}`}
+	class={`relative ${props.class||''}`}
+	style={`width:${props.def.w}px; height:${props.def.h}px; ${props.style||''}`}
 	>
 	<For each={props.widgets}>{w => (
 		<Switch fallback={<Widget widget={w} container={props.def}>
