@@ -16,6 +16,7 @@ interface TriggerProps {
 const MARK_HSCALE = 2.25
 const MARK_VSCALE = 4/7
 const MARK_RSCALE = 1/3
+const LINE_N = 'TriggerLine'
 
 
 const Trigger = (props: TriggerProps) => {
@@ -28,33 +29,36 @@ const Trigger = (props: TriggerProps) => {
 	const markR = () => markW()*MARK_RSCALE
 	const markContW = () => Math.sqrt(markW()**2+markW()**2)
 	const trig = () => props.trigger-0.5
-	const linerad = () => rad()+(props.line/4)/(2*props.trigR*Math.PI)*(180/Math.PI)
+	const linename = () => `${LINE_N}_${props.trigR}_${props.trigH}`
 	return <svg
 		version='1.1' xmlns='http://www.w3.org/2000/svg'
-		width={rc2s(props.trigR,props.trigH) + m()*2}
-		height={props.trigH + m()*2}
+		width={rc2s(props.trigR,props.trigH)+m()*2}
+		height={props.trigH+m()*2}
 		class={`${props.class||''}`}
-		style={`margin-left:-${m()}px;
-margin-top:-${m()+props.trigH/2}px;
-${props.style||''}`}
+		style={`margin-left:-${m()}px;margin-top:-${m()+props.trigH/2}px;${props.style||''}`}
 		>
-		<path
+		<defs>
+			<symbol id={linename()}>
+				<path d={`M
+					${m()+props.trigR*(1-Math.cos(rad()/2))}
+					${m()+props.trigH/2-props.trigR*Math.sin(rad()/2)}
+					a ${props.trigR} ${props.trigR} 0  0 0  0 ${props.trigH}`}
+				/>
+			</symbol>
+		</defs>
+		<use
 			// outline
+			href={`#${linename()}`}	
 			class={`fill-transparent stroke-black/[0.35]`}
 			stroke-width={props.line*3}
-			d={`M
-				${m()+props.trigR*(1-Math.cos(linerad()/2))}
-				${m()+props.trigH/2-props.trigR*Math.sin(linerad()/2)}
-				a ${props.trigR} ${props.trigR} 0  0 0  0 ${props.trigR*Math.sin(linerad()/2)*2}`}
+			stroke-linecap='square'
 		/>
-		<path
+		<use
 			// main line
+			href={`#${linename()}`}	
 			class={`fill-transparent ${props.bumper?'stroke-gray-300':'stroke-gray-800'}`}
 			stroke-width={props.line}
-			d={`M
-				${m()+props.trigR*(1-Math.cos(rad()/2))}
-				${m()+props.trigH/2-props.trigR*Math.sin(rad()/2)}
-				a ${props.trigR} ${props.trigR} 0  0 0  0 ${props.trigH}`}
+			stroke-linecap='square'
 		/>
 		<svg
 			// marker 
