@@ -125,10 +125,10 @@ const CButton4 = (props: Button4Props) => <svg
 export const WCButton4 = (props: WidgetProps): JSXElement => <Widget
 	widget={props.def} container={props.container}>
 	<CButton4
-		down=	{props.pad?.buttonPress[props.def.bt[0]]||false}
-		right=	{props.pad?.buttonPress[props.def.bt[1]]||false}
-		left=	{props.pad?.buttonPress[props.def.bt[2]]||false}
-		up=		{props.pad?.buttonPress[props.def.bt[3]]||false}
+		down=	{props.pad?.buttonPress[props.def.bt[0]]||(props.pad?.axes[props.def.ax[1]]>0.3?true:false)||false}
+		right=	{props.pad?.buttonPress[props.def.bt[1]]||(props.pad?.axes[props.def.ax[0]]>0.3?true:false)||false}
+		left=	{props.pad?.buttonPress[props.def.bt[2]]||(props.pad?.axes[props.def.ax[0]]<-0.3?true:false)||false}
+		up=		{props.pad?.buttonPress[props.def.bt[3]]||(props.pad?.axes[props.def.ax[1]]<-0.3?true:false)||false}
 		r1=		{props.def.val[0]||28}
 		r2=		{props.def.val[1]||16}
 		line=	{props.container.line||3}
