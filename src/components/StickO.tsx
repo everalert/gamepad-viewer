@@ -93,15 +93,10 @@ ${props.style||''}`}
 			href={`#${octname()}`}
 		/>
 
-		<circle
-			class='fill-gray-500'
-			cx={props.r+m()}
-			cy={props.r+m()}
-			r={props.line/2}
-		/>
 		<line
 			class={`stroke-gray-500`}
 			stroke-width={props.line}
+			stroke-linecap='round'
 			x1={props.r+m()}
 			y1={props.r+m()}
 			x2={(props.x+1)*props.r+m()}
