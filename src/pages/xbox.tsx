@@ -2,10 +2,11 @@ import type { Component } from 'solid-js';
 import { createSignal, For } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
 import type { GamepadState } from '../types/gamepad'
-import { Gamepad, StickText, TriggerText } from '../components'
+import { Gamepad } from '../components'
 import { XBoxAxis as XBA, XBoxButton as XBB } from '../types/xbox'
 import { WidgetType, WidgetDef } from '../components/Widget'
 import { WidgetContainer, WidgetContainerDef } from '../components/WidgetContainer'
+import { TextContainer } from '../components/TextContainer'
 
 
 const XBox: Component = () => {
@@ -63,21 +64,10 @@ width:${container.w+container.m*2}px;
 padding:${container.m}px;
 gap:${container.m/2}px;
 `}>
-			{ NOTEXT || <div
-				class={`flex justify-center gap-4 text-lg`}
-				style={`width:${container.w}px;`}
-				>
-				<For each={widgets.filter(w=>w.type===WidgetType.Stick||w.type===WidgetType.StickOct)}>
-					{s => <StickText
-						x={pad()?.axes[s.ax[0]]||0}
-						y={pad()?.axes[s.ax[1]]||0}
-					/>}
-				</For>
-				<TriggerText
-					left={pad()?.buttonValue[XBB.LT]||0}
-					right={pad()?.buttonValue[XBB.RT]||0}
-				/>
-			</div> }
+			{ NOTEXT || <TextContainer
+				widgets={widgets} pad={pad()}
+				style={`width:${container.w}px;`} />
+			}
 			{ NOIMAGE || <WidgetContainer def={container} widgets={widgets} pad={pad()} /> }
 		</div>
 	</>

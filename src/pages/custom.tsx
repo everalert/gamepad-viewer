@@ -2,10 +2,10 @@ import type { Component } from 'solid-js';
 import { createSignal, For, Index } from 'solid-js';
 import { useSearchParams, useLocation } from '@solidjs/router'
 import type { GamepadState } from '../types/gamepad'
-import { Gamepad, StickText, TriggerText } from '../components'
-import { XBoxButton as XBB } from '../types/xbox'
+import { Gamepad } from '../components'
 import { WidgetType, WidgetDef, parseWidgetStr, genWidgetStr } from '../components/Widget'
 import { WidgetContainer, WidgetContainerDef, parseContainerStr, genContainerStr } from '../components/WidgetContainer'
+import { TextContainer } from '../components/TextContainer'
 import { A } from '@solidjs/router';
 import { filterParams } from '../helpers/formatting'
 
@@ -33,20 +33,10 @@ width:${container().w+container().m*2}px;
 padding:${container().m}px;
 gap:${container().m/2}px;
 `}>
-			{ NOTEXT || <div
-				class={`flex justify-center gap-4 text-lg ${!MODE_EDIT||'outline outline-[4px] outline-gray-950/[0.85]'}`}
-				>
-				<For each={widgets().filter(w=>w.type===WidgetType.Stick||w.type===WidgetType.StickOct)}>
-					{s => <StickText
-						x={pad()?.axes[s.ax[0]]||0}
-						y={pad()?.axes[s.ax[1]]||0}
-					/>}
-				</For>
-				<TriggerText
-					left={pad()?.buttonValue[XBB.LT]||0}
-					right={pad()?.buttonValue[XBB.RT]||0}
-				/>
-			</div> }
+			{ NOTEXT || <TextContainer
+				widgets={widgets()} pad={pad()}
+				class={`${!MODE_EDIT||'outline outline-[4px] outline-gray-950/[0.85]'}`}/>
+			}
 			{ NOIMAGE || <WidgetContainer
 				def={container()} widgets={widgets()} pad={pad()}
 				class={`${!MODE_EDIT||'outline outline-[4px] outline-gray-950/[0.85]'}`}
