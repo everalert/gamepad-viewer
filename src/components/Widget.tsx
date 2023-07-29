@@ -13,6 +13,7 @@ export enum WidgetType {
 	//Bmp,
 	//Bmp2,
 	StkO	= 6,
+	CBtn4 	= 7,
 	//StkR,
 	MAX
 }
