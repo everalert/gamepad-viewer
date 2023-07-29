@@ -63,59 +63,35 @@ ${props.style||''}`}
 			</clipPath>
 			<symbol id={genUniqueStr('DPadBaseShape')}>
 				<path d={`M ${line()+iEdge()+rad()} ${line()}
-h ${oEdgeR()}
-q ${rad()} ${0}, ${rad()} ${rad()} 
-v ${iEdgeR()}
-h ${iEdgeR()}
-q ${rad()} ${0}, ${rad()} ${rad()} 
-v ${oEdgeR()}
-q ${0} ${rad()}, ${-rad()} ${rad()} 
-h ${-iEdgeR()}
-v ${iEdgeR()}
-q ${0} ${rad()}, ${-rad()} ${rad()} 
-h ${-oEdgeR()}
-q ${-rad()} ${0}, ${-rad()} ${-rad()} 
-v ${-iEdgeR()}
-h ${-iEdgeR()}
-q ${-rad()} ${0}, ${-rad()} ${-rad()} 
-v ${-oEdgeR()}
-q ${0} ${-rad()}, ${rad()} ${-rad()} 
-h ${iEdgeR()}
-v ${-iEdgeR()}
-q ${0} ${-rad()}, ${rad()} ${-rad()} 
-Z
-				`} />
-			</symbol>
-			<symbol id={genUniqueStr('DPadBaseShapeThicc')}>
-				<path d={`M ${line()+iEdge()+rad()} ${0}
-h ${oEdgeR()}
-q ${rad()+line()} ${0}, ${rad()+line()} ${rad()+line()} 
-v ${iEdgeR()-line()}
-h ${iEdgeR()-line()}
-q ${rad()+line()} ${0}, ${rad()+line()} ${rad()+line()} 
-v ${oEdgeR()}
-q ${0} ${rad()+line()}, ${-rad()-line()} ${rad()+line()} 
-h ${-iEdgeR()+line()}
-v ${iEdgeR()-line()}
-q ${0} ${rad()+line()}, ${-rad()-line()} ${rad()+line()} 
-h ${-oEdgeR()}
-q ${-rad()-line()} ${0}, ${-rad()-line()} ${-rad()-line()} 
-v ${-iEdgeR()+line()}
-h ${-iEdgeR()+line()}
-q ${-rad()-line()} ${0}, ${-rad()-line()} ${-rad()-line()} 
-v ${-oEdgeR()}
-q ${0} ${-rad()-line()}, ${rad()+line()} ${-rad()-line()} 
-h ${iEdgeR()-line()}
-v ${-iEdgeR()+line()}
-q ${0} ${-rad()-line()}, ${rad()+line()} ${-rad()-line()} 
-Z
+					h ${oEdgeR()}
+					q ${rad()} ${0}, ${rad()} ${rad()} 
+					v ${iEdgeR()}
+					h ${iEdgeR()}
+					q ${rad()} ${0}, ${rad()} ${rad()} 
+					v ${oEdgeR()}
+					q ${0} ${rad()}, ${-rad()} ${rad()} 
+					h ${-iEdgeR()}
+					v ${iEdgeR()}
+					q ${0} ${rad()}, ${-rad()} ${rad()} 
+					h ${-oEdgeR()}
+					q ${-rad()} ${0}, ${-rad()} ${-rad()} 
+					v ${-iEdgeR()}
+					h ${-iEdgeR()}
+					q ${-rad()} ${0}, ${-rad()} ${-rad()} 
+					v ${-oEdgeR()}
+					q ${0} ${-rad()}, ${rad()} ${-rad()} 
+					h ${iEdgeR()}
+					v ${-iEdgeR()}
+					q ${0} ${-rad()}, ${rad()} ${-rad()} 
+					Z
 				`} />
 			</symbol>
 		</defs>
 
 		<use
-			class='fill-black/[0.5]'
-			href={genUniqueStr('#DPadBaseShapeThicc')}
+			class='opacity-50 fill-black stroke-black'
+			stroke-width={line()*2}
+			href={genUniqueStr('#DPadBaseShape')}
 		/>
 		<g class='fill-transparent'>
 			<use class={props.up?'fill-white':''}
