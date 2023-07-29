@@ -1,12 +1,62 @@
 import type { Component } from 'solid-js';
-import { createSignal, For } from 'solid-js';
+import { createSignal } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
 import type { GamepadState } from '../types/gamepad'
 import { Gamepad } from '../components'
 import { XBoxAxis as XBA, XBoxButton as XBB } from '../types/xbox'
-import { WidgetType, WidgetDef } from '../components/Widget'
-import { WidgetContainer, WidgetContainerDef } from '../components/WidgetContainer'
+import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
+import { WidgetContainer, WidgetContainerDef, genContainerStr } from '../components/WidgetContainer'
 import { TextContainer } from '../components/TextContainer'
+
+
+const INNER_X = 64,		INNER_X_COMPACT = 46
+const INNER_Y = 24,		INNER_Y_COMPACT = 6
+const OUTER_X = 172,	OUTER_X_COMPACT = 140
+const OUTER_Y = -24,	OUTER_Y_COMPACT = 0
+
+export const XBOX_DFLT_CONTAINER: WidgetContainerDef = { w: 512, h: 144, m: 32, line: 3 }
+
+export const XBOX_DFLT_WIDGETS: WidgetDef[] = [
+	{ type:WidgetType.Stick, x:-OUTER_X, y:OUTER_Y,
+		ax:[XBA.LSx,XBA.LSy], bt:[XBB.LSB], val:[48] },
+	{ type:WidgetType.Stick, x:INNER_X, y:INNER_Y,
+		ax:[XBA.RSx,XBA.RSy], bt:[XBB.RSB], val:[48] },
+	{ type:WidgetType.Button2, x:0, y:-48,
+		ax:[], bt:[XBB.Back,XBB.Start], val:[32,12] },
+	{ type:WidgetType.DPad, x:-INNER_X, y:INNER_Y,
+		ax:[], bt:[XBB.DD,XBB.DR,XBB.DL,XBB.DU], val:[80,28] },
+	{ type:WidgetType.Button4, x:OUTER_X, y:OUTER_Y,
+		ax:[], bt:[XBB.A,XBB.B,XBB.X,XBB.Y], val:[28,16] },
+	{ type:WidgetType.Trigger, x:-XBOX_DFLT_CONTAINER.w/2, y:0,
+		ax:[], bt:[XBB.LT,XBB.LB], val:[96,256] },
+	{ type:WidgetType.Trigger, x:XBOX_DFLT_CONTAINER.w/2, y:0,
+		ax:[], bt:[XBB.RT,XBB.RB], val:[96,256], fx:true },
+]
+
+export const XBOX_DFLT_STR: string =
+	`${genContainerStr(XBOX_DFLT_CONTAINER)}|${genWidgetStr(XBOX_DFLT_WIDGETS)}`
+
+export const XBOX_DFLT_CONTAINER_COMPACT: WidgetContainerDef = { w: 396, h: 80, m: 32, line: 3 }
+
+export const XBOX_DFLT_WIDGETS_COMPACT: WidgetDef[] = [
+	{ type:WidgetType.Stick, x:-OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
+		ax:[XBA.LSx,XBA.LSy], bt:[XBB.LSB], val:[40] },
+	{ type:WidgetType.Stick, x:INNER_X_COMPACT, y:INNER_Y_COMPACT,
+		ax:[XBA.RSx,XBA.RSy], bt:[XBB.RSB], val:[40] },
+	{ type:WidgetType.Button2, x:0, y:-34,
+		ax:[], bt:[XBB.Back,XBB.Start], val:[92,10] },
+	{ type:WidgetType.DPad, x:-INNER_X_COMPACT, y:INNER_Y_COMPACT,
+		ax:[], bt:[XBB.DD,XBB.DR,XBB.DL,XBB.DU], val:[72,24] },
+	{ type:WidgetType.Button4, x:OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
+		ax:[], bt:[XBB.A,XBB.B,XBB.X,XBB.Y], val:[24,13] },
+	{ type:WidgetType.Trigger, x:-XBOX_DFLT_CONTAINER_COMPACT.w/2, y:0,
+		ax:[], bt:[XBB.LT,XBB.LB], val:[64,256] },
+	{ type:WidgetType.Trigger, x:XBOX_DFLT_CONTAINER_COMPACT.w/2, y:0,
+		ax:[], bt:[XBB.RT,XBB.RB], val:[64,256], fx:true },
+]
+
+export const XBOX_DFLT_STR_COMPACT: string =
+	`${genContainerStr(XBOX_DFLT_CONTAINER_COMPACT)}|${genWidgetStr(XBOX_DFLT_WIDGETS_COMPACT)}`
 
 
 const XBox: Component = () => {
@@ -17,53 +67,22 @@ const XBox: Component = () => {
 	const NOTEXT		= params.notext !== undefined
 	const NOIMAGE		= params.noimage !== undefined
 	const MODE_COMPACT	= params.compact !== undefined
-	const INNER_X	= MODE_COMPACT ? 46 : 64
-	const INNER_Y	= MODE_COMPACT ? 0 : 24
-	const OUTER_X	= MODE_COMPACT ? 140 : 172
-	const OUTER_Y	= MODE_COMPACT ? 0 : -24
-	const MID_Y		= MODE_COMPACT ? -40 : -48
-	const ST_R		= MODE_COMPACT ? 40 : 48
-	const TR_H		= MODE_COMPACT ? 64 : 96
-	const B2_R1		= MODE_COMPACT ? 92 : 32
-	const B2_R2		= MODE_COMPACT ? 10 : 12
-	const B4_R1		= MODE_COMPACT ? 24 : 28
-	const B4_R2		= MODE_COMPACT ? 13 : 16
-	const DP_L		= MODE_COMPACT ? 72 : 80
-	const DP_T		= MODE_COMPACT ? 24 : 28
 	
-	const container: WidgetContainerDef = {
-		w: MODE_COMPACT ? 396 : 512,
-		h: MODE_COMPACT ? 80 : 144,
-		m: 32,
-		line: 3,
-	}
+	const container: WidgetContainerDef = MODE_COMPACT ?
+		XBOX_DFLT_CONTAINER_COMPACT : XBOX_DFLT_CONTAINER
 
-	const widgets: WidgetDef[] = [
-		{ type:WidgetType.Stick, x:-OUTER_X, y:OUTER_Y,
-			ax:[XBA.LSx,XBA.LSy], bt:[XBB.LSB], val:[ST_R,5] },
-		{ type:WidgetType.Stick, x:INNER_X, y:INNER_Y,
-			ax:[XBA.RSx,XBA.RSy], bt:[XBB.RSB], val:[ST_R,5] },
-		{ type:WidgetType.Button2, x:0, y:MID_Y,
-			ax:[], bt:[XBB.Back,XBB.Start], val:[B2_R1,B2_R2] },
-		{ type:WidgetType.DPad, x:-INNER_X, y:INNER_Y,
-			ax:[], bt:[XBB.DD,XBB.DR,XBB.DL,XBB.DU], val:[DP_L,DP_T] },
-		{ type:WidgetType.Button4, x:OUTER_X, y:OUTER_Y,
-			ax:[], bt:[XBB.A,XBB.B,XBB.X,XBB.Y], val:[B4_R1,B4_R2] },
-		{ type:WidgetType.Trigger, x:-container.w/2, y:0,
-			ax:[], bt:[XBB.LT,XBB.LB], val:[TR_H,256] },
-		{ type:WidgetType.Trigger, x:container.w/2, y:0,
-			ax:[], bt:[XBB.RT,XBB.RB], val:[TR_H,256], fx:true },
-	]
+	const widgets: WidgetDef[] = MODE_COMPACT ?
+		XBOX_DFLT_WIDGETS_COMPACT : XBOX_DFLT_WIDGETS
 
 	return <>
 		<Gamepad padIndex={padIndex} onUpdate={setPad} />
 		<div
 			class={`flex flex-col`}
 			style={`
-width:${container.w+container.m*2}px;
-padding:${container.m}px;
-gap:${container.m/2}px;
-`}>
+				width:${container.w+container.m*2}px;
+				padding:${container.m}px;
+				gap:${container.m/2}px;
+				`}>
 			{ NOTEXT || <TextContainer
 				widgets={widgets} pad={pad()}
 				style={`width:${container.w}px;`} />
