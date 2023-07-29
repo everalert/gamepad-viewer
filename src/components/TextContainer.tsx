@@ -14,7 +14,6 @@ export interface TextContainerProps {
 
 export const TextContainer = (props: TextContainerProps) => {
 	const triggers = () => props.widgets.filter(w=>w.type===WidgetType.Trigger)
-	console.log(triggers()[0].bt.slice(-1)[0], )
 	return <div
 		class={`flex justify-center gap-4 text-lg ${props.class}`}
 		style={`${props.class}`}
