@@ -67,7 +67,7 @@ gap:${container.m/2}px;
 				class={`flex justify-center gap-4 text-lg`}
 				style={`width:${container.w}px;`}
 				>
-				<For each={widgets.filter(w=>w.type===WidgetType.Stick)}>
+				<For each={widgets.filter(w=>w.type===WidgetType.Stick||w.type===WidgetType.StickOct)}>
 					{s => <StickText
 						x={pad()?.axes[s.ax[0]]||0}
 						y={pad()?.axes[s.ax[1]]||0}
