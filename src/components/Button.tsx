@@ -34,7 +34,7 @@ interface ButtonProps {
 	style?: string;
 }
 
-const Button = (props: ButtonProps) => <svg
+export const Button = (props: ButtonProps) => <svg
 	version='1.1' xmlns='http://www.w3.org/2000/svg'
 	width={(props.r+props.line)*2}
 	height={(props.r+props.line)*2}

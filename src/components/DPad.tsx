@@ -17,7 +17,7 @@ interface DPadProps {
 const RADIUS_FACTOR = 0.30  // original design = 8px/28px = 0.285
 
 
-const DPad = (props: DPadProps) => {
+export const DPad = (props: DPadProps) => {
 	const genUniqueStr = (b:string) => `${b}_${props.length}_${props.thickness}_${props.line}`
 	const rad = () => props.thickness*RADIUS_FACTOR
 	const line = () => props.line

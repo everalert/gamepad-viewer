@@ -18,7 +18,7 @@ const DOT_RSCALE = 1.25	// radius
 const DOT_LSCALE = 0.6	// line
 const OCT_N = 'StickOct'
 
-const StickO = (props: StickOProps) => {
+export const StickO = (props: StickOProps) => {
 	const octname = () => `${OCT_N}_${props.r}_${props.a}_${props.ar}`
 	const dotR = () => props.line*DOT_RSCALE+props.line*DOT_LSCALE
 	const m = () => props.line+dotR()

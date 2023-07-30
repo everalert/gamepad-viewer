@@ -12,7 +12,7 @@ interface StickTextProps {
 const deadzone = 0.05
 
 
-const StickText = (props: StickTextProps) => {
+export const StickText = (props: StickTextProps) => {
 	const [params] = useSearchParams();
 	const MODE_COMPACT = params.compact !== undefined || params.lesstext !== undefined
 

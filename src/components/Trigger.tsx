@@ -19,7 +19,7 @@ const MARK_RSCALE = 1/3
 const LINE_N = 'TriggerLine'
 
 
-const Trigger = (props: TriggerProps) => {
+export const Trigger = (props: TriggerProps) => {
 	const m = () => props.line*2
 	const rad = () => rc2rad(props.trigR,props.trigH)
 	const deg = () => rc2deg(props.trigR,props.trigH)

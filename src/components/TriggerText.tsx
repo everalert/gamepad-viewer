@@ -7,7 +7,7 @@ interface TriggerTextProps {
 }
 
 
-const TriggerText = (props: TriggerTextProps) => {
+export const TriggerText = (props: TriggerTextProps) => {
 	return (
 		<div class='grid grid-cols-1 leading-[1.0125rem] px-3 py-2 pb-1 bg-black/[0.65] rounded-md'>
 			<div class='font-medium'>

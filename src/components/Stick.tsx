@@ -14,7 +14,7 @@ interface StickProps {
 const DOT_RSCALE = 1.25	// radius
 const DOT_LSCALE = 0.6	// line
 
-const Stick = (props: StickProps) => {
+export const Stick = (props: StickProps) => {
 	const dotR = () => props.line*DOT_RSCALE+props.line*DOT_LSCALE
 	const m = () => props.line+dotR()
 

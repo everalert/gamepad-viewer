@@ -9,7 +9,7 @@ interface GamepadProps {
 }
 
 
-const Gamepad = ({ onUpdate, padIndex }: GamepadProps) => {
+export const Gamepad = ({ onUpdate, padIndex }: GamepadProps) => {
 	onMount(() => {
 		function loop(t) {
 			const gamepads = navigator.getGamepads()

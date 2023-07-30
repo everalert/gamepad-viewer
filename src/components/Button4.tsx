@@ -16,7 +16,7 @@ interface Button4Props {
 }
 
 
-const Button4 = (props: Button4Props) => <svg
+export const Button4 = (props: Button4Props) => <svg
 	version='1.1' xmlns='http://www.w3.org/2000/svg'
 	width={(props.r1+props.r2+props.line)*2}
 	height={(props.r1+props.r2+props.line)*2}
