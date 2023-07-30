@@ -5,6 +5,7 @@ import { filterParams } from '../helpers/formatting'
 import { XBOX_DFLT_STR, XBOX_DFLT_STR_COMPACT } from './xbox'
 import { PSX_DFLT_STR, PSX_DFLT_STR_COMPACT } from './psx'
 import { WIIU_DFLT_STR, WIIU_DFLT_STR_COMPACT } from './wiiu'
+import { EditIcon } from '../components/icons'
 
 
 type PageDef = {
@@ -63,13 +64,17 @@ const Index: Component = () => {
 						class='px-2 py-0.5 text-center font-bold text-blue-300 bg-blue-950 rounded
 						hover:text-blue-100 hover:bg-blue-900'
 						href={`/${p.name}${paramstr()}`}
-					>{p.name}</A>
+						>
+						{p.name}
+					</A>
 					<A
-						class='px-1 py-0.5 font-medium text-blue-300 rounded
-						hover:text-blue-100'
+						class='w-5 h-5 m-1 text-blue-800 rounded
+						hover:text-blue-400'
 						href={`/custom/edit${filterParams(paramstr(),
-							`?settings=${params()['compact']===true?p.compact:p.layout}`)}`}
-					>edit</A>
+						`?settings=${params()['compact']===true?p.compact:p.layout}`)}`}
+						>
+						<EditIcon />
+					</A>
 				</>}</For>
 			</div>
 		</div>

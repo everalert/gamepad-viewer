@@ -9,6 +9,7 @@ import { TextContainer } from '../components/TextContainer'
 import { A } from '@solidjs/router';
 import { filterParams } from '../helpers/formatting'
 import { XBOX_DFLT_CONTAINER, XBOX_DFLT_WIDGETS } from './xbox'
+import { AddIcon, DeleteIcon, ResetIcon, ConfirmIcon } from '../components/icons'
 
 
 const Custom: Component = () => {
@@ -111,46 +112,46 @@ gap:${container().m/2}px;
 								onInput={()=>{setVal({fy:!w().fy})}}
 									class='w-5 h-5 px-1.5 pt-0.5 bg-gray-800' />
 							</div>
-							<div><input
-								type='button'
-								value='del'
+							<div
+								class='h-7 w-7 -my-2 text-red-800 relative top-2
+								hover:text-red-400 cursor-pointer'
 								onClick={()=>setWidgets([
 									...widgets().slice(0,-widgets().length+i),
 									...widgets().slice(i+1,widgets().length),
 								])} 
-								class='px-2 py-0.5 font-bold text-red-300 bg-red-950 rounded
-								hover:text-red-100 hover:bg-red-900 cursor-pointer'
-							/></div>
+								>
+								<DeleteIcon />
+							</div>
 						</>
 					}}</Index>
 				</div>
 				<div class='mt-3 flex gap-2'>
-					<input
-						type='button'
-						value='add'
+					<div
+						class='flex items-center font-bold text-blue-800
+						hover:text-blue-400 cursor-pointer group'
 						onClick={()=>setWidgets([...widgets(),
 							{type:0,x:0,y:0,ax:[],bt:[],val:[],fx:false,fy:false}])}
-						class='px-2 py-0.5 font-bold text-blue-300 bg-blue-950 rounded
-						hover:text-blue-100 hover:bg-blue-900 cursor-pointer'
-					/>
-					<input
-						type='button'
-						value='reset'
+						>
+						<AddIcon class='h-9 w-9 p-1' />add
+					</div>
+					<div
+						class='flex items-center font-bold text-red-800 rounded
+						hover:text-red-400 cursor-pointer group'
 						onClick={()=>{
 							setContainer(parseContainerStr(SETTINGS))
 							setWidgets(parseWidgetStr(SETTINGS))
 						}}
-						class='px-2 py-0.5 font-bold text-red-300 bg-red-950 rounded
-						hover:text-red-100 hover:bg-red-900 cursor-pointer'
-					/>
+						>
+					<ResetIcon class='h-9 w-9 p-1' /> reset
+					</div>
 					<A
 						href={`/custom${filterParams(
 							location.search,
 							`settings=${genContainerStr(container())}|${genWidgetStr(widgets())}`
 						)}`}
-						class='px-2 py-0.5 font-bold text-green-300 bg-green-950 rounded
-						hover:text-green-100 hover:bg-green-900'
-					>confirm</A>
+						class='flex items-center font-bold text-green-800 rounded
+						hover:text-green-400 group'
+					><ConfirmIcon class='h-9 w-9 p-1' />confirm</A>
 				</div>
 			</div> }
 		</div>
