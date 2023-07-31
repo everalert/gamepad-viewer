@@ -14,19 +14,24 @@ export interface TextContainerProps {
 
 
 export const TextContainer = (props: TextContainerProps):JSXElement => {
-	const triggers = () => props.widgets.filter(w=>w.type===WidgetType.Trigger)
+	const sticks = () => props.widgets.filter(w=> w.type===WidgetType.Stick
+		|| w.type===WidgetType.StickCircle
+		|| w.type===WidgetType.StickSquare
+		|| w.type===WidgetType.StickGC
+		|| w.type===WidgetType.StickN64
+		|| w.type===WidgetType.StickHori
+		|| w.type===WidgetType.StickRound
+	)
+	const triggers = () => props.widgets.filter(w => w.type===WidgetType.Trigger
+		|| w.type===WidgetType.TriggerCurved
+		|| w.type===WidgetType.TriggerFlat
+	)
+
 	return <div
 		class={`flex justify-center gap-4 text-lg ${props.class}`}
 		style={`${props.class}`}
 		>
-		<For each={props.widgets.filter(w=> w.type===WidgetType.Stick
-				|| w.type===WidgetType.StickCircle
-				|| w.type===WidgetType.StickSquare
-				|| w.type===WidgetType.StickGC
-				|| w.type===WidgetType.StickN64
-				|| w.type===WidgetType.StickHori
-				|| w.type===WidgetType.StickRound
-			)}>
+		<For each={sticks()}>
 			{s => <StickText
 				x={props.pad?.axes[s.ax[0]]||0}
 				y={props.pad?.axes[s.ax[1]]||0}

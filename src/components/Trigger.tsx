@@ -1,4 +1,4 @@
-import { clamp, rc2s, rc2rad, rc2deg } from '../helpers/math'
+import { clamp, rc2rad, rc2deg } from '../helpers/math'
 import type { JSXElement } from 'solid-js'
 import { Widget, WidgetProps } from './Widget'
 
@@ -20,30 +20,39 @@ const LINE_N = 'TriggerLine'
 
 
 export const Trigger = (props: TriggerProps) => {
-	const m = () => props.line*2
-	const rad = () => rc2rad(props.trigR,props.trigH)
-	const deg = () => rc2deg(props.trigR,props.trigH)
-	const markL = () => props.line*MARK_VSCALE
-	const markW = () => markL()+props.line*MARK_HSCALE
-	const markH = () => markL()+props.line*MARK_HSCALE*MARK_VSCALE
-	const markR = () => markW()*MARK_RSCALE
+	const rad		= () => rc2rad(props.trigR,props.trigH)
+	const deg		= () => rc2deg(props.trigR,props.trigH)
+	const m			= () => props.line*2
+	const x			= (m:number) => props.trigR===0 ? 0 :
+						props.trigR*(1-Math.cos(rad()*m))
+	const y			= (m:number) => props.trigR===0 ? props.trigH*m :
+						props.trigR*Math.sin(rad()*m)
+	const markL		= () => props.line*MARK_VSCALE
+	const markW		= () => markL()+props.line*MARK_HSCALE
+	const markH		= () => markL()+props.line*MARK_HSCALE*MARK_VSCALE
+	const markR		= () => markW()*MARK_RSCALE
 	const markContW = () => Math.sqrt(markW()**2+markW()**2)
-	const trig = () => props.trigger-0.5
-	const linename = () => `${LINE_N}_${props.trigR}_${props.trigH}`
+	const trig		= () => props.trigger-0.5
+	const linename	= () => `${LINE_N}_${props.trigR}_${props.trigH}`
+
 	return <svg
 		version='1.1' xmlns='http://www.w3.org/2000/svg'
-		width={rc2s(props.trigR,props.trigH)+m()*2}
+		width={x(1)+m()*2}
 		height={props.trigH+m()*2}
 		class={`${props.class||''}`}
 		style={`margin-left:-${m()}px;margin-top:-${m()+props.trigH/2}px;${props.style||''}`}
 		>
 		<defs>
 			<symbol id={linename()}>
-				<path d={`M
-					${m()+props.trigR*(1-Math.cos(rad()/2))}
-					${m()+props.trigH/2-props.trigR*Math.sin(rad()/2)}
+				{ props.trigR===0 ? <path d={`M
+					${m()}
+					${m()+props.trigH/2-y(0.5)}
+					v ${props.trigH}`}
+				/> : <path d={`M
+					${m()+x(0.5)}
+					${m()+props.trigH/2-y(0.5)}
 					a ${props.trigR} ${props.trigR} 0  0 0  0 ${props.trigH}`}
-				/>
+				/> }
 			</symbol>
 		</defs>
 		<use
@@ -62,8 +71,8 @@ export const Trigger = (props: TriggerProps) => {
 		/>
 		<svg
 			// marker 
-			x={m()-markContW()/2+props.trigR*(1-Math.cos(rad()*trig()))}
-			y={m()-markContW()/2+props.trigH/2-props.trigR*(Math.sin(rad()*trig()))}
+			x={m()-markContW()/2+x(trig())}
+			y={m()-markContW()/2+props.trigH/2-y(trig())}
 			width={markContW()}
 			height={markContW()}
 			>
@@ -91,6 +100,32 @@ export const WTrigger = (props: WidgetProps): JSXElement => <Widget
 			||false}
 		trigH={props.def.val[0]>=0?props.def.val[0]:64}
 		trigR={props.def.val[1]>=0?props.def.val[1]:256}
+		line={props.container.line||3}
+	/>	
+</Widget>
+
+export const WTriggerCurved = (props: WidgetProps): JSXElement => <Widget
+	widget={props.def} container={props.container}>
+	<Trigger
+		trigger={clamp(props.pad?.axes[props.def.ax[0]]*(props.def.val[2]>=1?-1:1),0,1)
+			||props.pad?.buttonValue[props.def.bt[0]]||0}
+		bumper={props.pad?.buttonPress[props.def.bt[props.def.ax[0]===undefined?1:0]]
+			||false}
+		trigH={props.def.val[0]>=0?props.def.val[0]:64}
+		trigR={props.def.val[1]>=0?props.def.val[1]:256}
+		line={props.container.line||3}
+	/>	
+</Widget>
+
+export const WTriggerFlat = (props: WidgetProps): JSXElement => <Widget
+	widget={props.def} container={props.container}>
+	<Trigger
+		trigger={clamp(props.pad?.axes[props.def.ax[0]]*(props.def.val[2]>=1?-1:1),0,1)
+			||props.pad?.buttonValue[props.def.bt[0]]||0}
+		bumper={props.pad?.buttonPress[props.def.bt[props.def.ax[0]===undefined?1:0]]
+			||false}
+		trigH={props.def.val[0]>=0?props.def.val[0]:64}
+		trigR={0}
 		line={props.container.line||3}
 	/>	
 </Widget>

@@ -2,7 +2,7 @@ import type { Component } from 'solid-js';
 import { For, Switch, Match } from 'solid-js';
 import { WidgetType, WidgetDef, WidgetProps, Widget} from '../components/Widget'
 import type { GamepadState } from '../types/gamepad'
-import { WStick, WStickCircle, WStickSquare, WStickGC, WStickN64, WStickHori, WStickRound, WButton, WButton2, WButton4, WDPad, WTrigger } from './'
+import { WStick, WStickCircle, WStickSquare, WStickGC, WStickN64, WStickHori, WStickRound, WButton, WButton2, WButton4, WDPad, WTrigger, WTriggerCurved, WTriggerFlat } from './'
 
 
 export interface WidgetContainerDef {
@@ -74,6 +74,8 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
 				{ widgetMatch(w, WidgetType.Button4,		WButton4) }
 				{ widgetMatch(w, WidgetType.DPad,			WDPad) }
 				{ widgetMatch(w, WidgetType.Trigger,		WTrigger) }
+				{ widgetMatch(w, WidgetType.TriggerCurved,	WTriggerCurved) }
+				{ widgetMatch(w, WidgetType.TriggerFlat,	WTriggerFlat) }
 			</Switch>
 		)}</For>
 	</div>

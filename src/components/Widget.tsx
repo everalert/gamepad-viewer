@@ -9,7 +9,7 @@ export enum WidgetType {
 	Button2			= 2,
 	Button4			= 3,
 	DPad			= 4,
-	Trigger			= 5,
+	TriggerCurved	= 5,
 	//Bmp,
 	//Bmp2,
 	StickGC			= 6,
@@ -18,6 +18,8 @@ export enum WidgetType {
 	StickRound		= 9,
 	Stick			= 10,
 	StickSquare		= 11,
+	TriggerFlat		= 12,
+	Trigger			= 13,
 	MAX
 }
 
