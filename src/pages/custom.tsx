@@ -94,7 +94,7 @@ gap:${container().m/2}px;
 							<div><input value={w().y}
 							onInput={(e)=>{setVal({y:Number.parseInt(e.target.value)||0})}}
 								class='w-12 px-1.5 pt-0.5 bg-gray-800 rounded' /></div>
-							<div><input value={w().rot}
+							<div><input value={w()?.rot||0}
 							onInput={(e)=>{setVal({rot:Number.parseInt(e.target.value)||0})}}
 								class='w-12 px-1.5 pt-0.5 bg-gray-800 rounded' /></div>
 							<div><input value={w().ax.join(',')}
