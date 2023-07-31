@@ -14,18 +14,19 @@ export interface WidgetContainerDef {
 
 const containerdef_re =		/G((?:(?:w|h|m|l)\-?[0-9]+)+)/g
 const containerparam_re =	/(w|h|m|l)(\-?[0-9]+)/g
+export const WCONTAINER_DFLT = { w:512, h:144, m:32, line:3 }
 
 export const parseContainerStr = (str: string):WidgetContainerDef => {
-	const c_out:WidgetContainerDef = { w:512, h:144, m:32, line:3 }
+	const c_out:WidgetContainerDef = JSON.parse(JSON.stringify(WCONTAINER_DFLT))
 	for (const c of str.matchAll(containerdef_re)) {
 		for (const p of c[1].matchAll(containerparam_re)) {
-					switch (p[1]) {
-						case 'w': c_out.w = Number.parseInt(p[2]); break;
-						case 'h': c_out.h = Number.parseInt(p[2]); break;
-						case 'm': c_out.m = Number.parseInt(p[2]); break;
-						case 'l': c_out.line = Number.parseInt(p[2]); break;
-					}
+			switch (p[1]) {
+				case 'w': c_out.w = Number.parseInt(p[2]); break;
+				case 'h': c_out.h = Number.parseInt(p[2]); break;
+				case 'm': c_out.m = Number.parseInt(p[2]); break;
+				case 'l': c_out.line = Number.parseInt(p[2]); break;
 			}
+		}
 	}
 	return c_out
 }

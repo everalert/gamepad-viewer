@@ -25,6 +25,7 @@ export interface WidgetDef {
 	type: WidgetType;
 	x: number;
 	y: number;
+	rot?: number;
 	ax: number[];
 	bt: number[];
 	val: number[];
@@ -32,13 +33,14 @@ export interface WidgetDef {
 	fy?: boolean;
 }
 
-const widgetdef_re =	/W([0-9]+)((?:(?:(?:x|y|a|b|v)(?:\-?[0-9]+))|(?:fx|fy))+)/g
-const widgetparam_re =	/(?:(x|y|a|b|v)(\-?[0-9]+))|(?:fx|fy)/g
+const widgetdef_re =	/W([0-9]+)((?:(?:(?:x|y|a|b|v|r)(?:\-?[0-9]+))|(?:fx|fy))+)/g
+const widgetparam_re =	/(?:(x|y|a|b|v|r)(\-?[0-9]+))|(?:fx|fy)/g
+export const WIDGET_DFLT = { type:0, x:0, y:0, rot:0, ax:[], bt:[], val:[], fx:false, fy:false }
 
-export const parseWidgetStr = (str: string):WidgetDef[] => {
+export const parseWidgetStr = (str:string):WidgetDef[] => {
 	const w_out:WidgetDef[] = []
 	for (const w of str.matchAll(widgetdef_re)) {
-		const w_new:WidgetDef = { type:0, x:0, y:0, ax:[], bt:[], val:[], fx:false, fy:false }
+		const w_new:WidgetDef = JSON.parse(JSON.stringify(WIDGET_DFLT))
 		w_new.type = Number.parseInt(w[1])
 		for (const p of w[2].matchAll(widgetparam_re)) {
 			switch(p[0]){
@@ -48,6 +50,7 @@ export const parseWidgetStr = (str: string):WidgetDef[] => {
 					switch (p[1]) {
 						case 'x': w_new.x = Number.parseInt(p[2]); break;
 						case 'y': w_new.y = Number.parseInt(p[2]); break;
+						case 'r': w_new.rot = Number.parseInt(p[2]); break;
 						case 'a': w_new.ax.push(Number.parseInt(p[2])); break;
 						case 'b': w_new.bt.push(Number.parseInt(p[2])); break;
 						case 'v': w_new.val.push(Number.parseInt(p[2])); break;
@@ -62,10 +65,15 @@ export const parseWidgetStr = (str: string):WidgetDef[] => {
 
 export const genWidgetStr = (widgets:WidgetDef[]):string => {
 	return widgets.map(w => {
+		const x = w.x !== WIDGET_DFLT.x ? `x${w.x.toString()}` : ''
+		const y = w.y !== WIDGET_DFLT.y ? `y${w.y.toString()}` : ''
+		const r = w.rot !== undefined && w.rot !== WIDGET_DFLT.rot ? `r${w.rot.toString()}` : ''
 		const ax = w.ax.map(ax=>`a${ax.toString()}`).join('')
 		const bt = w.bt.map(bt=>`b${bt.toString()}`).join('')
 		const val = w.val.map(val=>`v${val.toString()}`).join('')
-		return `W${w.type.toString()}x${w.x.toString()}y${w.y.toString()}${ax}${bt}${val}${w.fx?'fx':''}${w.fy?'fy':''}`
+		const fx = w.fx ? 'fx' : ''
+		const fy = w.fy ? 'fy' : ''
+		return `W${w.type.toString()}${x}${y}${r}${ax}${bt}${val}${fx}${fy}`
 	}).join('|')
 }
 
@@ -82,17 +90,15 @@ export interface WidgetProps {
 	container: WidgetContainerDef;
 }
 
-export const Widget = (props: WidgetWrapperProps) => <div
-	class={`
-		absolute
-		${ props.widget?.fx && '-scale-x-100' }
-		${ props.widget?.fy && '-scale-y-100' }
-	`}
+export const Widget = (props: WidgetWrapperProps):JSXElement => <div
+	class='absolute origin-top-left'
 	style={`
-		${props.widget?.fx?'right':'left'}:
-		${props.container.w/2+(props.widget?.fx?-props.widget.x:props.widget.x)}px;
-		${props.widget?.fy?'bottom':'top'}:
-		${props.container.h/2+(props.widget?.fy?-props.widget.y:props.widget.y)}px;
+		left:${props.container.w/2+props.widget.x}px;
+		top:${props.container.h/2+props.widget.y}px;
+		transform:
+			${props.widget?.fx ? 'scaleX(-1)' : ''}
+			${props.widget?.fy ? 'scaleY(-1)' : ''}
+			rotate(${props.widget?.rot||0}deg);
 	`}
 	>
 	{props.children}

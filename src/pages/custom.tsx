@@ -56,10 +56,11 @@ gap:${container().m/2}px;
 				</div>
 				<div class='mt-4 font-semibold'>widgets</div>
 				<div class='text-gray-400'>x and y offset from center</div>
-				<div class='grid grid-cols-[max-content_max-content_max-content_max-content_max-content_max-content_max-content_max-content_max-content] items-baseline gap-y-1 gap-x-2'>
+				<div class='grid grid-cols-[max-content_max-content_max-content_max-content_max-content_max-content_max-content_max-content_max-content_max-content] items-baseline gap-y-1 gap-x-2'>
 					<div></div>
 					<div class='px-1'>x</div>
 					<div class='px-1'>y</div>
+					<div class='px-1'>rot</div>
 					<div class='px-1'>axis</div>
 					<div class='px-1'>btn</div>
 					<div class='px-1'>val</div>
@@ -92,6 +93,9 @@ gap:${container().m/2}px;
 								class='w-12 px-1.5 pt-0.5 bg-gray-800 rounded' /></div>
 							<div><input value={w().y}
 							onInput={(e)=>{setVal({y:Number.parseInt(e.target.value)||0})}}
+								class='w-12 px-1.5 pt-0.5 bg-gray-800 rounded' /></div>
+							<div><input value={w().rot}
+							onInput={(e)=>{setVal({rot:Number.parseInt(e.target.value)||0})}}
 								class='w-12 px-1.5 pt-0.5 bg-gray-800 rounded' /></div>
 							<div><input value={w().ax.join(',')}
 							onInput={(e)=>{setVal({ax:e.target.value.split(',').map(n=>Number.parseInt(n)||0)})}}
