@@ -15,7 +15,7 @@ export enum WidgetType {
 	StickGC			= 6,
 	StickN64		= 7,
 	StickHori		= 8,
-	StickRndOct		= 9,
+	StickRound		= 9,
 	Stick			= 10,
 	StickSquare		= 11,
 	MAX

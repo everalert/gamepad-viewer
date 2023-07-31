@@ -2,7 +2,7 @@ import type { Component } from 'solid-js';
 import { For, Switch, Match } from 'solid-js';
 import { WidgetType, WidgetDef, WidgetProps, Widget} from '../components/Widget'
 import type { GamepadState } from '../types/gamepad'
-import { WStick, WStickCircle, WStickSquare, WStickGC, WStickN64, WStickHori, WStickRndOct, WButton, WButton2, WButton4, WDPad, WTrigger } from './'
+import { WStick, WStickCircle, WStickSquare, WStickGC, WStickN64, WStickHori, WStickRound, WButton, WButton2, WButton4, WDPad, WTrigger } from './'
 
 
 export interface WidgetContainerDef {
@@ -66,7 +66,7 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
 				{ widgetMatch(w, WidgetType.StickGC,		WStickGC) }
 				{ widgetMatch(w, WidgetType.StickN64,		WStickN64) }
 				{ widgetMatch(w, WidgetType.StickHori,		WStickHori) }
-				{ widgetMatch(w, WidgetType.StickRndOct,	WStickRndOct) }
+				{ widgetMatch(w, WidgetType.StickRound,		WStickRound) }
 				{ widgetMatch(w, WidgetType.Stick,			WStick) }
 				{ widgetMatch(w, WidgetType.Button,			WButton) }
 				{ widgetMatch(w, WidgetType.Button2,		WButton2) }

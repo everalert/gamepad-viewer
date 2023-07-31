@@ -200,7 +200,7 @@ export const WStickGC:Component = (props: WidgetProps) => <Widget
 	/>
 </Widget>
 
-export const WStickRndOct:Component = (props: WidgetProps) => <Widget
+export const WStickRound:Component = (props: WidgetProps) => <Widget
 	widget={props.def} container={props.container}>
 	<Stick
 		x={props.pad?.axes[props.def.ax[0]]||0}
