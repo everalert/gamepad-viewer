@@ -21,10 +21,11 @@ export const TextContainer:Component = (props: TextContainerProps) => {
 		>
 		<For each={props.widgets.filter(w=> w.type===WidgetType.Stick
 				|| w.type===WidgetType.StickCircle
+				|| w.type===WidgetType.StickSquare
 				|| w.type===WidgetType.StickGC
 				|| w.type===WidgetType.StickN64
 				|| w.type===WidgetType.StickHori
-				|| w.type===WidgetType.StickRndOct
+				|| w.type===WidgetType.StickRound
 			)}>
 			{s => <StickText
 				x={props.pad?.axes[s.ax[0]]||0}
