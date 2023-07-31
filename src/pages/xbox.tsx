@@ -17,9 +17,9 @@ const OUTER_Y = -24,	OUTER_Y_COMPACT = 0
 export const XBOX_DFLT_CONTAINER: WidgetContainerDef = { w: 512, h: 144, m: 32, line: 3 }
 
 export const XBOX_DFLT_WIDGETS: WidgetDef[] = [
-	{ type:WidgetType.Stick, x:-OUTER_X, y:OUTER_Y,
+	{ type:WidgetType.StickCircle, x:-OUTER_X, y:OUTER_Y,
 		ax:[XBA.LSx,XBA.LSy], bt:[XBB.LSB], val:[48] },
-	{ type:WidgetType.Stick, x:INNER_X, y:INNER_Y,
+	{ type:WidgetType.StickCircle, x:INNER_X, y:INNER_Y,
 		ax:[XBA.RSx,XBA.RSy], bt:[XBB.RSB], val:[48] },
 	{ type:WidgetType.Button2, x:0, y:-48,
 		ax:[], bt:[XBB.Back,XBB.Start], val:[32,12] },
@@ -39,9 +39,9 @@ export const XBOX_DFLT_STR: string =
 export const XBOX_DFLT_CONTAINER_COMPACT: WidgetContainerDef = { w: 396, h: 80, m: 32, line: 3 }
 
 export const XBOX_DFLT_WIDGETS_COMPACT: WidgetDef[] = [
-	{ type:WidgetType.Stick, x:-OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
+	{ type:WidgetType.StickCircle, x:-OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
 		ax:[XBA.LSx,XBA.LSy], bt:[XBB.LSB], val:[40] },
-	{ type:WidgetType.Stick, x:INNER_X_COMPACT, y:INNER_Y_COMPACT,
+	{ type:WidgetType.StickCircle, x:INNER_X_COMPACT, y:INNER_Y_COMPACT,
 		ax:[XBA.RSx,XBA.RSy], bt:[XBB.RSB], val:[40] },
 	{ type:WidgetType.Button2, x:0, y:-34,
 		ax:[], bt:[XBB.Back,XBB.Start], val:[92,10] },

@@ -17,9 +17,9 @@ const OUTER_Y = -24,	OUTER_Y_COMPACT = 0
 export const WIIU_DFLT_CONTAINER: WidgetContainerDef = { w: 512, h: 144, m: 32, line: 3 }
 
 export const WIIU_DFLT_WIDGETS: WidgetDef[] = [
-	{ type:WidgetType.Stick, x:-OUTER_X, y:OUTER_Y,
+	{ type:WidgetType.StickCircle, x:-OUTER_X, y:OUTER_Y,
 		ax:[WUA.LSx,WUA.LSy], bt:[WUB.LSB], val:[48] },
-	{ type:WidgetType.Stick, x:OUTER_X, y:OUTER_Y,
+	{ type:WidgetType.StickCircle, x:OUTER_X, y:OUTER_Y,
 		ax:[WUA.RSx,WUA.RSy], bt:[WUB.RSB], val:[48] },
 	{ type:WidgetType.Button2, x:0, y:-48,
 		ax:[], bt:[WUB.Select,WUB.Start], val:[32,12] },
@@ -39,9 +39,9 @@ export const WIIU_DFLT_STR: string =
 export const WIIU_DFLT_CONTAINER_COMPACT: WidgetContainerDef = { w: 396, h: 80, m: 32, line: 3 }
 
 export const WIIU_DFLT_WIDGETS_COMPACT: WidgetDef[] = [
-	{ type:WidgetType.Stick, x:-OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
+	{ type:WidgetType.StickCircle, x:-OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
 		ax:[WUA.LSx,WUA.LSy], bt:[WUB.LSB], val:[40] },
-	{ type:WidgetType.Stick, x:OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
+	{ type:WidgetType.StickCircle, x:OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
 		ax:[WUA.RSx,WUA.RSy], bt:[WUB.RSB], val:[40] },
 	{ type:WidgetType.Button2, x:0, y:-34,
 		ax:[], bt:[WUB.Select,WUB.Start], val:[84,10] },
