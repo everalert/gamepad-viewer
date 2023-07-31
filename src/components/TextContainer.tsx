@@ -1,4 +1,4 @@
-import type { Component } from 'solid-js';
+import type { JSXElement } from 'solid-js';
 import { For, Show } from 'solid-js';
 import type { GamepadState } from '../types/gamepad'
 import { StickText, TriggerText } from '../components'
@@ -13,7 +13,7 @@ export interface TextContainerProps {
 }
 
 
-export const TextContainer:Component = (props: TextContainerProps) => {
+export const TextContainer = (props: TextContainerProps):JSXElement => {
 	const triggers = () => props.widgets.filter(w=>w.type===WidgetType.Trigger)
 	return <div
 		class={`flex justify-center gap-4 text-lg ${props.class}`}
