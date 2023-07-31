@@ -90,16 +90,21 @@ export interface WidgetProps {
 	container: WidgetContainerDef;
 }
 
-export const Widget = (props: WidgetWrapperProps):JSXElement => <div
-	class='absolute origin-top-left'
-	style={`
-		left:${props.container.w/2+props.widget.x}px;
-		top:${props.container.h/2+props.widget.y}px;
-		transform:
-			${props.widget?.fx ? 'scaleX(-1)' : ''}
-			${props.widget?.fy ? 'scaleY(-1)' : ''}
-			rotate(${props.widget?.rot||0}deg);
-	`}
-	>
-	{props.children}
-</div>
+export const Widget = (props: WidgetWrapperProps):JSXElement => {
+	const rot = () => props.widget?.rot||0
+	const fx = () => props.widget?.fx
+	const fy = () => props.widget?.fy
+	return <div
+		class='absolute origin-top-left'
+		style={`
+			left:${props.container.w/2+props.widget.x}px;
+			top:${props.container.h/2+props.widget.y}px;
+			transform:
+				${fx() ? 'scaleX(-1)' : ''}
+				${fy() ? 'scaleY(-1)' : ''}
+				rotate(${rot()?( (fx()?!fy():fy())?-rot():rot() ):0}deg);
+		`}
+		>
+		{props.children}
+	</div>
+}
