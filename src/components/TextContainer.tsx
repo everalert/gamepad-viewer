@@ -1,3 +1,4 @@
+import type { Component } from 'solid-js';
 import { For, Show } from 'solid-js';
 import type { GamepadState } from '../types/gamepad'
 import { StickText, TriggerText } from '../components'
@@ -12,13 +13,19 @@ export interface TextContainerProps {
 }
 
 
-export const TextContainer = (props: TextContainerProps) => {
+export const TextContainer:Component = (props: TextContainerProps) => {
 	const triggers = () => props.widgets.filter(w=>w.type===WidgetType.Trigger)
 	return <div
 		class={`flex justify-center gap-4 text-lg ${props.class}`}
 		style={`${props.class}`}
 		>
-		<For each={props.widgets.filter(w=>w.type===WidgetType.Stick||w.type===WidgetType.StickOct)}>
+		<For each={props.widgets.filter(w=> w.type===WidgetType.Stick
+				|| w.type===WidgetType.StickCircle
+				|| w.type===WidgetType.StickGC
+				|| w.type===WidgetType.StickN64
+				|| w.type===WidgetType.StickHori
+				|| w.type===WidgetType.StickRndOct
+			)}>
 			{s => <StickText
 				x={props.pad?.axes[s.ax[0]]||0}
 				y={props.pad?.axes[s.ax[1]]||0}

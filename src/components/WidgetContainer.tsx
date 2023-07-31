@@ -1,7 +1,8 @@
+import type { Component } from 'solid-js';
 import { For, Switch, Match } from 'solid-js';
-import { WidgetType, WidgetDef, Widget} from '../components/Widget'
+import { WidgetType, WidgetDef, WidgetProps, Widget} from '../components/Widget'
 import type { GamepadState } from '../types/gamepad'
-import { WStick, WStickO, WButton, WButton2, WButton4, WDPad, WTrigger } from './'
+import { WStick, WStickCircle, WStickGC, WStickN64, WStickHori, WStickRndOct, WButton, WButton2, WButton4, WDPad, WTrigger } from './'
 
 
 export interface WidgetContainerDef {
@@ -46,35 +47,32 @@ export interface WidgetContainerProps {
 	style?: string;
 }
 
-export const WidgetContainer = (props: WidgetContainerProps) => <div
-	class={`relative ${props.class||''}`}
-	style={`width:${props.def.w}px; height:${props.def.h}px; ${props.style||''}`}
-	>
-	<For each={props.widgets}>{w => (
-		<Switch fallback={<Widget widget={w} container={props.def}>
-			no {WidgetType[w.type]} widget
-		</Widget>}>
-			<Match when={w.type===WidgetType.Stick}>
-				<WStick pad={props.pad} def={w} container={props.def} />
-			</Match>
-			<Match when={w.type===WidgetType.StickOct}>
-				<WStickO pad={props.pad} def={w} container={props.def} />
-			</Match>
-			<Match when={w.type===WidgetType.Button}>
-				<WButton pad={props.pad} def={w} container={props.def} />
-			</Match>
-			<Match when={w.type===WidgetType.Button2}>
-				<WButton2 pad={props.pad} def={w} container={props.def} />
-			</Match>
-			<Match when={w.type===WidgetType.Button4}>
-				<WButton4 pad={props.pad} def={w} container={props.def} />
-			</Match>
-			<Match when={w.type===WidgetType.DPad}>
-				<WDPad pad={props.pad} def={w} container={props.def} />
-			</Match>
-			<Match when={w.type===WidgetType.Trigger}>
-				<WTrigger pad={props.pad} def={w} container={props.def} />
-			</Match>
-		</Switch>
-	)}</For>
-</div>
+export const WidgetContainer = (props: WidgetContainerProps) => {
+	const widgetMatch = (w:WidgetDef, t:WidgetType, C:Component<WidgetProps>) => (
+		<Match when={w.type===t}>
+			<C pad={props.pad} def={w} container={props.def} />
+		</Match>
+	)
+	return <div
+		class={`relative ${props.class||''}`}
+		style={`width:${props.def.w}px; height:${props.def.h}px; ${props.style||''}`}
+		>
+		<For each={props.widgets}>{w => (
+			<Switch fallback={<Widget widget={w} container={props.def}>
+				no {WidgetType[w.type]} widget
+			</Widget>}>
+				{ widgetMatch(w, WidgetType.StickCircle,	WStickCircle) }
+				{ widgetMatch(w, WidgetType.StickGC,		WStickGC) }
+				{ widgetMatch(w, WidgetType.StickN64,		WStickN64) }
+				{ widgetMatch(w, WidgetType.StickHori,		WStickHori) }
+				{ widgetMatch(w, WidgetType.StickRndOct,	WStickRndOct) }
+				{ widgetMatch(w, WidgetType.Stick,			WStick) }
+				{ widgetMatch(w, WidgetType.Button,			WButton) }
+				{ widgetMatch(w, WidgetType.Button2,		WButton2) }
+				{ widgetMatch(w, WidgetType.Button4,		WButton4) }
+				{ widgetMatch(w, WidgetType.DPad,			WDPad) }
+				{ widgetMatch(w, WidgetType.Trigger,		WTrigger) }
+			</Switch>
+		)}</For>
+	</div>
+}

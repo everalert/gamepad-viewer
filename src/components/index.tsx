@@ -1,6 +1,5 @@
 export * from './Gamepad'
 export * from './Stick'
-export * from './StickO'
 export * from './StickText'
 export * from './Button'
 export * from './Button2'
