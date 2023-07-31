@@ -148,6 +148,19 @@ export const WStickCircle:Component = (props: WidgetProps) => <Widget
 	/>	
 </Widget>
 
+export const WStickSquare:Component = (props: WidgetProps) => <Widget
+	widget={props.def} container={props.container}>
+	<Stick
+		x={props.pad?.axes[props.def.ax[0]]||0}
+		y={props.pad?.axes[props.def.ax[1]]||0}
+		button={props.pad?.buttonPress[props.def.bt[0]]||false}
+		r={props.def.val[0]>0?props.def.val[0]:48}
+		a={90}
+		ar={0}
+		line={props.container.line||3}
+	/>	
+</Widget>
+
 export const WStickN64:Component = (props: WidgetProps) => <Widget
 	widget={props.def} container={props.container}>
 	<Stick
