@@ -3,23 +3,25 @@ import type { JSXElement } from 'solid-js';
 import type { WidgetContainerDef } from './WidgetContainer'
 
 
+// NOTE: keep hardcoded values the same 
+// so that URI strings are generated the same way across versions
 export enum WidgetType {
-	StickCircle		= 0,
-	Button			= 1,
-	Button2			= 2,
-	Button4			= 3,
-	DPad			= 4,
-	TriggerCurved	= 5,
-	//Bmp,
-	//Bmp2,
-	StickGC			= 6,
-	StickN64		= 7,
-	StickHori		= 8,
-	StickRound		= 9,
-	Stick			= 10,
-	StickSquare		= 11,
-	TriggerFlat		= 12,
-	Trigger			= 13,
+	StickCircle			= 0,
+	ButtonRingCircle	= 1,
+	DPad				= 4,
+	TriggerCurved		= 5,
+	StickGC				= 6,
+	StickN64			= 7,
+	StickHori			= 8,
+	StickRound			= 9,
+	Stick				= 10,
+	StickSquare			= 11,
+	TriggerFlat			= 12,
+	Trigger				= 13,
+	ButtonRing			= 14,
+	ButtonRingRect		= 15,
+	ButtonRingTriangle	= 16,
+	ButtonRingN64C		= 17,
 	MAX
 }
 

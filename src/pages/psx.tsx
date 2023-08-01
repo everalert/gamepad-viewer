@@ -6,6 +6,7 @@ import { Gamepad } from '../components'
 import { PSxAxis as PSA, PSxButton as PSB } from '../types/psx'
 import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
 import { WidgetContainer, WidgetContainerDef, genContainerStr } from '../components/WidgetContainer'
+import { ButtonShape } from '../components/ButtonInline'
 import { TextContainer } from '../components/TextContainer'
 
 
@@ -21,12 +22,12 @@ export const PSX_DFLT_WIDGETS: WidgetDef[] = [
 		ax:[PSA.LSx,PSA.LSy], bt:[PSB.L3], val:[48] },
 	{ type:WidgetType.StickCircle, x:INNER_X, y:INNER_Y,
 		ax:[PSA.RSx,PSA.RSy], bt:[PSB.R3], val:[48] },
-	{ type:WidgetType.Button2, x:0, y:-48,
-		ax:[], bt:[PSB.Select,PSB.Start], val:[32,12] },
+	{ type:WidgetType.ButtonRing, x:0, y:-48,
+		ax:[], bt:[PSB.Start,PSB.Select], val:[32,12,8,1,ButtonShape.TriIso,ButtonShape.Rect] },
 	{ type:WidgetType.DPad, x:-OUTER_X, y:OUTER_Y,
 		ax:[], bt:[PSB.DD,PSB.DR,PSB.DL,PSB.DU], val:[80,28] },
-	{ type:WidgetType.Button4, x:OUTER_X, y:OUTER_Y,
-		ax:[], bt:[PSB.Cr,PSB.Ci,PSB.Sq,PSB.Tr], val:[28,16] },
+	{ type:WidgetType.ButtonRingCircle, x:OUTER_X, y:OUTER_Y,
+		ax:[], bt:[PSB.Ci,PSB.Cr,PSB.Sq,PSB.Tr], val:[28,16] },
 	{ type:WidgetType.Trigger, x:-PSX_DFLT_CONTAINER.w/2, y:0,
 		ax:[], bt:[PSB.L2,PSB.L1], val:[96,256] },
 	{ type:WidgetType.Trigger, x:PSX_DFLT_CONTAINER.w/2, y:0,
@@ -43,12 +44,12 @@ export const PSX_DFLT_WIDGETS_COMPACT: WidgetDef[] = [
 		ax:[PSA.LSx,PSA.LSy], bt:[PSB.L3], val:[40] },
 	{ type:WidgetType.StickCircle, x:INNER_X_COMPACT, y:INNER_Y_COMPACT,
 		ax:[PSA.RSx,PSA.RSy], bt:[PSB.R3], val:[40] },
-	{ type:WidgetType.Button2, x:0, y:-34,
-		ax:[], bt:[PSB.Select,PSB.Start], val:[100,10] },
+	{ type:WidgetType.ButtonRing, x:0, y:-34,
+		ax:[], bt:[PSB.Start,PSB.Select], val:[100,10,6,1,ButtonShape.TriIso,ButtonShape.Rect] },
 	{ type:WidgetType.DPad, x:-OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
 		ax:[], bt:[PSB.DD,PSB.DR,PSB.DL,PSB.DU], val:[72,24] },
-	{ type:WidgetType.Button4, x:OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
-		ax:[], bt:[PSB.Cr,PSB.Ci,PSB.Sq,PSB.Tr], val:[24,13] },
+	{ type:WidgetType.ButtonRingCircle, x:OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
+		ax:[], bt:[PSB.Ci,PSB.Cr,PSB.Sq,PSB.Tr], val:[24,13] },
 	{ type:WidgetType.Trigger, x:-PSX_DFLT_CONTAINER_COMPACT.w/2, y:0,
 		ax:[], bt:[PSB.L2,PSB.L1], val:[64,256] },
 	{ type:WidgetType.Trigger, x:PSX_DFLT_CONTAINER_COMPACT.w/2, y:0,
