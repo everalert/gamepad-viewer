@@ -22,6 +22,11 @@ export enum WidgetType {
 	ButtonRingRect		= 15,
 	ButtonRingTriangle	= 16,
 	ButtonRingN64C		= 17,
+	ButtonGrid			= 18,
+	ButtonGridCircle	= 19,
+	ButtonGridRect		= 20,
+	ButtonGridTriangle	= 21,
+	ButtonGridN64C		= 22,
 	MAX
 }
 

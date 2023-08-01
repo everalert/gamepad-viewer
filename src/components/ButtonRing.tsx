@@ -38,7 +38,7 @@ export const ButtonRing = (props: ButtonRingProps): JSXElement => {
 		>
 		<For each={props.on}>{(on,i) => {
 			const Btn = shape(i())
-			return <Btn
+			return Btn ? <Btn
 				x={w()/2+props.r*Math.cos(angle()*i())*lenMult()}
 				y={w()/2+props.r*Math.sin(angle()*i())*lenMult()}
 				d1={props.rx}
@@ -46,7 +46,7 @@ export const ButtonRing = (props: ButtonRingProps): JSXElement => {
 				angle={props.rotate?(360/props.on.length)*i():0}
 				on={on}
 				w={props.line}
-			/>
+			/> : null
 		}}</For>
 	</svg>
 }
