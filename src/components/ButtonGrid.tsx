@@ -59,10 +59,10 @@ export const WButtonGrid = (props: WidgetProps): JSXElement => <Widget
 	<ButtonGrid
 		on		= { props.def.bt.map(b=>props.pad?.buttonPress[b]) }
 		cols	= { props.def.val[0] || props.def.bt.length }
-		stepx	= { props.def.val[1] || 28 }
-		stepy	= { props.def.val[2] || 28 }
-		rx		= { props.def.val[3] || 28 }
-		ry		= { props.def.val[4] || 28 }
+		stepx	= { props.def.val[1] || 41 }
+		stepy	= { props.def.val[2] || 41 }
+		rx		= { props.def.val[3] || 16 }
+		ry		= { props.def.val[4] || 16 }
 		shape	= { props.def.val.slice(5) }
 		line	= { props.container.line || 3 }
 	/>
@@ -73,10 +73,10 @@ const WButtonGridShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => <
 	<ButtonGrid
 		on		= { props.p.def.bt.map(b=>props.p.pad?.buttonPress[b]) }
 		cols	= { props.p.def.val[0] || props.p.def.bt.length }
-		stepx	= { props.p.def.val[1] || 28 }
-		stepy	= { props.p.def.val[2] || 28 }
-		rx		= { props.p.def.val[3] || 28 }
-		ry		= { props.p.def.val[4] || 28 }
+		stepx	= { props.p.def.val[1] || 41 }
+		stepy	= { props.p.def.val[2] || 41 }
+		rx		= { props.p.def.val[3] || 16 }
+		ry		= { props.p.def.val[4] || 16 }
 		shape	= { [props.s] }
 		line	= { props.p.container.line || 3 }
 	/>
