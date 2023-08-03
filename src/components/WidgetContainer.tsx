@@ -19,7 +19,8 @@ export interface WidgetContainerDef {
 
 const containerdef_re =		/G((?:(?:w|h|m|l)\-?[0-9]+)+)/g
 const containerparam_re =	/(w|h|m|l)(\-?[0-9]+)/g
-export const WCONTAINER_DFLT = { w:512, h:144, m:32, line:3 }
+export const WCONTAINER_DFLT: WidgetContainerDef =
+	{ w:512, h:144, m:32, line:3 }
 
 export const parseContainerStr = (str: string):WidgetContainerDef => {
 	const c_out:WidgetContainerDef = JSON.parse(JSON.stringify(WCONTAINER_DFLT))
@@ -63,7 +64,7 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
 		class={`relative ${props.class||''}`}
 		style={`width:${props.def.w}px; height:${props.def.h}px; ${props.style||''}`}
 		>
-		<For each={props.widgets}>{w => (
+		<For each={props.widgets}>{w => w.hide ? null : (
 			<Switch fallback={<Widget widget={w} container={props.def}>
 				no {WidgetType[w.type]} widget
 			</Widget>}>
