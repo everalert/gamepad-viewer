@@ -10,6 +10,7 @@ interface ButtonRingProps {
 	r: number;
 	rx: number;
 	ry: number;
+	rz: number;
 	line: number;
 	on: boolean[];
 	shape: ButtonShape[];
@@ -44,6 +45,7 @@ export const ButtonRing = (props: ButtonRingProps): JSXElement => {
 				y={w()/2+props.r*Math.sin(angle()*i())*lenMult()}
 				d1={props.rx}
 				d2={props.ry}
+				d3={props.rz}
 				angle={props.rotate?(360/props.on.length)*i():0}
 				on={on}
 				w={props.line}
@@ -62,8 +64,9 @@ export const WButtonRing = (props: WidgetProps): JSXElement => {
 			r		= { props.def.val[0] || 28 }
 			rx		= { props.def.val[1] || 16 }
 			ry		= { props.def.val[2] || 16 }
-			rotate	= { props.def.val[3]>0 || false }
-			shape	= { props.def.val.slice(4) }
+			rz		= { props.def.val[3] || 0 }
+			rotate	= { props.def.val[4]>0 || false }
+			shape	= { props.def.val.slice(5) }
 			line	= { props.container.line || 3 }
 		/>
 	</Widget>
@@ -78,6 +81,8 @@ const WButtonRingShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
 			r  		= { props.p.def.val[0] || 28 }
 			rx 		= { props.p.def.val[1] || 16 }
 			ry 		= { props.p.def.val[2] || 16 }
+			rz 		= { props.p.def.val[3] || 0 }
+			rotate	= { props.p.def.val[4]>0 || false }
 			shape	= { [props.s] }
 			line	= { props.p.container.line || 3 }
 		/>

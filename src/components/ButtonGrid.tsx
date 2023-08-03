@@ -11,6 +11,7 @@ interface ButtonGridProps {
 	stepy: number;
 	rx: number;
 	ry: number;
+	rz: number;
 	line: number;
 	on: boolean[];
 	shape: ButtonShape[];
@@ -46,6 +47,7 @@ export const ButtonGrid = (props: ButtonGridProps): JSXElement => {
 				y={mi()+props.stepy*(Math.floor(i()/props.cols))}
 				d1={props.rx}
 				d2={props.ry}
+				d3={props.rz}
 				angle={0}
 				on={on}
 				w={props.line}
@@ -61,12 +63,13 @@ export const WButtonGrid = (props: WidgetProps): JSXElement => {
 		widget={props.def} container={props.container}>
 		<ButtonGrid
 			on		= { inputs().map(i => i?.pressed) }
-			cols	= { props.def.val[0] || props.def.bt.length }
+			cols	= { props.def.val[0] || props.def.inputs.length }
 			stepx	= { props.def.val[1] || 41 }
 			stepy	= { props.def.val[2] || 41 }
 			rx		= { props.def.val[3] || 16 }
 			ry		= { props.def.val[4] || 16 }
-			shape	= { props.def.val.slice(5) }
+			rz		= { props.def.val[5] || 0 }
+			shape	= { props.def.val.slice(6) }
 			line	= { props.container.line || 3 }
 		/>
 	</Widget>
@@ -78,11 +81,12 @@ const WButtonGridShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
 		widget={props.p.def} container={props.p.container}>
 		<ButtonGrid
 			on		= { inputs().map(i => i?.pressed) }
-			cols	= { props.p.def.val[0] || props.p.def.bt.length }
+			cols	= { props.p.def.val[0] || props.p.def.inputs.length }
 			stepx	= { props.p.def.val[1] || 41 }
 			stepy	= { props.p.def.val[2] || 41 }
 			rx		= { props.p.def.val[3] || 16 }
 			ry		= { props.p.def.val[4] || 16 }
+			rz		= { props.p.def.val[5] || 0 }
 			shape	= { [props.s] }
 			line	= { props.p.container.line || 3 }
 		/>

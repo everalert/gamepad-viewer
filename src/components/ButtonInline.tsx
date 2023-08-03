@@ -7,6 +7,7 @@ interface ButtonInlineProps {
 	y: number;
 	d1: number;
 	d2: number;
+	d3: number;
 	angle: number;
 	w: number;
 	on: boolean;
@@ -89,22 +90,31 @@ export const ButtonInlineTriIso = (props: ButtonInlineProps) => {
 }
 
 export const ButtonInlineRect = (props: ButtonInlineProps) => {
-	const a = () => ang(props.d1,props.d2)
-	const m = () => mag(props.d1,props.d2)
-	const points = () => [a(),180-a(),180+a(),360-a()].map(v => `
-		${props.x+m()*Math.cos(deg2rad(v+props.angle))}
-		${props.y+m()*Math.sin(deg2rad(v+props.angle))}
-		`).join(' ')
+	const xx = (d:number) => d*Math.cos(deg2rad(props.angle))
+	const xy = (d:number) => d*Math.sin(deg2rad(props.angle))
+	const yx = (d:number) => d*Math.cos(deg2rad(props.angle+90))
+	const yy = (d:number) => d*Math.sin(deg2rad(props.angle+90))
+	const rm = () => Math.min(props.d1,props.d2) * Math.min(props.d3/5,1)
+	const d = () => `M ${props.x+xx(props.d1)} ${props.y+xy(props.d1)}
+		l ${yx(props.d2-rm())} ${yy(props.d2-rm())}
+		q ${yx(rm())} ${yy(rm())}, ${yx(rm())-xx(rm())} ${yy(rm())-xy(rm())}
+		l ${-xx(props.d1-rm())*2} ${-xy(props.d1-rm())*2}
+		q ${-xx(rm())} ${-xy(rm())}, ${-yx(rm())-xx(rm())} ${-yy(rm())-xy(rm())}
+		l ${-yx(props.d2-rm())*2} ${-yy(props.d2-rm())*2}
+		q ${-yx(rm())} ${-yy(rm())}, ${-yx(rm())+xx(rm())} ${-yy(rm())+xy(rm())}
+		l ${xx(props.d1-rm())*2} ${xy(props.d1-rm())*2}
+		q ${xx(rm())} ${xy(rm())}, ${yx(rm())+xx(rm())} ${yy(rm())+xy(rm())}
+	Z`
 	return <>
-		<polygon
+		<path
 			class='opacity-50 fill-black stroke-black'
 			stroke-width={props.w*2} stroke-linejoin='round'
-			points={points()}
+			d={d()}
 		/>
-		<polygon
+		<path
 			class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
 			stroke-width={props.w} stroke-linejoin='round'
-			points={points()}
+			d={d()}
 		/>
 	</>
 }
