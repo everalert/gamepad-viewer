@@ -29,7 +29,7 @@ const PAGES: PageDef[] = [
 	},
 ]
 
-const PARAMS: string[] = ['compact', 'lesstext', 'notext', 'noimage']
+const PARAMS: string[] = ['compact', 'lesstext', 'notext', 'noimage', 'noguide']
 
 
 const Index: Component = () => {

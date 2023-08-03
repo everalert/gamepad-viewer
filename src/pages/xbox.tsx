@@ -8,6 +8,7 @@ import { XBoxAxis as XBA, XBoxButton as XBB } from '../types/xbox'
 import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
 import { WidgetContainer, WidgetContainerDef, genContainerStr } from '../components/WidgetContainer'
 import { TextContainer } from '../components/TextContainer'
+import { DisplayContainer } from '../components/DisplayContainer'
 
 
 const INNER_X = 64,		INNER_X_COMPACT = 46
@@ -95,19 +96,13 @@ const XBox: Component = () => {
 
 	return <>
 		<Gamepad padIndex={padIndex} pad={pad} onUpdate={setPad} />
-		<div
-			class={`flex flex-col`}
-			style={`
-				width:${container.w+container.m*2}px;
-				padding:${container.m}px;
-				gap:${container.m/2}px;
-				`}>
+		<DisplayContainer container={container}>
 			{ NOTEXT || <TextContainer
 				widgets={widgets} pad={pad()}
 				style={`width:${container.w}px;`} />
 			}
 			{ NOIMAGE || <WidgetContainer def={container} widgets={widgets} pad={pad()} /> }
-		</div>
+		</DisplayContainer>
 	</>
 }
 

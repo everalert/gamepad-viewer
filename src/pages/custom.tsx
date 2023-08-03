@@ -11,6 +11,7 @@ import { A } from '@solidjs/router';
 import { filterParams } from '../helpers/formatting'
 import { XBOX_DFLT_CONTAINER, XBOX_DFLT_WIDGETS } from './xbox'
 import { AddIcon, DeleteIcon, ResetIcon, ConfirmIcon } from '../components/icons'
+import { DisplayContainer } from '../components/DisplayContainer'
 
 
 const Custom: Component = () => {
@@ -30,13 +31,7 @@ const Custom: Component = () => {
 
 	return <>
 		<Gamepad padIndex={padIndex} pad={pad} onUpdate={setPad} />
-		<div
-			class={`flex flex-col items-center ${!MODE_EDIT||'bg-black min-w-full min-h-screen'}`}
-			style={`
-width:${container().w+container().m*2}px;
-padding:${container().m}px;
-gap:${container().m/2}px;
-`}>
+		<DisplayContainer container={container()}>
 			{ NOTEXT || <TextContainer
 				widgets={widgets()} pad={pad()}
 				class={`${!MODE_EDIT||'outline outline-[4px] outline-gray-950/[0.85]'}`}/>
@@ -200,7 +195,7 @@ location.search,
 						><ConfirmIcon class='h-9 w-9 p-1' />confirm</A>
 				</div>
 			</div> }
-		</div>
+		</DisplayContainer>
 	</>
 }
 
