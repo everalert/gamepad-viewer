@@ -35,12 +35,12 @@ export interface WidgetDef {
 	type: WidgetType;
 	x: number;
 	y: number;
-	rot: number;
+	rot?: number;
 	inputs: GamepadInputDef[];
 	val: number[];
-	fx: boolean;
-	fy: boolean;
-	hide: boolean;
+	fx?: boolean;
+	fy?: boolean;
+	hide?: boolean;
 }
 
 const widgetdef_re =	/W([0-9]+)((?:(?:(?:x|y|a|b|v|r)(?:\-?[0-9]+))|(?:fx|fy|h))+)/g
