@@ -3,6 +3,7 @@ import { For } from 'solid-js'
 import { Widget, WidgetProps } from './Widget'
 import { deg2rad } from '../helpers/math'
 import { ButtonShape, ButtonInlineMap } from './ButtonInline'
+import { getInputMap } from '../types/gamepad'
 
 
 interface ButtonRingProps {
@@ -52,30 +53,36 @@ export const ButtonRing = (props: ButtonRingProps): JSXElement => {
 }
 
 
-export const WButtonRing = (props: WidgetProps): JSXElement => <Widget
-	widget={props.def} container={props.container}>
-	<ButtonRing
-		on =	{ props.def.bt.map(b=>props.pad?.buttonPress[b]) }
-		r  =	{ props.def.val[0] || 28 }
-		rx =	{ props.def.val[1] || 16 }
-		ry =	{ props.def.val[2] || 16 }
-		rotate = { props.def.val[3]>0 || false }
-		shape =	{ props.def.val.slice(4) }
-		line =	{ props.container.line || 3 }
-	/>
-</Widget>
+export const WButtonRing = (props: WidgetProps): JSXElement => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<ButtonRing
+			on		= { inputs().map(i => i?.pressed) }
+			r		= { props.def.val[0] || 28 }
+			rx		= { props.def.val[1] || 16 }
+			ry		= { props.def.val[2] || 16 }
+			rotate	= { props.def.val[3]>0 || false }
+			shape	= { props.def.val.slice(4) }
+			line	= { props.container.line || 3 }
+		/>
+	</Widget>
+}
 
-const WButtonRingShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => <Widget
-	widget={props.p.def} container={props.p.container}>
-	<ButtonRing
-		on =	{ props.p.def.bt.map(b=>props.p.pad?.buttonPress[b]) }
-		r  =	{ props.p.def.val[0] || 28 }
-		rx =	{ props.p.def.val[1] || 16 }
-		ry =	{ props.p.def.val[2] || 16 }
-		shape =	{[props.s]}
-		line =	{ props.p.container.line || 3 }
-	/>
-</Widget>
+const WButtonRingShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
+	const inputs = () => getInputMap(props.p.pad?.inputs, props.p.def.inputs)
+	return <Widget
+		widget={props.p.def} container={props.p.container}>
+		<ButtonRing
+			on		= { inputs().map(i => i?.pressed) }
+			r  		= { props.p.def.val[0] || 28 }
+			rx 		= { props.p.def.val[1] || 16 }
+			ry 		= { props.p.def.val[2] || 16 }
+			shape	= { [props.s] }
+			line	= { props.p.container.line || 3 }
+		/>
+	</Widget>
+}
 
 export const WButtonRingCircle = (props: WidgetProps): JSXElement => 
 	<WButtonRingShape p={props} s={ButtonShape.Circle} />

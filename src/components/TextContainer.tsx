@@ -1,6 +1,7 @@
 import type { JSXElement } from 'solid-js';
 import { For, Show } from 'solid-js';
-import type { GamepadState } from '../types/gamepad'
+import type { GamepadState, GamepadInputDef } from '../types/gamepad'
+import { getInputMap } from '../types/gamepad'
 import { StickText, TriggerText } from '../components'
 import { WidgetType, WidgetDef } from '../components/Widget'
 
@@ -26,21 +27,21 @@ export const TextContainer = (props: TextContainerProps):JSXElement => {
 		|| w.type===WidgetType.TriggerCurved
 		|| w.type===WidgetType.TriggerFlat
 	)
+	const inputs = (di:GamepadInputDef[]) => getInputMap(props.pad?.inputs, di)
 
 	return <div
 		class={`flex justify-center gap-4 text-lg ${props.class}`}
 		style={`${props.class}`}
 		>
-		<For each={sticks()}>
-			{s => <StickText
-				x={props.pad?.axes[s.ax[0]]||0}
-				y={props.pad?.axes[s.ax[1]]||0}
-			/>}
-		</For>
+		<For each={sticks()}>{s => {
+			return <StickText
+				x={inputs(s.inputs)[0]?.ascalar||0}
+				y={inputs(s.inputs)[1]?.ascalar||0}
+		/>}}</For>
 		<Show when={triggers().length > 0}>
 			<TriggerText
-				left={props.pad?.buttonValue[triggers()[0]?.bt[0]]||0}
-				right={props.pad?.buttonValue[triggers()[1]?.bt[0]]||0}
+				left={inputs(triggers()[0]?.inputs)[0]?.bscalar||0}
+				right={inputs(triggers()[1]?.inputs)[0]?.bscalar||0}
 			/>
 		</Show>
 	</div>

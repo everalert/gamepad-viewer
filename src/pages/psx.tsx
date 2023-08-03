@@ -2,6 +2,7 @@ import type { Component } from 'solid-js';
 import { createSignal } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
 import type { GamepadState } from '../types/gamepad'
+import { GamepadInputType as GIT, inputDef as iD } from '../types/gamepad'
 import { Gamepad } from '../components'
 import { PSxAxis as PSA, PSxButton as PSB } from '../types/psx'
 import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
@@ -19,18 +20,27 @@ export const PSX_DFLT_CONTAINER: WidgetContainerDef = { w: 512, h: 144, m: 32, l
 
 export const PSX_DFLT_WIDGETS: WidgetDef[] = [
 	{ type:WidgetType.StickCircle, x:-INNER_X, y:INNER_Y,
+		inputs:[iD(GIT.Axis,PSA.LSx),iD(GIT.Axis,PSA.LSy),iD(GIT.Button,PSB.L3)],
 		ax:[PSA.LSx,PSA.LSy], bt:[PSB.L3], val:[48] },
 	{ type:WidgetType.StickCircle, x:INNER_X, y:INNER_Y,
+		inputs:[iD(GIT.Axis,PSA.RSx),iD(GIT.Axis,PSA.RSy),iD(GIT.Button,PSB.R3)],
 		ax:[PSA.RSx,PSA.RSy], bt:[PSB.R3], val:[48] },
 	{ type:WidgetType.ButtonRing, x:0, y:-48,
+		inputs:[iD(GIT.Button,PSB.Start),iD(GIT.Button,PSB.Select)],
 		ax:[], bt:[PSB.Start,PSB.Select], val:[32,12,8,1,ButtonShape.TriIso,ButtonShape.Rect] },
 	{ type:WidgetType.DPad, x:-OUTER_X, y:OUTER_Y,
+		inputs:[iD(GIT.Button,PSB.DD),iD(GIT.Button,PSB.DR),
+			iD(GIT.Button,PSB.DL),iD(GIT.Button,PSB.DU)],
 		ax:[], bt:[PSB.DD,PSB.DR,PSB.DL,PSB.DU], val:[80,28] },
 	{ type:WidgetType.ButtonRingCircle, x:OUTER_X, y:OUTER_Y,
+		inputs:[iD(GIT.Button,PSB.Ci),iD(GIT.Button,PSB.Cr),
+			iD(GIT.Button,PSB.Sq),iD(GIT.Button,PSB.Tr)],
 		ax:[], bt:[PSB.Ci,PSB.Cr,PSB.Sq,PSB.Tr], val:[28,16] },
 	{ type:WidgetType.Trigger, x:-PSX_DFLT_CONTAINER.w/2, y:0,
+		inputs:[iD(GIT.Button,PSB.L2),iD(GIT.Button,PSB.L1)],
 		ax:[], bt:[PSB.L2,PSB.L1], val:[96,256] },
 	{ type:WidgetType.Trigger, x:PSX_DFLT_CONTAINER.w/2, y:0,
+		inputs:[iD(GIT.Button,PSB.R2),iD(GIT.Button,PSB.R1)],
 		ax:[], bt:[PSB.R2,PSB.R1], val:[96,256], fx:true },
 ]
 
@@ -41,18 +51,27 @@ export const PSX_DFLT_CONTAINER_COMPACT: WidgetContainerDef = { w: 396, h: 80, m
 
 export const PSX_DFLT_WIDGETS_COMPACT: WidgetDef[] = [
 	{ type:WidgetType.StickCircle, x:-INNER_X_COMPACT, y:INNER_Y_COMPACT,
+		inputs:[iD(GIT.Axis,PSA.LSx),iD(GIT.Axis,PSA.LSy),iD(GIT.Button,PSB.L3)],
 		ax:[PSA.LSx,PSA.LSy], bt:[PSB.L3], val:[40] },
 	{ type:WidgetType.StickCircle, x:INNER_X_COMPACT, y:INNER_Y_COMPACT,
+		inputs:[iD(GIT.Axis,PSA.RSx),iD(GIT.Axis,PSA.RSy),iD(GIT.Button,PSB.R3)],
 		ax:[PSA.RSx,PSA.RSy], bt:[PSB.R3], val:[40] },
 	{ type:WidgetType.ButtonRing, x:0, y:-34,
+		inputs:[iD(GIT.Button,PSB.Start),iD(GIT.Button,PSB.Select)],
 		ax:[], bt:[PSB.Start,PSB.Select], val:[100,10,6,1,ButtonShape.TriIso,ButtonShape.Rect] },
 	{ type:WidgetType.DPad, x:-OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
+		inputs:[iD(GIT.Button,PSB.DD),iD(GIT.Button,PSB.DR),
+			iD(GIT.Button,PSB.DL),iD(GIT.Button,PSB.DU)],
 		ax:[], bt:[PSB.DD,PSB.DR,PSB.DL,PSB.DU], val:[72,24] },
 	{ type:WidgetType.ButtonRingCircle, x:OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
+		inputs:[iD(GIT.Button,PSB.Ci),iD(GIT.Button,PSB.Cr),
+			iD(GIT.Button,PSB.Sq),iD(GIT.Button,PSB.Tr)],
 		ax:[], bt:[PSB.Ci,PSB.Cr,PSB.Sq,PSB.Tr], val:[24,13] },
 	{ type:WidgetType.Trigger, x:-PSX_DFLT_CONTAINER_COMPACT.w/2, y:0,
+		inputs:[iD(GIT.Button,PSB.L2),iD(GIT.Button,PSB.L1)],
 		ax:[], bt:[PSB.L2,PSB.L1], val:[64,256] },
 	{ type:WidgetType.Trigger, x:PSX_DFLT_CONTAINER_COMPACT.w/2, y:0,
+		inputs:[iD(GIT.Button,PSB.R2),iD(GIT.Button,PSB.R1)],
 		ax:[], bt:[PSB.R2,PSB.R1], val:[64,256], fx:true },
 ]
 
@@ -76,7 +95,7 @@ const PSx: Component = () => {
 		PSX_DFLT_WIDGETS_COMPACT : PSX_DFLT_WIDGETS
 
 	return <>
-		<Gamepad padIndex={padIndex} onUpdate={setPad} />
+		<Gamepad padIndex={padIndex} pad={pad} onUpdate={setPad} />
 		<div
 			class={`flex flex-col`}
 			style={`

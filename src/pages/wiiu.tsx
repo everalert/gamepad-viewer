@@ -2,6 +2,7 @@ import type { Component } from 'solid-js';
 import { createSignal } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
 import type { GamepadState } from '../types/gamepad'
+import { GamepadInputType as GIT, inputDef as iD } from '../types/gamepad'
 import { Gamepad } from '../components'
 import { WiiUAxis as WUA, WiiUButton as WUB } from '../types/wiiu'
 import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
@@ -18,18 +19,27 @@ export const WIIU_DFLT_CONTAINER: WidgetContainerDef = { w: 512, h: 144, m: 32, 
 
 export const WIIU_DFLT_WIDGETS: WidgetDef[] = [
 	{ type:WidgetType.StickCircle, x:-OUTER_X, y:OUTER_Y,
+		inputs:[iD(GIT.Axis,WUA.LSx),iD(GIT.Axis,WUA.LSy),iD(GIT.Button,WUB.LSB)],
 		ax:[WUA.LSx,WUA.LSy], bt:[WUB.LSB], val:[48] },
 	{ type:WidgetType.StickCircle, x:OUTER_X, y:OUTER_Y,
+		inputs:[iD(GIT.Axis,WUA.RSx),iD(GIT.Axis,WUA.RSy),iD(GIT.Button,WUB.RSB)],
 		ax:[WUA.RSx,WUA.RSy], bt:[WUB.RSB], val:[48] },
 	{ type:WidgetType.ButtonRingCircle, x:0, y:-48,
+		inputs:[iD(GIT.Button,WUB.Start),iD(GIT.Button,WUB.Select)],
 		ax:[], bt:[WUB.Start,WUB.Select], val:[32,12] },
 	{ type:WidgetType.DPad, x:-INNER_X, y:INNER_Y,
+		inputs:[iD(GIT.Button,WUB.DD),iD(GIT.Button,WUB.DR),
+			iD(GIT.Button,WUB.DL),iD(GIT.Button,WUB.DU)],
 		ax:[], bt:[WUB.DD,WUB.DR,WUB.DL,WUB.DU], val:[80,28] },
 	{ type:WidgetType.ButtonRingCircle, x:INNER_X, y:INNER_Y,
+		inputs:[iD(GIT.Button,WUB.A),iD(GIT.Button,WUB.B),
+			iD(GIT.Button,WUB.Y),iD(GIT.Button,WUB.X)],
 		ax:[], bt:[WUB.A,WUB.B,WUB.Y,WUB.X], val:[28,16] },
 	{ type:WidgetType.Trigger, x:-WIIU_DFLT_CONTAINER.w/2, y:0,
+		inputs:[iD(GIT.Button,WUB.ZL),iD(GIT.Button,WUB.L)],
 		ax:[], bt:[WUB.ZL,WUB.L], val:[96,256] },
 	{ type:WidgetType.Trigger, x:WIIU_DFLT_CONTAINER.w/2, y:0,
+		inputs:[iD(GIT.Button,WUB.ZR),iD(GIT.Button,WUB.R)],
 		ax:[], bt:[WUB.ZR,WUB.R], val:[96,256], fx:true },
 ]
 
@@ -40,18 +50,27 @@ export const WIIU_DFLT_CONTAINER_COMPACT: WidgetContainerDef = { w: 396, h: 80, 
 
 export const WIIU_DFLT_WIDGETS_COMPACT: WidgetDef[] = [
 	{ type:WidgetType.StickCircle, x:-OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
+		inputs:[iD(GIT.Axis,WUA.LSx),iD(GIT.Axis,WUA.LSy),iD(GIT.Button,WUB.LSB)],
 		ax:[WUA.LSx,WUA.LSy], bt:[WUB.LSB], val:[40] },
 	{ type:WidgetType.StickCircle, x:OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
+		inputs:[iD(GIT.Axis,WUA.RSx),iD(GIT.Axis,WUA.RSy),iD(GIT.Button,WUB.RSB)],
 		ax:[WUA.RSx,WUA.RSy], bt:[WUB.RSB], val:[40] },
 	{ type:WidgetType.ButtonRingCircle, x:0, y:-34,
+		inputs:[iD(GIT.Button,WUB.Start),iD(GIT.Button,WUB.Select)],
 		ax:[], bt:[WUB.Start,WUB.Select], val:[84,10] },
 	{ type:WidgetType.DPad, x:-INNER_X_COMPACT, y:INNER_Y_COMPACT,
+		inputs:[iD(GIT.Button,WUB.DD),iD(GIT.Button,WUB.DR),
+			iD(GIT.Button,WUB.DL),iD(GIT.Button,WUB.DU)],
 		ax:[], bt:[WUB.DD,WUB.DR,WUB.DL,WUB.DU], val:[72,24] },
 	{ type:WidgetType.ButtonRingCircle, x:INNER_X_COMPACT, y:INNER_Y_COMPACT,
+		inputs:[iD(GIT.Button,WUB.A),iD(GIT.Button,WUB.B),
+			iD(GIT.Button,WUB.Y),iD(GIT.Button,WUB.X)],
 		ax:[], bt:[WUB.A,WUB.B,WUB.Y,WUB.X], val:[24,13] },
 	{ type:WidgetType.Trigger, x:-WIIU_DFLT_CONTAINER_COMPACT.w/2, y:0,
+		inputs:[iD(GIT.Button,WUB.ZL),iD(GIT.Button,WUB.L)],
 		ax:[], bt:[WUB.ZL,WUB.L], val:[64,256] },
 	{ type:WidgetType.Trigger, x:WIIU_DFLT_CONTAINER_COMPACT.w/2, y:0,
+		inputs:[iD(GIT.Button,WUB.ZR),iD(GIT.Button,WUB.R)],
 		ax:[], bt:[WUB.ZR,WUB.R], val:[64,256], fx:true },
 ]
 
@@ -75,7 +94,7 @@ const WiiU: Component = () => {
 		WIIU_DFLT_WIDGETS_COMPACT : WIIU_DFLT_WIDGETS
 
 	return <>
-		<Gamepad padIndex={padIndex} onUpdate={setPad} />
+		<Gamepad padIndex={padIndex} pad={pad} onUpdate={setPad} />
 		<div
 			class={`flex flex-col`}
 			style={`

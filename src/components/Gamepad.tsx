@@ -1,27 +1,31 @@
-import type { Setter } from 'solid-js'
+import type { Setter, Accessor } from 'solid-js'
 import { onMount, onCleanup } from 'solid-js'
 import type { GamepadState } from '../types/gamepad'
+import { GamepadInput, GamepadInputType } from '../types/gamepad'
 
 
 interface GamepadProps {
 	onUpdate: Setter<GamepadState>;
+	pad: Accessor<GamepadState>;
 	padIndex: number;
 }
 
 
-export const Gamepad = ({ onUpdate, padIndex }: GamepadProps) => {
+export const Gamepad = ({ onUpdate, pad, padIndex }: GamepadProps) => {
 	onMount(() => {
 		function loop(t) {
 			const gamepads = navigator.getGamepads()
 
 			if (gamepads && gamepads[padIndex]) {
 				const gamepad = gamepads[padIndex]
-				const state: GamepadState = {
-					index:			padIndex,
-					axes:			gamepad.axes.map(a => a),
-					buttonValue:	gamepad.buttons.map(b => b.value),
-					buttonPress:	gamepad.buttons.map(b => b.pressed),
-				}
+				const state: GamepadState = pad() ?
+					{...pad()} : { index:padIndex, inputs:[] }
+				state.inputs = [
+					...gamepad.axes.map((a,i) => 
+						new GamepadInput(GamepadInputType.Axis,i,a)),
+					...gamepad.buttons.map((b,i) => 
+						new GamepadInput(GamepadInputType.Button,i,b.value,b.pressed))
+				]
 				onUpdate(state)
 			}
 			

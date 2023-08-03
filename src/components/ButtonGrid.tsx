@@ -2,6 +2,7 @@ import type { JSXElement } from 'solid-js'
 import { For } from 'solid-js'
 import { Widget, WidgetProps } from './Widget'
 import { ButtonShape, ButtonInlineMap } from './ButtonInline'
+import { getInputMap } from '../types/gamepad'
 
 
 interface ButtonGridProps {
@@ -54,33 +55,39 @@ export const ButtonGrid = (props: ButtonGridProps): JSXElement => {
 }
 
 
-export const WButtonGrid = (props: WidgetProps): JSXElement => <Widget
-	widget={props.def} container={props.container}>
-	<ButtonGrid
-		on		= { props.def.bt.map(b=>props.pad?.buttonPress[b]) }
-		cols	= { props.def.val[0] || props.def.bt.length }
-		stepx	= { props.def.val[1] || 41 }
-		stepy	= { props.def.val[2] || 41 }
-		rx		= { props.def.val[3] || 16 }
-		ry		= { props.def.val[4] || 16 }
-		shape	= { props.def.val.slice(5) }
-		line	= { props.container.line || 3 }
-	/>
-</Widget>
+export const WButtonGrid = (props: WidgetProps): JSXElement => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<ButtonGrid
+			on		= { inputs().map(i => i?.pressed) }
+			cols	= { props.def.val[0] || props.def.bt.length }
+			stepx	= { props.def.val[1] || 41 }
+			stepy	= { props.def.val[2] || 41 }
+			rx		= { props.def.val[3] || 16 }
+			ry		= { props.def.val[4] || 16 }
+			shape	= { props.def.val.slice(5) }
+			line	= { props.container.line || 3 }
+		/>
+	</Widget>
+}
 
-const WButtonGridShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => <Widget
-	widget={props.p.def} container={props.p.container}>
-	<ButtonGrid
-		on		= { props.p.def.bt.map(b=>props.p.pad?.buttonPress[b]) }
-		cols	= { props.p.def.val[0] || props.p.def.bt.length }
-		stepx	= { props.p.def.val[1] || 41 }
-		stepy	= { props.p.def.val[2] || 41 }
-		rx		= { props.p.def.val[3] || 16 }
-		ry		= { props.p.def.val[4] || 16 }
-		shape	= { [props.s] }
-		line	= { props.p.container.line || 3 }
-	/>
-</Widget>
+const WButtonGridShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
+	const inputs = () => getInputMap(props.p.pad?.inputs, props.p.def.inputs)
+	return <Widget
+		widget={props.p.def} container={props.p.container}>
+		<ButtonGrid
+			on		= { inputs().map(i => i?.pressed) }
+			cols	= { props.p.def.val[0] || props.p.def.bt.length }
+			stepx	= { props.p.def.val[1] || 41 }
+			stepy	= { props.p.def.val[2] || 41 }
+			rx		= { props.p.def.val[3] || 16 }
+			ry		= { props.p.def.val[4] || 16 }
+			shape	= { [props.s] }
+			line	= { props.p.container.line || 3 }
+		/>
+	</Widget>
+}
 
 export const WButtonGridCircle = (props: WidgetProps): JSXElement => 
 	<WButtonGridShape p={props} s={ButtonShape.Circle} />

@@ -1,9 +1,10 @@
 import type { Component } from 'solid-js';
 import { createSignal, For, Index } from 'solid-js';
 import { useSearchParams, useLocation } from '@solidjs/router'
-import type { GamepadState } from '../types/gamepad'
+import type { GamepadState, GamepadInputDef } from '../types/gamepad'
+import { GamepadInputType } from '../types/gamepad'
 import { Gamepad } from '../components'
-import { WidgetType, WidgetDef, parseWidgetStr, genWidgetStr } from '../components/Widget'
+import { WidgetType, WidgetDef, parseWidgetStr, genWidgetStr, WIDGET_DFLT } from '../components/Widget'
 import { WidgetContainer, WidgetContainerDef, parseContainerStr, genContainerStr } from '../components/WidgetContainer'
 import { TextContainer } from '../components/TextContainer'
 import { A } from '@solidjs/router';
@@ -28,7 +29,7 @@ const Custom: Component = () => {
 	const [widgets, setWidgets] = createSignal<WidgetDef[]>(parseWidgetStr(SETTINGS))
 
 	return <>
-		<Gamepad padIndex={padIndex} onUpdate={setPad} />
+		<Gamepad padIndex={padIndex} pad={pad} onUpdate={setPad} />
 		<div
 			class={`flex flex-col items-center ${!MODE_EDIT||'bg-black min-w-full min-h-screen'}`}
 			style={`
@@ -55,30 +56,26 @@ gap:${container().m/2}px;
 					}}</Index>
 				</div>
 				<div class='mt-4 font-semibold'>widgets</div>
-				<div class='text-gray-400'>x and y offset from center</div>
-				<div class='grid grid-cols-[max-content_max-content_max-content_max-content_max-content_max-content_max-content_max-content_max-content_max-content] items-baseline gap-y-1 gap-x-2'>
+				<div class='grid grid-cols-[max-content_max-content_max-content_max-content_max-content_max-content_max-content_max-content_max-content] items-baseline gap-y-1 gap-x-2'>
 					<div></div>
 					<div class='px-1'>x</div>
 					<div class='px-1'>y</div>
 					<div class='px-1'>rot</div>
-					<div class='px-1'>axis</div>
-					<div class='px-1'>btn</div>
-					<div class='px-1'>val</div>
 					<div class='px-1'>fx</div>
 					<div class='px-1'>fy</div>
+					<div class='px-1'>input</div>
+					<div class='px-1'>val</div>
 					<div></div>
 					<Index each={widgets()}>{(w,i) => {
-						const setVal = (c:{[key:string]:number|boolean|number[]}) => setWidgets([
+						const setVal = (c:{[key:string]:number|boolean|number[]|GamepadInputDef[]}) => setWidgets([
 							...widgets().slice(0,-widgets().length+i),
 							{...w(),...c},
 							...widgets().slice(i+1,widgets().length),
 						]) 
 						return <>
 							<div>
-								<select
+								<select onInput={e=>setVal({type:Number.parseInt(e.currentTarget.value)})}
 									value={w().type}
-									onInput={e=>setVal(
-										{type:Number.parseInt(e.currentTarget.value)})}
 									class='px-1 py-0.5 font-semibold bg-gray-800 rounded'
 									>
 									<For each={Object.keys(WidgetType)
@@ -88,33 +85,54 @@ gap:${container().m/2}px;
 									}</For>
 								</select>
 							</div>
-							<div><input value={w().x}
-							onInput={(e)=>{setVal({x:Number.parseInt(e.target.value)||0})}}
-								class='w-12 px-1.5 pt-0.5 bg-gray-800 rounded' /></div>
-							<div><input value={w().y}
-							onInput={(e)=>{setVal({y:Number.parseInt(e.target.value)||0})}}
-								class='w-12 px-1.5 pt-0.5 bg-gray-800 rounded' /></div>
-							<div><input value={w()?.rot||0}
-							onInput={(e)=>{setVal({rot:Number.parseInt(e.target.value)||0})}}
-								class='w-12 px-1.5 pt-0.5 bg-gray-800 rounded' /></div>
-							<div><input value={w().ax.join(',')}
-							onInput={(e)=>{setVal({ax:e.target.value.split(',').map(n=>Number.parseInt(n)||0)})}}
-								class='w-10 px-1.5 pt-0.5 bg-gray-800 rounded' /></div>
-							<div><input value={w().bt.join(',')}
-							onInput={(e)=>{setVal({bt:e.target.value.split(',').map(n=>Number.parseInt(n)||0)})}}
-								class='w-28 px-1.5 pt-0.5 bg-gray-800 rounded' /></div>
-							<div><input value={w().val.join(',')}
-							onInput={(e)=>{setVal({val:e.target.value.split(',').map(n=>Number.parseInt(n)||0)})}}
-								class='w-20 px-1.5 pt-0.5 bg-gray-800 rounded' /></div>
-							<div class='relative top-1'>
-								<input type='checkbox' checked={w().fx}
-								onInput={()=>{setVal({fx:!w().fx})}}
-									class='w-5 h-5 px-1.5 pt-0.5 bg-gray-800' />
+							<div>
+								<input onInput={(e)=>{setVal({x:Number.parseInt(e.target.value)||0})}}
+									value={w().x}
+									class='w-12 px-1.5 pt-0.5 bg-gray-800 rounded'
+								/>
+							</div>
+							<div>
+								<input onInput={(e)=>{setVal({y:Number.parseInt(e.target.value)||0})}}
+									value={w().y}
+									class='w-12 px-1.5 pt-0.5 bg-gray-800 rounded'
+								/>
+							</div>
+							<div>
+								<input onInput={(e)=>{setVal({rot:Number.parseInt(e.target.value)||0})}}
+									value={w()?.rot||0}
+									class='w-12 px-1.5 pt-0.5 bg-gray-800 rounded'
+								/>
 							</div>
 							<div class='relative top-1'>
-								<input type='checkbox' checked={w().fy}
-								onInput={()=>{setVal({fy:!w().fy})}}
-									class='w-5 h-5 px-1.5 pt-0.5 bg-gray-800' />
+								<input onInput={()=>{setVal({fx:!w().fx})}}
+									type='checkbox' checked={w().fx}
+									class='w-5 h-5 px-1.5 pt-0.5 bg-gray-800'
+								/>
+							</div>
+							<div class='relative top-1'>
+								<input onInput={()=>{setVal({fy:!w().fy})}}
+									type='checkbox' checked={w().fy}
+									class='w-5 h-5 px-1.5 pt-0.5 bg-gray-800'
+								/>
+							</div>
+							<div>
+								<input onInput={(e)=>{setVal({
+									inputs:e.target.value.split(',').map(i => {
+										return {
+											type:(i.charAt(0)==='a'?GamepadInputType.Axis:GamepadInputType.Button),
+											index:Number.parseInt(i.slice(1))||0
+										} as GamepadInputDef 
+									})
+									})}}
+									value={w().inputs.map(i=>`${i.type===GamepadInputType.Axis?'a':'b'}${i.index.toString()}`).join(',')}
+									class='w-40 px-1.5 pt-0.5 bg-gray-800 rounded'
+								/>
+							</div>
+							<div>
+								<input onInput={(e)=>{setVal({val:e.target.value.split(',').map(n=>Number.parseInt(n)||0)})}}
+									value={w().val.join(',')}
+									class='w-20 px-1.5 pt-0.5 bg-gray-800 rounded'
+								/>
 							</div>
 							<div
 								class='h-7 w-7 -my-2 text-red-800 relative top-2
@@ -129,12 +147,13 @@ gap:${container().m/2}px;
 						</>
 					}}</Index>
 				</div>
+				<div class='mt-2 text-gray-400'>x and y offset from center</div>
 				<div class='mt-3 flex gap-2'>
 					<div
 						class='flex items-center font-bold text-blue-800
 						hover:text-blue-400 cursor-pointer group'
 						onClick={()=>setWidgets([...widgets(),
-							{type:0,x:0,y:0,ax:[],bt:[],val:[],fx:false,fy:false}])}
+							JSON.parse(JSON.stringify(WIDGET_DFLT))])}
 						>
 						<AddIcon class='h-9 w-9 p-1' />add
 					</div>

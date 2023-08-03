@@ -1,6 +1,7 @@
 import type { Component } from 'solid-js'
 import { Widget, WidgetProps } from './Widget'
 import { AbC2a, AbC2h } from '../helpers/math'
+import { getInputMap } from '../types/gamepad'
 
 
 interface StickProps {
@@ -122,95 +123,116 @@ ${props.style||''}`}
 	</svg>
 }
 
-export const WStick:Component = (props: WidgetProps) => <Widget
-	widget={props.def} container={props.container}>
-	<Stick
-		x={props.pad?.axes[props.def.ax[0]]||0}
-		y={props.pad?.axes[props.def.ax[1]]||0}
-		button={props.pad?.buttonPress[props.def.bt[0]]||false}
-		r={props.def.val[0]>0?props.def.val[0]:48}
-		a={props.def.val[1]>0?props.def.val[1]:67.5}
-		ar={props.def.val[2]>0?props.def.val[2]:48*NICE_FACTOR}
-		line={props.container.line||3}
-	/>	
-</Widget>
+export const WStick:Component = (props: WidgetProps) => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<Stick
+			x={inputs()[0]?.ascalar||0}
+			y={inputs()[1]?.ascalar||0}
+			button={inputs()[2]?.pressed||false}
+			r={props.def.val[0]>0?props.def.val[0]:48}
+			a={props.def.val[1]>0?props.def.val[1]:67.5}
+			ar={props.def.val[2]>0?props.def.val[2]:48*NICE_FACTOR}
+			line={props.container.line||3}
+		/>	
+	</Widget>
+}
 
-export const WStickCircle:Component = (props: WidgetProps) => <Widget
-	widget={props.def} container={props.container}>
-	<Stick
-		x={props.pad?.axes[props.def.ax[0]]||0}
-		y={props.pad?.axes[props.def.ax[1]]||0}
-		button={props.pad?.buttonPress[props.def.bt[0]]||false}
-		r={props.def.val[0]>0?props.def.val[0]:48}
-		a={67.5}
-		ar={props.def.val[0]>0?props.def.val[0]:48}
-		line={props.container.line||3}
-	/>	
-</Widget>
+export const WStickCircle:Component = (props: WidgetProps) => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<Stick
+			x={inputs()[0]?.ascalar||0}
+			y={inputs()[1]?.ascalar||0}
+			button={inputs()[2]?.pressed||false}
+			r={props.def.val[0]>0?props.def.val[0]:48}
+			a={67.5}
+			ar={props.def.val[0]>0?props.def.val[0]:48}
+			line={props.container.line||3}
+		/>	
+	</Widget>
+}
 
-export const WStickSquare:Component = (props: WidgetProps) => <Widget
-	widget={props.def} container={props.container}>
-	<Stick
-		x={props.pad?.axes[props.def.ax[0]]||0}
-		y={props.pad?.axes[props.def.ax[1]]||0}
-		button={props.pad?.buttonPress[props.def.bt[0]]||false}
-		r={props.def.val[0]>0?props.def.val[0]:48}
-		a={90}
-		ar={0}
-		line={props.container.line||3}
-	/>	
-</Widget>
+export const WStickSquare:Component = (props: WidgetProps) => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<Stick
+			x={inputs()[0]?.ascalar||0}
+			y={inputs()[1]?.ascalar||0}
+			button={inputs()[2]?.pressed||false}
+			r={props.def.val[0]>0?props.def.val[0]:48}
+			a={90}
+			ar={0}
+			line={props.container.line||3}
+		/>	
+	</Widget>
+}
 
-export const WStickN64:Component = (props: WidgetProps) => <Widget
-	widget={props.def} container={props.container}>
-	<Stick
-		x={props.pad?.axes[props.def.ax[0]]||0}
-		y={props.pad?.axes[props.def.ax[1]]||0}
-		button={props.pad?.buttonPress[props.def.bt[0]]||false}
-		r={props.def.val[0]>0?props.def.val[0]:48}
-		a={75} //TODO: confirm from notes
-		ar={props.def.val[0]>0?props.def.val[0]*NICE_FACTOR:48*NICE_FACTOR}
-		line={props.container.line||3}
-	/>
-</Widget>
+export const WStickN64:Component = (props: WidgetProps) => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<Stick
+			x={inputs()[0]?.ascalar||0}
+			y={inputs()[1]?.ascalar||0}
+			button={inputs()[2]?.pressed||false}
+			r={props.def.val[0]>0?props.def.val[0]:48}
+			a={75} //TODO: confirm from notes
+			ar={props.def.val[0]>0?props.def.val[0]*NICE_FACTOR:48*NICE_FACTOR}
+			line={props.container.line||3}
+		/>
+	</Widget>
+}
 
-export const WStickHori:Component = (props: WidgetProps) => <Widget
-	widget={props.def} container={props.container}>
-	<Stick
-		x={props.pad?.axes[props.def.ax[0]]||0}
-		y={props.pad?.axes[props.def.ax[1]]||0}
-		button={props.pad?.buttonPress[props.def.bt[0]]||false}
-		r={props.def.val[0]>0?props.def.val[0]:48}
-		a={73} //TODO: confirm from notes
-		ar={props.def.val[0]>0?props.def.val[0]*NICE_FACTOR:48*NICE_FACTOR}
-		line={props.container.line||3}
-	/>
-</Widget>
+export const WStickHori:Component = (props: WidgetProps) => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<Stick
+			x={inputs()[0]?.ascalar||0}
+			y={inputs()[1]?.ascalar||0}
+			button={inputs()[2]?.pressed||false}
+			r={props.def.val[0]>0?props.def.val[0]:48}
+			a={73} //TODO: confirm from notes
+			ar={props.def.val[0]>0?props.def.val[0]*NICE_FACTOR:48*NICE_FACTOR}
+			line={props.container.line||3}
+		/>
+	</Widget>
+}
 
-export const WStickGC:Component = (props: WidgetProps) => <Widget
-	widget={props.def} container={props.container}>
-	<Stick
-		x={props.pad?.axes[props.def.ax[0]]||0}
-		y={props.pad?.axes[props.def.ax[1]]||0}
-		button={props.pad?.buttonPress[props.def.bt[0]]||false}
-		r={props.def.val[0]>0?props.def.val[0]:48}
-		a={67.5}
-		ar={props.def.val[0]>0?props.def.val[0]*NICE_FACTOR:48*NICE_FACTOR}
-		line={props.container.line||3}
-	/>
-</Widget>
+export const WStickGC:Component = (props: WidgetProps) => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<Stick
+			x={inputs()[0]?.ascalar||0}
+			y={inputs()[1]?.ascalar||0}
+			button={inputs()[2]?.pressed||false}
+			r={props.def.val[0]>0?props.def.val[0]:48}
+			a={67.5}
+			ar={props.def.val[0]>0?props.def.val[0]*NICE_FACTOR:48*NICE_FACTOR}
+			line={props.container.line||3}
+		/>
+	</Widget>
+}
 
-export const WStickRound:Component = (props: WidgetProps) => <Widget
-	widget={props.def} container={props.container}>
-	<Stick
-		x={props.pad?.axes[props.def.ax[0]]||0}
-		y={props.pad?.axes[props.def.ax[1]]||0}
-		button={props.pad?.buttonPress[props.def.bt[0]]||false}
-		r={props.def.val[0]>0?props.def.val[0]:48}
-		a={67.5}
-		ar={props.def.val[0]>0?props.def.val[0]*ROUND_FACTOR:48*ROUND_FACTOR}
-		line={props.container.line||3}
-	/>
-</Widget>
+export const WStickRound:Component = (props: WidgetProps) => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<Stick
+			x={inputs()[0]?.ascalar||0}
+			y={inputs()[1]?.ascalar||0}
+			button={inputs()[2]?.pressed||false}
+			r={props.def.val[0]>0?props.def.val[0]:48}
+			a={67.5}
+			ar={props.def.val[0]>0?props.def.val[0]*ROUND_FACTOR:48*ROUND_FACTOR}
+			line={props.container.line||3}
+		/>
+	</Widget>
+}
 
 export default Stick;

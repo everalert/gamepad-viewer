@@ -2,6 +2,7 @@ import type { Component } from 'solid-js';
 import { createSignal } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
 import type { GamepadState } from '../types/gamepad'
+import { GamepadInputType as GIT, inputDef as iD } from '../types/gamepad'
 import { Gamepad } from '../components'
 import { XBoxAxis as XBA, XBoxButton as XBB } from '../types/xbox'
 import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
@@ -18,18 +19,27 @@ export const XBOX_DFLT_CONTAINER: WidgetContainerDef = { w: 512, h: 144, m: 32, 
 
 export const XBOX_DFLT_WIDGETS: WidgetDef[] = [
 	{ type:WidgetType.StickCircle, x:-OUTER_X, y:OUTER_Y,
+		inputs:[iD(GIT.Axis,XBA.LSx),iD(GIT.Axis,XBA.LSy),iD(GIT.Button,XBB.LSB)],
 		ax:[XBA.LSx,XBA.LSy], bt:[XBB.LSB], val:[48] },
 	{ type:WidgetType.StickCircle, x:INNER_X, y:INNER_Y,
+		inputs:[iD(GIT.Axis,XBA.RSx),iD(GIT.Axis,XBA.RSy),iD(GIT.Button,XBB.RSB)],
 		ax:[XBA.RSx,XBA.RSy], bt:[XBB.RSB], val:[48] },
 	{ type:WidgetType.ButtonRingCircle, x:0, y:-48,
+		inputs:[iD(GIT.Button,XBB.Start),iD(GIT.Button,XBB.Back)],
 		ax:[], bt:[XBB.Start,XBB.Back], val:[32,12] },
 	{ type:WidgetType.DPad, x:-INNER_X, y:INNER_Y,
+		inputs:[iD(GIT.Button,XBB.DD),iD(GIT.Button,XBB.DR),
+			iD(GIT.Button,XBB.DD),iD(GIT.Button,XBB.DR)],
 		ax:[], bt:[XBB.DD,XBB.DR,XBB.DL,XBB.DU], val:[80,28] },
 	{ type:WidgetType.ButtonRingCircle, x:OUTER_X, y:OUTER_Y,
+		inputs:[iD(GIT.Button,XBB.B),iD(GIT.Button,XBB.A),
+			iD(GIT.Button,XBB.X),iD(GIT.Button,XBB.Y)],
 		ax:[], bt:[XBB.B,XBB.A,XBB.X,XBB.Y], val:[28,16] },
 	{ type:WidgetType.Trigger, x:-XBOX_DFLT_CONTAINER.w/2, y:0,
+		inputs:[iD(GIT.Button,XBB.LT),iD(GIT.Button,XBB.LB)],
 		ax:[], bt:[XBB.LT,XBB.LB], val:[96,256] },
 	{ type:WidgetType.Trigger, x:XBOX_DFLT_CONTAINER.w/2, y:0,
+		inputs:[iD(GIT.Button,XBB.RT),iD(GIT.Button,XBB.RB)],
 		ax:[], bt:[XBB.RT,XBB.RB], val:[96,256], fx:true },
 ]
 
@@ -40,18 +50,27 @@ export const XBOX_DFLT_CONTAINER_COMPACT: WidgetContainerDef = { w: 396, h: 80, 
 
 export const XBOX_DFLT_WIDGETS_COMPACT: WidgetDef[] = [
 	{ type:WidgetType.StickCircle, x:-OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
+		inputs:[iD(GIT.Axis,XBA.LSx),iD(GIT.Axis,XBA.LSy),iD(GIT.Button,XBB.LSB)],
 		ax:[XBA.LSx,XBA.LSy], bt:[XBB.LSB], val:[40] },
 	{ type:WidgetType.StickCircle, x:INNER_X_COMPACT, y:INNER_Y_COMPACT,
+		inputs:[iD(GIT.Axis,XBA.RSx),iD(GIT.Axis,XBA.RSy),iD(GIT.Button,XBB.RSB)],
 		ax:[XBA.RSx,XBA.RSy], bt:[XBB.RSB], val:[40] },
 	{ type:WidgetType.ButtonRingCircle, x:0, y:-34,
+		inputs:[iD(GIT.Button,XBB.Start),iD(GIT.Button,XBB.Back)],
 		ax:[], bt:[XBB.Start,XBB.Back], val:[92,10] },
 	{ type:WidgetType.DPad, x:-INNER_X_COMPACT, y:INNER_Y_COMPACT,
+		inputs:[iD(GIT.Button,XBB.DD),iD(GIT.Button,XBB.DR),
+			iD(GIT.Button,XBB.DD),iD(GIT.Button,XBB.DR)],
 		ax:[], bt:[XBB.DD,XBB.DR,XBB.DL,XBB.DU], val:[72,24] },
 	{ type:WidgetType.ButtonRingCircle, x:OUTER_X_COMPACT, y:OUTER_Y_COMPACT,
+		inputs:[iD(GIT.Button,XBB.B),iD(GIT.Button,XBB.A),
+			iD(GIT.Button,XBB.X),iD(GIT.Button,XBB.Y)],
 		ax:[], bt:[XBB.B,XBB.A,XBB.X,XBB.Y], val:[24,13] },
 	{ type:WidgetType.Trigger, x:-XBOX_DFLT_CONTAINER_COMPACT.w/2, y:0,
+		inputs:[iD(GIT.Button,XBB.LT),iD(GIT.Button,XBB.LB)],
 		ax:[], bt:[XBB.LT,XBB.LB], val:[64,256] },
 	{ type:WidgetType.Trigger, x:XBOX_DFLT_CONTAINER_COMPACT.w/2, y:0,
+		inputs:[iD(GIT.Button,XBB.RT),iD(GIT.Button,XBB.RB)],
 		ax:[], bt:[XBB.RT,XBB.RB], val:[64,256], fx:true },
 ]
 
@@ -75,7 +94,7 @@ const XBox: Component = () => {
 		XBOX_DFLT_WIDGETS_COMPACT : XBOX_DFLT_WIDGETS
 
 	return <>
-		<Gamepad padIndex={padIndex} onUpdate={setPad} />
+		<Gamepad padIndex={padIndex} pad={pad} onUpdate={setPad} />
 		<div
 			class={`flex flex-col`}
 			style={`

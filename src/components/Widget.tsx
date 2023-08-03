@@ -1,4 +1,5 @@
-import type { GamepadState } from '../types/gamepad'
+import type { GamepadState, GamepadInputDef } from '../types/gamepad'
+import { GamepadInputType } from '../types/gamepad'
 import type { JSXElement } from 'solid-js';
 import type { WidgetContainerDef } from './WidgetContainer'
 
@@ -34,17 +35,16 @@ export interface WidgetDef {
 	type: WidgetType;
 	x: number;
 	y: number;
-	rot?: number;
-	ax: number[];
-	bt: number[];
+	rot: number;
+	inputs: GamepadInputDef[];
 	val: number[];
-	fx?: boolean;
-	fy?: boolean;
+	fx: boolean;
+	fy: boolean;
 }
 
 const widgetdef_re =	/W([0-9]+)((?:(?:(?:x|y|a|b|v|r)(?:\-?[0-9]+))|(?:fx|fy))+)/g
 const widgetparam_re =	/(?:(x|y|a|b|v|r)(\-?[0-9]+))|(?:fx|fy)/g
-export const WIDGET_DFLT = { type:0, x:0, y:0, rot:0, ax:[], bt:[], val:[], fx:false, fy:false }
+export const WIDGET_DFLT = { type:0, x:0, y:0, rot:0, inputs:[], ax:[], bt:[], val:[], fx:false, fy:false }
 
 export const parseWidgetStr = (str:string):WidgetDef[] => {
 	const w_out:WidgetDef[] = []
@@ -60,8 +60,18 @@ export const parseWidgetStr = (str:string):WidgetDef[] => {
 						case 'x': w_new.x = Number.parseInt(p[2]); break;
 						case 'y': w_new.y = Number.parseInt(p[2]); break;
 						case 'r': w_new.rot = Number.parseInt(p[2]); break;
-						case 'a': w_new.ax.push(Number.parseInt(p[2])); break;
-						case 'b': w_new.bt.push(Number.parseInt(p[2])); break;
+						case 'a':
+							w_new.inputs.push({
+								type:GamepadInputType.Axis,
+								index:Number.parseInt(p[2])
+							});
+							break;
+						case 'b':
+							w_new.inputs.push({
+								type:GamepadInputType.Button,
+								index:Number.parseInt(p[2])
+							});
+							break;
 						case 'v': w_new.val.push(Number.parseInt(p[2])); break;
 					}
 				}
@@ -77,12 +87,12 @@ export const genWidgetStr = (widgets:WidgetDef[]):string => {
 		const x = w.x !== WIDGET_DFLT.x ? `x${w.x.toString()}` : ''
 		const y = w.y !== WIDGET_DFLT.y ? `y${w.y.toString()}` : ''
 		const r = w.rot !== undefined && w.rot !== WIDGET_DFLT.rot ? `r${w.rot.toString()}` : ''
-		const ax = w.ax.map(ax=>`a${ax.toString()}`).join('')
-		const bt = w.bt.map(bt=>`b${bt.toString()}`).join('')
+		const inputs = w.inputs.map(i=>
+			`${i.type===GamepadInputType.Axis?'a':'b'}${i.index.toString()}`).join('')
 		const val = w.val.map(val=>`v${val.toString()}`).join('')
 		const fx = w.fx ? 'fx' : ''
 		const fy = w.fy ? 'fy' : ''
-		return `W${w.type.toString()}${x}${y}${r}${ax}${bt}${val}${fx}${fy}`
+		return `W${w.type.toString()}${x}${y}${r}${inputs}${val}${fx}${fy}`
 	}).join('|')
 }
 

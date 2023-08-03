@@ -1,6 +1,7 @@
 import { clamp, rc2rad, rc2deg } from '../helpers/math'
 import type { JSXElement } from 'solid-js'
 import { Widget, WidgetProps } from './Widget'
+import { getInputMap } from '../types/gamepad'
 
 
 interface TriggerProps {
@@ -91,43 +92,46 @@ export const Trigger = (props: TriggerProps) => {
 	</svg>
 }
 
-export const WTrigger = (props: WidgetProps): JSXElement => <Widget
-	widget={props.def} container={props.container}>
-	<Trigger
-		trigger={clamp(props.pad?.axes[props.def.ax[0]]*(props.def.val[2]>=1?-1:1),0,1)
-			||props.pad?.buttonValue[props.def.bt[0]]||0}
-		bumper={props.pad?.buttonPress[props.def.bt[props.def.ax[0]===undefined?1:0]]
-			||false}
-		trigH={props.def.val[0]>=0?props.def.val[0]:64}
-		trigR={props.def.val[1]>=0?props.def.val[1]:256}
-		line={props.container.line||3}
-	/>	
-</Widget>
+export const WTrigger = (props: WidgetProps): JSXElement => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<Trigger
+			trigger={inputs()[0]?.bscalar||0}
+			bumper={inputs()[1]?.pressed||false}
+			trigH={props.def.val[0]>=0?props.def.val[0]:64}
+			trigR={props.def.val[1]>=0?props.def.val[1]:256}
+			line={props.container.line||3}
+		/>	
+	</Widget>
+}
 
-export const WTriggerCurved = (props: WidgetProps): JSXElement => <Widget
-	widget={props.def} container={props.container}>
-	<Trigger
-		trigger={clamp(props.pad?.axes[props.def.ax[0]]*(props.def.val[2]>=1?-1:1),0,1)
-			||props.pad?.buttonValue[props.def.bt[0]]||0}
-		bumper={props.pad?.buttonPress[props.def.bt[props.def.ax[0]===undefined?1:0]]
-			||false}
-		trigH={props.def.val[0]>=0?props.def.val[0]:64}
-		trigR={props.def.val[1]>=0?props.def.val[1]:256}
-		line={props.container.line||3}
-	/>	
-</Widget>
+export const WTriggerCurved = (props: WidgetProps): JSXElement => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<Trigger
+			trigger={inputs()[0]?.bscalar||0}
+			bumper={inputs()[1]?.pressed||false}
+			trigH={props.def.val[0]>=0?props.def.val[0]:64}
+			trigR={props.def.val[1]>=0?props.def.val[1]:256}
+			line={props.container.line||3}
+		/>	
+	</Widget>
+}
 
-export const WTriggerFlat = (props: WidgetProps): JSXElement => <Widget
-	widget={props.def} container={props.container}>
-	<Trigger
-		trigger={clamp(props.pad?.axes[props.def.ax[0]]*(props.def.val[2]>=1?-1:1),0,1)
-			||props.pad?.buttonValue[props.def.bt[0]]||0}
-		bumper={props.pad?.buttonPress[props.def.bt[props.def.ax[0]===undefined?1:0]]
-			||false}
-		trigH={props.def.val[0]>=0?props.def.val[0]:64}
-		trigR={0}
-		line={props.container.line||3}
-	/>	
-</Widget>
+export const WTriggerFlat = (props: WidgetProps): JSXElement => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<Trigger
+			trigger={inputs()[0]?.bscalar||0}
+			bumper={inputs()[1]?.pressed||false}
+			trigH={props.def.val[0]>=0?props.def.val[0]:64}
+			trigR={0}
+			line={props.container.line||3}
+		/>	
+	</Widget>
+}
 
 export default Trigger;

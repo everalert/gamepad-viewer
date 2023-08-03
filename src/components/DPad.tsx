@@ -1,5 +1,6 @@
 import type { JSXElement } from 'solid-js'
 import { Widget, WidgetProps } from './Widget'
+import { getInputMap } from '../types/gamepad'
 
 
 interface DPadProps {
@@ -115,17 +116,20 @@ ${props.style||''}`}
 	</svg>
 }
 
-export const WDPad = (props: WidgetProps): JSXElement => <Widget
-	widget={props.def} container={props.container}>
-	<DPad
-		down=		{props.pad?.buttonPress[props.def.bt[0]]||false}
-		right=		{props.pad?.buttonPress[props.def.bt[1]]||false}
-		left=		{props.pad?.buttonPress[props.def.bt[2]]||false}
-		up=			{props.pad?.buttonPress[props.def.bt[3]]||false}
-		length=		{props.def.val[0]||80}
-		thickness=	{props.def.val[1]||28}
-		line=		{props.container.line||3}
-	/>
-</Widget>
+export const WDPad = (props: WidgetProps): JSXElement => {
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	return <Widget
+		widget={props.def} container={props.container}>
+		<DPad
+			down=		{inputs()[0]?.pressed||false}
+			right=		{inputs()[1]?.pressed||false}
+			left=		{inputs()[2]?.pressed||false}
+			up=			{inputs()[3]?.pressed||false}
+			length=		{props.def.val[0]||80}
+			thickness=	{props.def.val[1]||28}
+			line=		{props.container.line||3}
+		/>
+	</Widget>
+}
 
 export default DPad;
