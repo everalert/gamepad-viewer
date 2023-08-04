@@ -1,4 +1,5 @@
 import type { Component } from 'solid-js'
+import { Show } from 'solid-js'
 import { deg2rad, ang, mag } from '../helpers/math'
 
 
@@ -8,6 +9,7 @@ interface ButtonInlineProps {
 	d1: number;
 	d2: number;
 	d3: number;
+	simple?: boolean;
 	angle: number;
 	w: number;
 	on: boolean;
@@ -31,14 +33,14 @@ export enum ButtonShape {
 export const ButtonInlineCircle = (props: ButtonInlineProps) => <>
 	<circle
 		class='opacity-50 fill-black stroke-black'
-		stroke-width={props.w*2}
+		stroke-width={props.simple?0:props.w*2}
 		cx={props.x}
 		cy={props.y}
 		r={props.d1}
 	/>
 	<circle
 		class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
-		stroke-width={props.w}
+		stroke-width={props.simple?0:props.w}
 		cx={props.x}
 		cy={props.y}
 		r={props.d1}
@@ -53,12 +55,12 @@ export const ButtonInlineTriEqu = (props: ButtonInlineProps) => {
 	return <>
 		<polygon
 			class='opacity-50 fill-black stroke-black'
-			stroke-width={props.w*2} stroke-linejoin='round'
+			stroke-width={props.simple?0:props.w*2} stroke-linejoin='round'
 			points={points()}
 		/>
 		<polygon
 			class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
-			stroke-width={props.w} stroke-linejoin='round'
+			stroke-width={props.simple?0:props.w} stroke-linejoin='round'
 			points={points()}
 		/>
 	</>
@@ -78,12 +80,12 @@ export const ButtonInlineTriIso = (props: ButtonInlineProps) => {
 	return <>
 		<polygon
 			class='opacity-50 fill-black stroke-black'
-			stroke-width={props.w*2} stroke-linejoin='round'
+			stroke-width={props.simple?0:props.w*2} stroke-linejoin='round'
 			points={points()}
 		/>
 		<polygon
 			class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
-			stroke-width={props.w} stroke-linejoin='round'
+			stroke-width={props.simple?0:props.w} stroke-linejoin='round'
 			points={points()}
 		/>
 	</>
@@ -108,12 +110,12 @@ export const ButtonInlineRect = (props: ButtonInlineProps) => {
 	return <>
 		<path
 			class='opacity-50 fill-black stroke-black'
-			stroke-width={props.w*2} stroke-linejoin='round'
+			stroke-width={props.simple?0:props.w*2} stroke-linejoin='round'
 			d={d()}
 		/>
 		<path
 			class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
-			stroke-width={props.w} stroke-linejoin='round'
+			stroke-width={props.simple?0:props.w} stroke-linejoin='round'
 			d={d()}
 		/>
 	</>
@@ -130,20 +132,21 @@ export const ButtonInlineN64C = (props: ButtonInlineProps) => {
 	return <>
 		<circle
 			class='opacity-50 fill-black stroke-black'
-			stroke-width={props.w*2}
+			stroke-width={props.simple?0:props.w*2}
 			cx={props.x}
 			cy={props.y}
 			r={props.d1}
 		/>
 		<circle
 			class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
-			stroke-width={props.w}
+			stroke-width={props.simple?0:props.w}
 			cx={props.x}
 			cy={props.y}
 			r={props.d1}
 		/>
 		<polygon
-			class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
+			class={`${props.simple?'stroke-gray-800':'stroke-gray-300'}
+				${props.on?'fill-white':'fill-transparent'}`}
 			stroke-width={props.w*N64C_TRISTROKE} stroke-linejoin='round'
 			points={points()}
 		/>

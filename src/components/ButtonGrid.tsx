@@ -12,6 +12,7 @@ interface ButtonGridProps {
 	rx: number;
 	ry: number;
 	rz: number;
+	simple?: boolean;
 	line: number;
 	on: boolean[];
 	shape: ButtonShape[];
@@ -48,6 +49,7 @@ export const ButtonGrid = (props: ButtonGridProps): JSXElement => {
 				d1={props.rx}
 				d2={props.ry}
 				d3={props.rz}
+				simple={props.simple}
 				angle={0}
 				on={on}
 				w={props.line}
@@ -69,7 +71,8 @@ export const WButtonGrid = (props: WidgetProps): JSXElement => {
 			rx		= { props.def.val[3] || 16 }
 			ry		= { props.def.val[4] || 16 }
 			rz		= { props.def.val[5] || 0 }
-			shape	= { props.def.val.slice(6) }
+			simple	= { props.def.val[6]>0 || false }
+			shape	= { props.def.val.slice(7) }
 			line	= { props.container.line || 3 }
 		/>
 	</Widget>
@@ -87,6 +90,7 @@ const WButtonGridShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
 			rx		= { props.p.def.val[3] || 16 }
 			ry		= { props.p.def.val[4] || 16 }
 			rz		= { props.p.def.val[5] || 0 }
+			simple	= { props.p.def.val[6]>0 || false }
 			shape	= { [props.s] }
 			line	= { props.p.container.line || 3 }
 		/>
