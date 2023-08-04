@@ -1,6 +1,7 @@
 import { GamepadInputType as GIT, inputDef } from '../types/gamepad'
 import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
 import { WidgetContainerDef, genContainerStr } from '../components/WidgetContainer'
+import { TriggerSimpleMode } from '../components/Trigger'
 import { XBoxButton as XBB } from './xbox'
 
 
@@ -61,7 +62,7 @@ export const MINIMAL_DFLT_WIDGETS: WidgetDef[] = [
 		y: STICK_Y,
 		rot: 90,
 		inputs: [inputDef(GIT.Axis,0)],
-		val: [132,0,2]
+		val: [132,0,TriggerSimpleMode.SplitThick]
 	},
 	{
 		type: WidgetType.Trigger,
@@ -69,7 +70,7 @@ export const MINIMAL_DFLT_WIDGETS: WidgetDef[] = [
 		y: STICK_Y,
 		rot: 90,
 		inputs: [inputDef(GIT.Axis,1)],
-		val: [132,0,2],
+		val: [132,0,TriggerSimpleMode.SplitThick],
 	},
 	{
 		type: WidgetType.Trigger,
@@ -77,7 +78,7 @@ export const MINIMAL_DFLT_WIDGETS: WidgetDef[] = [
 		y: STICK_Y,
 		rot: 90,
 		inputs: [inputDef(GIT.Axis,2)],
-		val: [132,0,2],
+		val: [132,0,TriggerSimpleMode.SplitThick],
 	},
 	{
 		type: WidgetType.Trigger,
@@ -85,7 +86,7 @@ export const MINIMAL_DFLT_WIDGETS: WidgetDef[] = [
 		y: STICK_Y,
 		rot: 90,
 		inputs: [inputDef(GIT.Axis,3)],
-		val: [132,0,2],
+		val: [132,0,TriggerSimpleMode.SplitThick],
 	},
 	{
 		type: WidgetType.ButtonGridRect,

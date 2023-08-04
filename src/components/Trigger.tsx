@@ -5,10 +5,12 @@ import { Widget, WidgetProps } from './Widget'
 import { getInputMap } from '../types/gamepad'
 
 
-enum TriggerSimpleMode {
+export enum TriggerSimpleMode {
 	None,
 	Full,
 	Split,
+	FullThick,
+	SplitThick,
 }
 
 
@@ -46,6 +48,7 @@ export const Trigger = (props: TriggerProps) => {
 		`M ${m()} ${m()+props.trigH/2-y(p1)} V ${m()+props.trigH/2-y(p2)}` :
 		`M ${m()+x(p1)} ${m()+props.trigH/2-y(p1)}
 		A ${props.trigR} ${props.trigR} 0  0 ${p2<p1?0:1}  ${m()+x(p2)} ${m()+props.trigH/2-y(p2)}`
+	const isThick = () => TriggerSimpleMode[props.simple].includes('Thick')
 
 	return <svg
 		version='1.1' xmlns='http://www.w3.org/2000/svg'
@@ -91,19 +94,19 @@ export const Trigger = (props: TriggerProps) => {
 			</svg>
 		</Show>
 
-		<Show when={props.simple===TriggerSimpleMode.Full||props.simple===TriggerSimpleMode.Split}>
+		<Show when={props.simple!==TriggerSimpleMode.None}>
 			<path
 				// background
 				d={path(-0.5,0.5)}	
 				class={`fill-transparent ${ props.bumper ?
 					'stroke-black/[0.75]' : 'stroke-black/[0.5]' }`}
-				stroke-width={props.line*4}
+				stroke-width={isThick() ? props.line*4 : props.line*2}
 			/>
 			<path
 				// foreground
 				d={path(props.simple===TriggerSimpleMode.Full?-0.5:0,trig())}	
 				class={`fill-transparent ${props.bumper?'stroke-white':'stroke-gray-300'}`}
-				stroke-width={props.line*4}
+				stroke-width={isThick() ? props.line*4 : props.line*2}
 			/>
 		</Show>
 	</svg>
