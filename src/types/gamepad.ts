@@ -26,9 +26,10 @@ export class GamepadInput {
 	index: number;
 	axis: number;
 	button: boolean;
+	free: boolean;
 
-	constructor(type:GamepadInputType, index:number, axis:number, button?:boolean) {
-		this.init(type, index, axis, button)	
+	constructor() {
+		this.reset()
 	}
 
 	init(type:GamepadInputType, index:number, axis:number, button?:boolean) {
@@ -36,6 +37,11 @@ export class GamepadInput {
 		this.index = index
 		this.axis = axis
 		this.button = button===true
+		this.free = false
+	}
+
+	reset() {
+		this.free = true
 	}
 	
 	get ascalar():number {
@@ -51,7 +57,7 @@ export class GamepadInput {
 	}
 }
 
-//FIXME: revisit using a pool/not constantly instantiating objects
+//FIXME: revisit using a pool/not constantly instantiating objects, for gamepadstate too
 //FIXME: also, need to store input maps and not regenerate them every widget redraw
 export type GamepadState = {
 	index: number;
@@ -63,4 +69,11 @@ export type GamepadState = {
 
 export const getInputMap = (inputs:GamepadInput[], defs:GamepadInputDef[]): GamepadInput[] => {
 	return defs?.map(d => inputs?.find(i => d.type===i.type && d.index===i.index)) || []
+}
+
+export const resetPool = (pool:GamepadInput[]) => pool.forEach(i => i.reset())
+
+export const resizePool = (pool:GamepadInput[], size:number) => {
+	while (pool.length < size) pool.push(new GamepadInput())
+	while (pool.length > size) pool.pop()
 }

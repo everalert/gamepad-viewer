@@ -1,7 +1,7 @@
 import type { Setter, Accessor } from 'solid-js'
 import { onMount, onCleanup } from 'solid-js'
 import type { GamepadState } from '../types/gamepad'
-import { GamepadInput, GamepadInputType } from '../types/gamepad'
+import { GamepadInput, GamepadInputType, resetPool, resizePool } from '../types/gamepad'
 
 
 interface GamepadProps {
@@ -20,12 +20,12 @@ export const Gamepad = ({ onUpdate, pad, padIndex }: GamepadProps) => {
 				const gamepad = gamepads[padIndex]
 				const state: GamepadState = pad() ?
 					{...pad()} : { index:padIndex, inputs:[] }
-				state.inputs = [
-					...gamepad.axes.map((a,i) => 
-						new GamepadInput(GamepadInputType.Axis,i,a)),
-					...gamepad.buttons.map((b,i) => 
-						new GamepadInput(GamepadInputType.Button,i,b.value,b.pressed))
-				]
+				resetPool(state.inputs)
+				resizePool(state.inputs, gamepad.axes.length+gamepad.buttons.length)
+				gamepad.axes.forEach((a,i) => state.inputs.find(p => p.free)
+					.init(GamepadInputType.Axis,i,a))
+				gamepad.buttons.forEach((b,i) => state.inputs.find(p => p.free)
+					.init(GamepadInputType.Button,i,b.value,b.pressed))
 				onUpdate(state)
 			}
 			
