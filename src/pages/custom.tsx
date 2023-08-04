@@ -9,7 +9,7 @@ import { WidgetContainer, WidgetContainerDef, parseContainerStr, genContainerStr
 import { TextContainer } from '../components/TextContainer'
 import { A } from '@solidjs/router';
 import { filterParams } from '../helpers/formatting'
-import { XBOX_DFLT_CONTAINER, XBOX_DFLT_WIDGETS } from './xbox'
+import { XBOX_DFLT_CONTAINER, XBOX_DFLT_WIDGETS } from '../types/xbox'
 import { AddIcon, DeleteIcon, ResetIcon, ConfirmIcon } from '../components/icons'
 import { DisplayContainer } from '../components/DisplayContainer'
 

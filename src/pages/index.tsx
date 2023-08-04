@@ -2,9 +2,9 @@ import type { Component } from 'solid-js';
 import { createSignal, For } from 'solid-js';
 import { A } from '@solidjs/router';
 import { filterParams } from '../helpers/formatting'
-import { XBOX_DFLT_STR, XBOX_DFLT_STR_COMPACT } from './xbox'
-import { PSX_DFLT_STR, PSX_DFLT_STR_COMPACT } from './psx'
-import { WIIU_DFLT_STR, WIIU_DFLT_STR_COMPACT } from './wiiu'
+import { XBOX_DFLT_STR, XBOX_DFLT_STR_COMPACT } from '../types/xbox'
+import { PSX_DFLT_STR, PSX_DFLT_STR_COMPACT } from '../types/psx'
+import { WIIU_DFLT_STR, WIIU_DFLT_STR_COMPACT } from '../types/wiiu'
 import { EditIcon } from '../components/icons'
 
 
