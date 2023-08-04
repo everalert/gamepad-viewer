@@ -34,12 +34,12 @@ const Custom: Component = () => {
 		<DisplayContainer container={container()}>
 			{ NOTEXT || <TextContainer
 				widgets={widgets()} pad={pad()}
-				class={`${!MODE_EDIT||'outline outline-[4px] outline-gray-950/[0.85]'}`}/>
+				class={`${!MODE_EDIT||'outline outline-[4px] outline-gray-800'}`}/>
 			}
 
 			{ NOIMAGE || <WidgetContainer
 				def={container()} widgets={widgets()} pad={pad()}
-				class={`${!MODE_EDIT||'outline outline-[4px] outline-gray-950/[0.85]'}`}
+				class={`${!MODE_EDIT||'outline outline-[4px] outline-gray-800'}`}
 			/> }
 
 			{ !MODE_EDIT || <div class='flex flex-col items-baseline'>
