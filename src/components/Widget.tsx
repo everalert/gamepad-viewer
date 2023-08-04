@@ -87,13 +87,13 @@ export const parseWidgetStr = (str:string):WidgetDef[] => {
 
 export const genWidgetStr = (widgets:WidgetDef[]):string => {
 	return widgets.map(w => {
-		const x = w.x !== WIDGET_DFLT.x ? `x${w.x.toString()}` : ''
-		const y = w.y !== WIDGET_DFLT.y ? `y${w.y.toString()}` : ''
+		const x = w.x !== WIDGET_DFLT.x ? `x${Math.round(w.x).toString()}` : ''
+		const y = w.y !== WIDGET_DFLT.y ? `y${Math.round(w.y).toString()}` : ''
 		const r = w.rot !== undefined && w.rot !== WIDGET_DFLT.rot ?
-			`r${w.rot.toString()}` : ''
+			`r${Math.round(w.rot).toString()}` : ''
 		const inputs = w.inputs.map(i=>
-			`${i.type===GamepadInputType.Axis?'a':'b'}${i.index.toString()}`).join('')
-		const val = w.val.map(val=>`v${val.toString()}`).join('')
+			`${i.type===GamepadInputType.Axis?'a':'b'}${Math.round(i.index).toString()}`).join('')
+		const val = w.val.map(val=>`v${Math.round(val).toString()}`).join('')
 		const fx = w.fx ? 'fx' : ''
 		const fy = w.fy ? 'fy' : ''
 		const hide = w.hide ? 'h' : ''

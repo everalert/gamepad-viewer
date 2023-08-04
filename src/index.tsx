@@ -7,6 +7,7 @@ import IndexPage from './pages/index'
 import XBoxPage from './pages/xbox'
 import PSxPage from './pages/psx'
 import WiiUPage from './pages/wiiu'
+import RacingPage from './pages/racing'
 import MinimalPage from './pages/minimal'
 import CustomPage from './pages/custom'
 
@@ -28,6 +29,7 @@ render(
 				<Route path='/xbox' component={XBoxPage} />
 				<Route path='/psx' component={PSxPage} />
 				<Route path='/wiiu' component={WiiUPage} />
+				<Route path='/racing' component={RacingPage} />
 				<Route path='/minimal' component={MinimalPage} />
 				<Route path='/custom' component={CustomPage} />
 				<Route path='/custom/edit' component={CustomPage} />
