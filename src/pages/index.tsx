@@ -5,27 +5,35 @@ import { filterParams } from '../helpers/formatting'
 import { XBOX_DFLT_STR, XBOX_DFLT_STR_COMPACT } from '../types/xbox'
 import { PSX_DFLT_STR, PSX_DFLT_STR_COMPACT } from '../types/psx'
 import { WIIU_DFLT_STR, WIIU_DFLT_STR_COMPACT } from '../types/wiiu'
+import { MINIMAL_DFLT_STR } from '../types/minimal'
 import { EditIcon } from '../components/icons'
 
 
 type PageDef = {
 	name:string;
 	layout:string;
-	compact:string;
+	compact?:string;
 }
 
 const PAGES: PageDef[] = [
-	{ name:'xbox',
+	{
+		name:'xbox',
 		layout:XBOX_DFLT_STR,
 		compact:XBOX_DFLT_STR_COMPACT,
 	},
-	{ name:'psx',
+	{
+		name:'psx',
 		layout:PSX_DFLT_STR,
 		compact:PSX_DFLT_STR_COMPACT,
 	},
-	{ name:'wiiu',
+	{
+		name:'wiiu',
 		layout:WIIU_DFLT_STR,
 		compact:WIIU_DFLT_STR_COMPACT,
+	},
+	{
+		name:'minimal',
+		layout:MINIMAL_DFLT_STR,
 	},
 ]
 
@@ -71,7 +79,8 @@ const Index: Component = () => {
 						class='w-5 h-5 m-1 text-blue-800 rounded
 						hover:text-blue-400'
 						href={`/custom/edit${filterParams(paramstr(),
-						`?settings=${params()['compact']===true?p.compact:p.layout}`)}`}
+						`?settings=${ p.compact && params()['compact']===true ?
+							p.compact : p.layout }`)}`}
 						>
 						<EditIcon />
 					</A>
