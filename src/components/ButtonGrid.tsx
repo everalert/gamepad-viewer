@@ -1,5 +1,5 @@
 import type { JSXElement } from 'solid-js'
-import { For } from 'solid-js'
+import { Index } from 'solid-js'
 import { Widget, WidgetProps } from './Widget'
 import { ButtonShape, ButtonInlineMap } from './ButtonInline'
 import { getInputMap } from '../types/gamepad'
@@ -41,20 +41,20 @@ export const ButtonGrid = (props: ButtonGridProps): JSXElement => {
 			margin-top:-${h()/2}px;
 			${props.style||''}`}
 		>
-		<For each={props.on}>{(on,i) => {
-			const Btn = shape(i())
+		<Index each={props.on}>{(on,i) => {
+			const Btn = shape(i)
 			return Btn ? <Btn
-				x={mi()+props.stepx*(i()%props.cols)}
-				y={mi()+props.stepy*(Math.floor(i()/props.cols))}
+				x={mi()+props.stepx*(i%props.cols)}
+				y={mi()+props.stepy*(Math.floor(i/props.cols))}
 				d1={props.rx}
 				d2={props.ry}
 				d3={props.rz}
 				simple={props.simple}
 				angle={0}
-				on={on}
+				on={on()}
 				w={props.line}
 			/> : null
-		}}</For>
+		}}</Index>
 	</svg>
 }
 

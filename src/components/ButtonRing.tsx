@@ -1,5 +1,5 @@
 import type { JSXElement } from 'solid-js'
-import { For } from 'solid-js'
+import { Index } from 'solid-js'
 import { Widget, WidgetProps } from './Widget'
 import { deg2rad } from '../helpers/math'
 import { ButtonShape, ButtonInlineMap } from './ButtonInline'
@@ -39,20 +39,20 @@ export const ButtonRing = (props: ButtonRingProps): JSXElement => {
 			margin-top:-${w()/2}px;
 			${props.style||''}`}
 		>
-		<For each={props.on}>{(on,i) => {
-			const Btn = shape(i())
+		<Index each={props.on}>{(on,i) => {
+			const Btn = shape(i)
 			return Btn ? <Btn
-				x={w()/2+props.r*Math.cos(angle()*i())*lenMult()}
-				y={w()/2+props.r*Math.sin(angle()*i())*lenMult()}
+				x={w()/2+props.r*Math.cos(angle()*i)*lenMult()}
+				y={w()/2+props.r*Math.sin(angle()*i)*lenMult()}
 				d1={props.rx}
 				d2={props.ry}
 				d3={props.rz}
 				simple={props.simple}
-				angle={props.rotate?(360/props.on.length)*i():0}
-				on={on}
+				angle={props.rotate?(360/props.on.length)*i:0}
+				on={on()}
 				w={props.line}
 			/> : null
-		}}</For>
+		}}</Index>
 	</svg>
 }
 
