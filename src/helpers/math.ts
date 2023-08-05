@@ -8,6 +8,10 @@ export const rad2deg = (r:number) => r * 180 / Math.PI
 // x/y-axis conversion
 export const ang = (x:number, y:number) => rad2deg(Math.atan2(y, x))
 export const mag = (x:number, y:number) => Math.sqrt(x**2 + y**2)
+export const rotVec2x = (x:number, y:number, ang:number) =>
+	mag(x,y)*Math.cos(deg2rad(ang)+Math.atan2(x,y))
+export const rotVec2y = (x:number, y:number, ang:number) =>
+	mag(x,y)*Math.sin(deg2rad(ang)+Math.atan2(x,y))
 
 
 // triangles

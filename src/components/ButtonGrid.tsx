@@ -109,5 +109,8 @@ export const WButtonGridTriangle = (props: WidgetProps): JSXElement =>
 export const WButtonGridN64C = (props: WidgetProps): JSXElement => 
 	<WButtonGridShape p={props} s={ButtonShape.N64C} />
 
+export const WButtonGridGCXY = (props: WidgetProps): JSXElement => 
+	<WButtonGridShape p={props} s={ButtonShape.GCXY} />
+
 
 export default ButtonGrid;

@@ -1,6 +1,5 @@
 import type { Component } from 'solid-js'
-import { Show } from 'solid-js'
-import { deg2rad, ang, mag } from '../helpers/math'
+import { deg2rad, ang, mag, rotVec2x, rotVec2y } from '../helpers/math'
 
 
 interface ButtonInlineProps {
@@ -25,8 +24,7 @@ export enum ButtonShape {
 	Rect	= 4,
 	//Trapezium,
 	N64C	= 5,
-	//GCXY,
-	//GCZ,
+	GCXY	= 6,
 }
 
 
@@ -153,6 +151,38 @@ export const ButtonInlineN64C = (props: ButtonInlineProps) => {
 	</>
 }
 
+export const ButtonInlineGCXY = (props: ButtonInlineProps) => {
+	// d1 = main radius
+	// d2 = angle spread
+	// d3 = thickness (i.e. cap radius)
+	const x = () => props.x+props.d1*Math.cos(deg2rad(180+props.angle))
+	const y = () => props.y+props.d1*Math.sin(deg2rad(180+props.angle))
+	const rv2x = (x:number, y:number) => rotVec2x(x,y,90+props.angle)
+	const rv2y = (x:number, y:number) => rotVec2y(x,y,90+props.angle)
+	const ox = () => -(props.d1+props.d3)+(props.d1+props.d3)*(1-Math.cos(deg2rad(props.d2/2)))
+	const oy = () => -(props.d1+props.d3)+(props.d1+props.d3)*(1-Math.sin(deg2rad(props.d2/2)))
+	const ix = () => -(props.d1-props.d3)+(props.d1-props.d3)*(1-Math.cos(deg2rad(props.d2/2)))
+	const iy = () => -(props.d1-props.d3)+(props.d1-props.d3)*(1-Math.sin(deg2rad(props.d2/2)))
+	const d = () => `M ${x()+rv2x(ox(),oy())} ${y()+rv2y(ox(),oy())}
+	A ${props.d1+props.d3} ${props.d1+props.d3} 0 0 1 ${x()+rv2x(ox(),-oy())} ${y()+rv2y(ox(),-oy())}
+	A ${props.d3} ${props.d3} 0 0 1 ${x()+rv2x(ix(),-iy())} ${y()+rv2y(ix(),-iy())}
+	A ${props.d1-props.d3} ${props.d1-props.d3} 0 0 0 ${x()+rv2x(ix(),iy())} ${y()+rv2y(ix(),iy())}
+	A ${props.d3} ${props.d3} 0 0 1 ${x()+rv2x(ox(),oy())} ${y()+rv2y(ox(),oy())}
+	Z`
+	return <>
+		<path
+			class='opacity-50 fill-black stroke-black'
+			stroke-width={props.simple?0:props.w*2} stroke-linejoin='round'
+			d={d()}
+		/>
+		<path
+			class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
+			stroke-width={props.simple?0:props.w} stroke-linejoin='round'
+			d={d()}
+		/>
+	</>
+}
+
 
 export const ButtonInlineMap:{[key:number]:Component<ButtonInlineProps>} = {
 	[ButtonShape.Circle]: ButtonInlineCircle,
@@ -160,5 +190,6 @@ export const ButtonInlineMap:{[key:number]:Component<ButtonInlineProps>} = {
 	[ButtonShape.TriEqu]: ButtonInlineTriEqu,
 	[ButtonShape.Rect]: ButtonInlineRect,
 	[ButtonShape.N64C]: ButtonInlineN64C,
+	[ButtonShape.GCXY]: ButtonInlineGCXY,
 }
 

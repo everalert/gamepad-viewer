@@ -105,5 +105,8 @@ export const WButtonRingTriangle = (props: WidgetProps): JSXElement =>
 export const WButtonRingN64C = (props: WidgetProps): JSXElement => 
 	<WButtonRingShape p={props} s={ButtonShape.N64C} />
 
+export const WButtonRingGCXY = (props: WidgetProps): JSXElement => 
+	<WButtonRingShape p={props} s={ButtonShape.GCXY} />
+
 
 export default ButtonRing;
