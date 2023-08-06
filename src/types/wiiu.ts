@@ -85,8 +85,8 @@ export const WIIU_DFLT_WIDGETS: WidgetDef[] = [
 		x: -INNER_X,
 		y: INNER_Y,
 		inputs: [
-			inputDef(GIT.Button,WUB.DD),
 			inputDef(GIT.Button,WUB.DR),
+			inputDef(GIT.Button,WUB.DD),
 			inputDef(GIT.Button,WUB.DL),
 			inputDef(GIT.Button,WUB.DU)
 		],
@@ -175,8 +175,8 @@ export const WIIU_DFLT_WIDGETS_COMPACT: WidgetDef[] = [
 		x: -INNER_X_COMPACT,
 		y: INNER_Y_COMPACT,
 		inputs: [
-			inputDef(GIT.Button,WUB.DD),
 			inputDef(GIT.Button,WUB.DR),
+			inputDef(GIT.Button,WUB.DD),
 			inputDef(GIT.Button,WUB.DL),
 			inputDef(GIT.Button,WUB.DU)
 		],

@@ -5,6 +5,8 @@ import { XBoxAxis as XBA, XBoxButton as XBB } from './xbox'
 import { ButtonShape } from '../components'
 
 
+// TODO: confirm label-index combos are correct, convert to wiiu refs
+
 const INNER_X = 56
 const INNER_Y = 24
 const OUTER_X = 160
@@ -52,8 +54,8 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		x: -INNER_X,
 		y: INNER_Y,
 		inputs: [
-			inputDef(GIT.Button,XBB.DD),
 			inputDef(GIT.Button,XBB.DR),
+			inputDef(GIT.Button,XBB.DD),
 			inputDef(GIT.Button,XBB.DL),
 			inputDef(GIT.Button,XBB.DU)
 		],

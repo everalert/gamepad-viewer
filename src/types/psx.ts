@@ -93,8 +93,8 @@ export const PSX_DFLT_WIDGETS: WidgetDef[] = [
 		x: -OUTER_X,
 		y: OUTER_Y,
 		inputs: [
-			inputDef(GIT.Button,PSB.DD),
 			inputDef(GIT.Button,PSB.DR),
+			inputDef(GIT.Button,PSB.DD),
 			inputDef(GIT.Button,PSB.DL),
 			inputDef(GIT.Button,PSB.DU)
 		],
@@ -182,8 +182,8 @@ export const PSX_DFLT_WIDGETS_COMPACT: WidgetDef[] = [
 		x : -OUTER_X_COMPACT,
 		y : OUTER_Y_COMPACT,
 		inputs: [
-			inputDef(GIT.Button,PSB.DD),
 			inputDef(GIT.Button,PSB.DR),
+			inputDef(GIT.Button,PSB.DD),
 			inputDef(GIT.Button,PSB.DL),
 			inputDef(GIT.Button,PSB.DU)
 		],

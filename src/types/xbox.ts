@@ -86,8 +86,8 @@ export const XBOX_DFLT_WIDGETS: WidgetDef[] = [
 		x: -INNER_X,
 		y: INNER_Y,
 		inputs: [
-			inputDef(GIT.Button,XBB.DD),
 			inputDef(GIT.Button,XBB.DR),
+			inputDef(GIT.Button,XBB.DD),
 			inputDef(GIT.Button,XBB.DL),
 			inputDef(GIT.Button,XBB.DU)
 		],
@@ -176,8 +176,8 @@ export const XBOX_DFLT_WIDGETS_COMPACT: WidgetDef[] = [
 		x: -INNER_X_COMPACT,
 		y: INNER_Y_COMPACT,
 		inputs: [
-			inputDef(GIT.Button,XBB.DD),
 			inputDef(GIT.Button,XBB.DR),
+			inputDef(GIT.Button,XBB.DD),
 			inputDef(GIT.Button,XBB.DL),
 			inputDef(GIT.Button,XBB.DU)
 		],
