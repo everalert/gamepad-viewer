@@ -1,14 +1,12 @@
 import { GamepadInputType as GIT, inputDef } from '../types/gamepad'
 import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
 import { WidgetContainerDef, genContainerStr } from '../components/WidgetContainer'
-import { XBoxAxis as XBA, XBoxButton as XBB } from './xbox'
+import { WiiUAxis as WUA, WiiUButton as WUB } from './wiiu'
 import { ButtonShape } from '../components'
 
 
-// TODO: confirm label-index combos are correct, convert to wiiu refs
-
 const INNER_X = 56
-const INNER_Y = 24
+const INNER_Y = 28
 const OUTER_X = 160
 const OUTER_Y = -24
 
@@ -25,9 +23,9 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		x: -OUTER_X,
 		y: OUTER_Y,
 		inputs: [
-			inputDef(GIT.Axis,XBA.LSx),
-			inputDef(GIT.Axis,XBA.LSy),
-			inputDef(GIT.Button,XBB.LSB)
+			inputDef(GIT.Axis,WUA.LSx),
+			inputDef(GIT.Axis,WUA.LSy),
+			inputDef(GIT.Button,WUB.LSB)
 		],
 		val: [48]
 	},
@@ -36,9 +34,9 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		x: INNER_X,
 		y: INNER_Y,
 		inputs: [
-			inputDef(GIT.Axis,XBA.RSx),
-			inputDef(GIT.Axis,XBA.RSy),
-			inputDef(GIT.Button,XBB.RSB)
+			inputDef(GIT.Axis,WUA.RSx),
+			inputDef(GIT.Axis,WUA.RSy),
+			inputDef(GIT.Button,WUB.RSB)
 		],
 		val: [40]
 	},
@@ -46,18 +44,18 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		type: WidgetType.Button,
 		x: 0,
 		y: -36,
-		inputs: [inputDef(GIT.Button,XBB.Start)],
-		val: [ButtonShape.Circle,8]
+		inputs: [inputDef(GIT.Button,WUB.Start)],
+		val: [ButtonShape.Circle,10]
 	},
 	{
 		type: WidgetType.DPad,
 		x: -INNER_X,
 		y: INNER_Y,
 		inputs: [
-			inputDef(GIT.Button,XBB.DR),
-			inputDef(GIT.Button,XBB.DD),
-			inputDef(GIT.Button,XBB.DL),
-			inputDef(GIT.Button,XBB.DU)
+			inputDef(GIT.Button,WUB.DR),
+			inputDef(GIT.Button,WUB.DD),
+			inputDef(GIT.Button,WUB.DL),
+			inputDef(GIT.Button,WUB.DU)
 		],
 		val: [72,24]
 	},
@@ -65,8 +63,8 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		type: WidgetType.Button,
 		x: OUTER_X,
 		y: OUTER_Y,
-		inputs: [inputDef(GIT.Button,XBB.B)],
-		val: [ButtonShape.Circle,20]
+		inputs: [inputDef(GIT.Button,WUB.A)],
+		val: [ButtonShape.Circle,24]
 	},
 	{
 		type: WidgetType.ButtonRing,
@@ -75,9 +73,9 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		rot: -22,
 		inputs: [
 			inputDef(GIT.Button,0),
-			inputDef(GIT.Button,XBB.A),
+			inputDef(GIT.Button,WUB.B),
 		],
-		val: [42,12,0,0,0,0,ButtonShape.NONE,ButtonShape.Circle]
+		val: [48,14,0,0,0,0,ButtonShape.NONE,ButtonShape.Circle]
 	},
 	{
 		type: WidgetType.ButtonRing,
@@ -85,18 +83,18 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		y: OUTER_Y,
 		rot: -6,
 		inputs: [
-			inputDef(GIT.Button,XBB.Y),
+			inputDef(GIT.Button,WUB.X),
 			inputDef(GIT.Button,0),
 			inputDef(GIT.Button,0),
-			inputDef(GIT.Button,XBB.X)
+			inputDef(GIT.Button,WUB.Y)
 		],
-		val: [40,40,28,8,1,0,ButtonShape.GCXY,ButtonShape.NONE,ButtonShape.NONE]
+		val: [44,44,28,10,1,0,ButtonShape.GCXY,ButtonShape.NONE,ButtonShape.NONE]
 	},
 	{
 		type: WidgetType.Button,
 		x: GCN_DFLT_CONTAINER.w/2-30,
 		y: 44,
-		inputs: [inputDef(GIT.Button,XBB.Back)],
+		inputs: [inputDef(GIT.Button,WUB.Select)],
 		val: [ButtonShape.Rect,12,6,5,0,0]
 	},
 	{
@@ -104,8 +102,8 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		x: -GCN_DFLT_CONTAINER.w/2,
 		y: 0,
 		inputs: [
-			inputDef(GIT.Button,XBB.LT),
-			inputDef(GIT.Button,XBB.LB)
+			inputDef(GIT.Button,WUB.ZL),
+			inputDef(GIT.Button,WUB.L)
 		],
 		val: [96,256]
 	},
@@ -114,8 +112,8 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		x: GCN_DFLT_CONTAINER.w/2,
 		y: 0,
 		inputs: [
-			inputDef(GIT.Button,XBB.RT),
-			inputDef(GIT.Button,XBB.RB)
+			inputDef(GIT.Button,WUB.ZR),
+			inputDef(GIT.Button,WUB.R)
 		],
 		val: [96,256],
 		fx: true
