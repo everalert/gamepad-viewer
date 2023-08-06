@@ -4,9 +4,11 @@ import { WidgetType, WidgetDef, WidgetProps, Widget} from '../components/Widget'
 import type { GamepadState } from '../types/gamepad'
 import { 
 	WStick, WStickCircle, WStickSquare, WStickGC, WStickN64, WStickHori, WStickRound,
-	WButtonRing, WButtonRingCircle, WButtonRingRect, WButtonRingTriangle, WButtonRingN64C, WButtonRingGCXY,
-	WButtonGrid, WButtonGridCircle, WButtonGridRect, WButtonGridTriangle, WButtonGridN64C, WButtonGridGCXY,
-	WDPad, WTrigger, WTriggerCurved, WTriggerFlat,
+	WButtonRing, WButtonRingCircle, WButtonRingRect, WButtonRingTriangle,
+	WButtonRingN64C, WButtonRingGCXY,
+	WButtonGrid, WButtonGridCircle, WButtonGridRect, WButtonGridTriangle,
+	WButtonGridN64C, WButtonGridGCXY,
+	WButton, WDPad, WTrigger, WTriggerCurved, WTriggerFlat,
 } from './'
 
 
@@ -75,6 +77,7 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
 				{ widgetMatch(w, WidgetType.StickHori,			WStickHori) }
 				{ widgetMatch(w, WidgetType.StickRound,			WStickRound) }
 				{ widgetMatch(w, WidgetType.Stick,				WStick) }
+				{ widgetMatch(w, WidgetType.Button,				WButton) }
 				{ widgetMatch(w, WidgetType.ButtonRing,			WButtonRing) }
 				{ widgetMatch(w, WidgetType.ButtonRingCircle,	WButtonRingCircle) }
 				{ widgetMatch(w, WidgetType.ButtonRingRect,		WButtonRingRect) }

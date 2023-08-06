@@ -2,7 +2,7 @@ import { GamepadInputType as GIT, inputDef } from '../types/gamepad'
 import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
 import { WidgetContainerDef, genContainerStr } from '../components/WidgetContainer'
 import { XBoxAxis as XBA, XBoxButton as XBB } from './xbox'
-import { ButtonShape } from '../components/ButtonInline'
+import { ButtonShape } from '../components'
 
 
 const INNER_X = 56
@@ -41,11 +41,11 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		val: [40]
 	},
 	{
-		type: WidgetType.ButtonRingCircle,
+		type: WidgetType.Button,
 		x: 0,
 		y: -36,
 		inputs: [inputDef(GIT.Button,XBB.Start)],
-		val: [32,8]
+		val: [ButtonShape.Circle,8]
 	},
 	{
 		type: WidgetType.DPad,
@@ -60,11 +60,11 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		val: [72,24]
 	},
 	{
-		type: WidgetType.ButtonRingCircle,
+		type: WidgetType.Button,
 		x: OUTER_X,
 		y: OUTER_Y,
 		inputs: [inputDef(GIT.Button,XBB.B)],
-		val: [0,20]
+		val: [ButtonShape.Circle,20]
 	},
 	{
 		type: WidgetType.ButtonRing,
@@ -91,11 +91,11 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		val: [40,40,28,8,1,0,ButtonShape.GCXY,ButtonShape.NONE,ButtonShape.NONE]
 	},
 	{
-		type: WidgetType.ButtonRingRect,
+		type: WidgetType.Button,
 		x: GCN_DFLT_CONTAINER.w/2-30,
 		y: 44,
 		inputs: [inputDef(GIT.Button,XBB.Back)],
-		val: [0,12,6,5,0,0]
+		val: [ButtonShape.Rect,12,6,5,0,0]
 	},
 	{
 		type: WidgetType.Trigger,

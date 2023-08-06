@@ -1,8 +1,8 @@
 import type { JSXElement } from 'solid-js'
 import { Index } from 'solid-js'
+import { ButtonShape, ButtonInlineMap } from './'
 import { Widget, WidgetProps } from './Widget'
 import { deg2rad } from '../helpers/math'
-import { ButtonShape, ButtonInlineMap } from './ButtonInline'
 import { getInputMap } from '../types/gamepad'
 
 
@@ -26,9 +26,6 @@ export const ButtonRing = (props: ButtonRingProps): JSXElement => {
 	const m = () => props.line*2
 	const w = () => (m()+props.r+props.rx)*2
 	const lenMult = () => props.on.length!==1?1:0
-	const shape = (i:number) =>
-		props.shape.length>0 && props.shape[i%props.shape.length] in ButtonInlineMap ?
-		ButtonInlineMap[props.shape[i%props.shape.length]] : ButtonInlineMap[0]
 
 	return <svg
 		version='1.1' xmlns='http://www.w3.org/2000/svg'
@@ -40,7 +37,7 @@ export const ButtonRing = (props: ButtonRingProps): JSXElement => {
 			${props.style||''}`}
 		>
 		<Index each={props.on}>{(on,i) => {
-			const Btn = shape(i)
+			const Btn = ButtonInlineMap[props.shape[i%props.shape.length]]
 			return Btn ? <Btn
 				x={w()/2+props.r*Math.cos(angle()*i)*lenMult()}
 				y={w()/2+props.r*Math.sin(angle()*i)*lenMult()}

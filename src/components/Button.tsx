@@ -1,5 +1,7 @@
 import type { Component } from 'solid-js'
+import { Widget, WidgetProps } from './Widget'
 import { deg2rad, ang, mag, rotVec2x, rotVec2y } from '../helpers/math'
+import { getInputMap } from '../types/gamepad'
 
 
 interface ButtonInlineProps {
@@ -193,3 +195,33 @@ export const ButtonInlineMap:{[key:number]:Component<ButtonInlineProps>} = {
 	[ButtonShape.GCXY]: ButtonInlineGCXY,
 }
 
+
+export const WButton = (props: WidgetProps) => {
+	const d1 = () => props.def.val[1] || 16
+	const d2 = () => props.def.val[2] || 16
+	const m = () => props.container.line*2
+	const w = () => (m()+Math.max(d1(),d2())*2)*2
+	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const shape = () => ButtonInlineMap[props.def.val[0]] || ButtonInlineMap[ButtonShape.Circle]
+	const Btn = shape()
+	return <Widget
+		widget={props.def} container={props.container}>
+		<svg version='1.1' xmlns='http://www.w3.org/2000/svg'
+			width={w()}
+			height={w()}
+			style={`margin-left:-${w()/2}px; margin-top:-${w()/2}px;`}
+			>
+			<Btn
+				x		= { w()/2 }
+				y		= { w()/2 }
+				on		= { inputs()[0]?.pressed || false }
+				d1		= { d1() }
+				d2		= { d2() }
+				d3		= { props.def.val[3] || 0 }
+				angle	= { props.def.val[4] || 0 }
+				simple	= { props.def.val[5]>0 || false }
+				w		= { props.container.line || 3 }
+			/>
+		</svg>
+	</Widget>
+}
