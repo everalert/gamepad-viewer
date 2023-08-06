@@ -5,6 +5,7 @@ import { filterParams } from '../helpers/formatting'
 import { XBOX_DFLT_STR, XBOX_DFLT_STR_COMPACT } from '../types/xbox'
 import { PSX_DFLT_STR, PSX_DFLT_STR_COMPACT } from '../types/psx'
 import { WIIU_DFLT_STR, WIIU_DFLT_STR_COMPACT } from '../types/wiiu'
+import { GCN_DFLT_STR } from '../types/gcn'
 import { MINIMAL_DFLT_STR } from '../types/minimal'
 import { RACING_DFLT_STR } from '../types/racing'
 import { EditIcon } from '../components/icons'
@@ -31,6 +32,10 @@ const PAGES: PageDef[] = [
 		name:'wiiu',
 		layout:WIIU_DFLT_STR,
 		compact:WIIU_DFLT_STR_COMPACT,
+	},
+	{
+		name:'gcn',
+		layout:GCN_DFLT_STR,
 	},
 	{
 		name:'racing',
