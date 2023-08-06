@@ -1,23 +1,21 @@
 import type { Component } from 'solid-js';
+import type { GamepadState } from '../types/gamepad'
+import type { WidgetContainerDef } from '../components/WidgetContainer'
+import DisplayContainer from '../components/DisplayContainer'
 import { createSignal } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
-import type { GamepadState } from '../types/gamepad'
 import { Gamepad } from '../components'
 import { WidgetDef } from '../components/Widget'
-import { WidgetContainer, WidgetContainerDef } from '../components/WidgetContainer'
-import { TextContainer } from '../components/TextContainer'
-import { DisplayContainer } from '../components/DisplayContainer'
 import { XBOX_DFLT_CONTAINER_COMPACT, XBOX_DFLT_CONTAINER,
 	XBOX_DFLT_WIDGETS_COMPACT, XBOX_DFLT_WIDGETS } from '../types/xbox'
+
 
 const XBox: Component = () => {
 	const [params] = useSearchParams();
 	const [pad, setPad] = createSignal<GamepadState>()
 	const padIndex = 0
 	
-	const NOTEXT		= params.notext !== undefined
-	const NOIMAGE		= params.noimage !== undefined
-	const MODE_COMPACT	= params.compact !== undefined
+	const MODE_COMPACT = params.compact !== undefined
 	
 	const container: WidgetContainerDef = MODE_COMPACT ?
 		XBOX_DFLT_CONTAINER_COMPACT : XBOX_DFLT_CONTAINER
@@ -26,14 +24,16 @@ const XBox: Component = () => {
 		XBOX_DFLT_WIDGETS_COMPACT : XBOX_DFLT_WIDGETS
 
 	return <>
-		<Gamepad padIndex={padIndex} pad={pad} onUpdate={setPad} />
-		<DisplayContainer container={container}>
-			{ NOTEXT || <TextContainer
-				widgets={widgets} pad={pad()}
-				style={`width:${container.w}px;`} />
-			}
-			{ NOIMAGE || <WidgetContainer def={container} widgets={widgets} pad={pad()} /> }
-		</DisplayContainer>
+		<Gamepad
+			padIndex={padIndex}
+			pad={pad}
+			onUpdate={setPad}
+		/>
+		<DisplayContainer
+			container={container}
+			widgets={widgets}
+			pad={pad}
+		/>
 	</>
 }
 

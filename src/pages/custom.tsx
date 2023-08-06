@@ -1,17 +1,18 @@
 import type { Component } from 'solid-js';
+import type { GamepadState, GamepadInputDef } from '../types/gamepad'
+import DisplayContainer from '../components/DisplayContainer'
 import { createSignal, For, Index } from 'solid-js';
 import { useSearchParams, useLocation } from '@solidjs/router'
-import type { GamepadState, GamepadInputDef } from '../types/gamepad'
 import { GamepadInputType } from '../types/gamepad'
 import { Gamepad } from '../components'
-import { WidgetType, WidgetDef, parseWidgetStr, genWidgetStr, WIDGET_DFLT } from '../components/Widget'
-import { WidgetContainer, WidgetContainerDef, parseContainerStr, genContainerStr } from '../components/WidgetContainer'
-import { TextContainer } from '../components/TextContainer'
+import { WidgetType, WidgetDef,
+	parseWidgetStr, genWidgetStr, WIDGET_DFLT } from '../components/Widget'
+import { WidgetContainerDef,
+	parseContainerStr, genContainerStr } from '../components/WidgetContainer'
 import { A } from '@solidjs/router';
 import { filterParams } from '../helpers/formatting'
 import { XBOX_DFLT_CONTAINER, XBOX_DFLT_WIDGETS } from '../types/xbox'
 import { AddIcon, DeleteIcon, ResetIcon, ConfirmIcon } from '../components/icons'
-import { DisplayContainer } from '../components/DisplayContainer'
 
 
 const Custom: Component = () => {
@@ -20,27 +21,24 @@ const Custom: Component = () => {
 	const [pad, setPad] = createSignal<GamepadState>()
 	const padIndex = 0
 
-	const SETTINGS = params.settings ? params.settings :
-		`${genContainerStr(XBOX_DFLT_CONTAINER)}|${genWidgetStr(XBOX_DFLT_WIDGETS)}`
-	const MODE_EDIT		= location.pathname.slice(-5) === '/edit'
-	const NOTEXT		= params.notext !== undefined
-	const NOIMAGE		= params.noimage !== undefined
+	const MODE_EDIT	= location.pathname.slice(-5) === '/edit'
 
+	const SETTINGS	= params.settings ? params.settings :
+		`${genContainerStr(XBOX_DFLT_CONTAINER)}|${genWidgetStr(XBOX_DFLT_WIDGETS)}`
 	const [container, setContainer] = createSignal<WidgetContainerDef>(parseContainerStr(SETTINGS))
 	const [widgets, setWidgets] = createSignal<WidgetDef[]>(parseWidgetStr(SETTINGS))
 
 	return <>
-		<Gamepad padIndex={padIndex} pad={pad} onUpdate={setPad} />
-		<DisplayContainer container={container()}>
-			{ NOTEXT || <TextContainer
-				widgets={widgets()} pad={pad()}
-				class={`${!MODE_EDIT||'outline outline-[4px] outline-gray-800'}`}/>
-			}
-
-			{ NOIMAGE || <WidgetContainer
-				def={container()} widgets={widgets()} pad={pad()}
-				class={`${!MODE_EDIT||'outline outline-[4px] outline-gray-800'}`}
-			/> }
+		<Gamepad
+			padIndex={padIndex}
+			pad={pad}
+			onUpdate={setPad}
+		/>
+		<DisplayContainer
+			container={container()}
+			widgets={widgets()}
+			pad={pad}
+		>
 
 			{ !MODE_EDIT || <div class='flex flex-col items-baseline'>
 				<div class='mt-3 mb-1 font-semibold'>global</div>
