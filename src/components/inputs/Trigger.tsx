@@ -106,7 +106,7 @@ export const Trigger = (props: TriggerProps) => {
 				// foreground
 				d={path(TriggerSimpleMode[props.simple].includes('Full')?-0.5:0,trig())}	
 				class={`fill-transparent ${props.bumper?'stroke-white':'stroke-gray-300'}`}
-				stroke-width={isThick() ? props.line*4 : props.line*2}
+				stroke-width={isThick() ? props.line*4+1 : props.line*2+1}
 			/>
 		</Show>
 	</svg>
