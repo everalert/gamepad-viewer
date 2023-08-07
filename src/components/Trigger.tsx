@@ -104,7 +104,7 @@ export const Trigger = (props: TriggerProps) => {
 			/>
 			<path
 				// foreground
-				d={path(props.simple===TriggerSimpleMode.Full?-0.5:0,trig())}	
+				d={path(TriggerSimpleMode[props.simple].includes('Full')?-0.5:0,trig())}	
 				class={`fill-transparent ${props.bumper?'stroke-white':'stroke-gray-300'}`}
 				stroke-width={isThick() ? props.line*4 : props.line*2}
 			/>
