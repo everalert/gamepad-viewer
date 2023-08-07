@@ -16,7 +16,7 @@ export const StickText = (props: StickTextProps) => {
 	const [params] = useSearchParams();
 	const MODE_COMPACT = params.compact !== undefined || params.lesstext !== undefined
 
-	return <div class={`grid ${ MODE_COMPACT ? 'grid-cols-1 w-[6.3rem]' : 'grid-cols-2 w-[10.75rem]' } leading-[1.0125rem] px-3 py-2 pb-1 bg-black/[0.65] rounded-md`}>
+	return <div class={`grid ${ MODE_COMPACT ? 'grid-cols-1 min-w-[6.3rem] w-[6.3rem]' : 'grid-cols-2 min-w-[10.75rem] w-[10.75rem]' } leading-[1.0125rem] px-3 py-2 pb-1 bg-black/[0.65] rounded-md`}>
 
 		{ props.label ? <div class='col-span-full font-bold text-sm'>
 			{props.label}
