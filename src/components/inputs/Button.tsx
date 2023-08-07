@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js'
-import { Widget, WidgetProps } from './Widget'
-import { deg2rad, ang, mag, rotVec2x, rotVec2y } from '../helpers/math'
-import { getInputMap } from '../types/gamepad'
+import { Widget, WidgetProps } from '../Widget'
+import { deg2rad, ang, mag, rotVec2x, rotVec2y } from '../../helpers/math'
+import { getInputMap } from '../../types/gamepad'
 
 
 interface ButtonInlineProps {

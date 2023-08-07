@@ -2,15 +2,8 @@
 import './index.css';
 import { render } from 'solid-js/web';
 import { Router, Route, Routes } from '@solidjs/router'
-
-import IndexPage from './pages/index'
-import XBoxPage from './pages/xbox'
-import PSxPage from './pages/psx'
-import WiiUPage from './pages/wiiu'
-import GCNPage from './pages/gcn'
-import RacingPage from './pages/racing'
-import MinimalPage from './pages/minimal'
-import CustomPage from './pages/custom'
+import { Main, XBox, PSx, WiiU, 
+GCN, Racing, Minimal, Custom } from './pages'
 
 const root = document.getElementById('root');
 
@@ -26,15 +19,15 @@ render(
 		return <Router>
 			<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet"/ >
 			<Routes>
-				<Route path='/' component={IndexPage} />
-				<Route path='/xbox' component={XBoxPage} />
-				<Route path='/psx' component={PSxPage} />
-				<Route path='/wiiu' component={WiiUPage} />
-				<Route path='/gcn' component={GCNPage} />
-				<Route path='/racing' component={RacingPage} />
-				<Route path='/minimal' component={MinimalPage} />
-				<Route path='/custom' component={CustomPage} />
-				<Route path='/custom/edit' component={CustomPage} />
+				<Route path='/' component={Main} />
+				<Route path='/xbox' component={XBox} />
+				<Route path='/psx' component={PSx} />
+				<Route path='/wiiu' component={WiiU} />
+				<Route path='/gcn' component={GCN} />
+				<Route path='/racing' component={Racing} />
+				<Route path='/minimal' component={Minimal} />
+				<Route path='/custom' component={Custom} />
+				<Route path='/custom/edit' component={Custom} />
 			</Routes>
 		</Router>
 	}, 

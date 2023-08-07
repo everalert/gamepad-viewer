@@ -1,7 +1,7 @@
-import { GamepadInputType as GIT, inputDef } from '../types/gamepad'
-import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
-import { WidgetContainerDef, genContainerStr } from '../components/WidgetContainer'
-import { TriggerSimpleMode } from '../components/Trigger'
+import { GamepadInputType as GIT, inputDef } from '../gamepad'
+import { WidgetType, WidgetDef, genWidgetStr } from '../../components/Widget'
+import { WidgetContainerDef, genContainerStr } from '../../components/containers'
+import { TriggerSimpleMode } from '../../components/inputs'
 import { XBoxButton as XBB } from './xbox'
 
 

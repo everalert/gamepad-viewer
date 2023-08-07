@@ -1,4 +1,3 @@
-export * from './Gamepad'
 export * from './Stick'
 export * from './StickText'
 export * from './Button'

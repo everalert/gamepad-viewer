@@ -1,7 +1,7 @@
 import type { Setter, Accessor } from 'solid-js'
 import { onMount, onCleanup } from 'solid-js'
 import type { GamepadState } from '../types/gamepad'
-import { GamepadInput, GamepadInputType, resetPool, resizePool } from '../types/gamepad'
+import { GamepadInputType, resetPool, resizePool } from '../types/gamepad'
 
 
 interface GamepadProps {

@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js';
 import { For, Switch, Match } from 'solid-js';
-import { WidgetType, WidgetDef, WidgetProps, Widget} from '../components/Widget'
-import type { GamepadState } from '../types/gamepad'
+import { WidgetType, WidgetDef, WidgetProps, Widget} from '../Widget'
+import type { GamepadState } from '../../types/gamepad'
 import { 
 	WStick, WStickCircle, WStickSquare, WStickGC, WStickN64, WStickHori, WStickRound,
 	WButtonRing, WButtonRingCircle, WButtonRingRect, WButtonRingTriangle,
@@ -9,7 +9,7 @@ import {
 	WButtonGrid, WButtonGridCircle, WButtonGridRect, WButtonGridTriangle,
 	WButtonGridN64C, WButtonGridGCXY,
 	WButton, WDPad, WTrigger, WTriggerCurved, WTriggerFlat,
-} from './'
+} from '../inputs'
 
 
 export interface WidgetContainerDef {

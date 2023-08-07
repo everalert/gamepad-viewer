@@ -1,9 +1,9 @@
 import type { JSXElement } from 'solid-js';
 import { For, Show } from 'solid-js';
-import type { GamepadState, GamepadInputDef } from '../types/gamepad'
-import { inputDefCmp, getInputMap } from '../types/gamepad'
-import { StickText, TriggerText } from '../components'
-import { WidgetType, WidgetDef } from '../components/Widget'
+import type { GamepadState, GamepadInputDef } from '../../types/gamepad'
+import { inputDefCmp, getInputMap } from '../../types/gamepad'
+import { StickText, TriggerText } from '../inputs'
+import { WidgetType, WidgetDef } from '../Widget'
 
 
 export interface TextContainerProps {

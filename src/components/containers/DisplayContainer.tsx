@@ -1,10 +1,10 @@
 import type { JSXElement, Accessor } from 'solid-js';
 import type { WidgetContainerDef } from './WidgetContainer'
-import type { GamepadState } from '../types/gamepad'
+import type { GamepadState } from '../../types/gamepad'
 import { useSearchParams, useLocation } from '@solidjs/router'
 import { WidgetContainer } from './WidgetContainer'
 import { TextContainer } from './TextContainer'
-import { WidgetDef } from './Widget'
+import { WidgetDef } from '../Widget'
 
 
 export interface DisplayContainerProps {

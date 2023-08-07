@@ -1,9 +1,9 @@
 import type { JSXElement } from 'solid-js'
 import { Index } from 'solid-js'
 import { ButtonShape, ButtonInlineMap } from './'
-import { Widget, WidgetProps } from './Widget'
-import { deg2rad } from '../helpers/math'
-import { getInputMap } from '../types/gamepad'
+import { Widget, WidgetProps } from '../Widget'
+import { deg2rad } from '../../helpers/math'
+import { getInputMap } from '../../types/gamepad'
 
 
 interface ButtonRingProps {

@@ -1,21 +1,19 @@
 import type { Component } from 'solid-js';
 import type { GamepadState, GamepadInputDef } from '../types/gamepad'
-import DisplayContainer from '../components/DisplayContainer'
-import { createSignal, For, Index } from 'solid-js';
-import { useSearchParams, useLocation } from '@solidjs/router'
-import { GamepadInputType } from '../types/gamepad'
-import { Gamepad } from '../components'
-import { WidgetType, WidgetDef,
-	parseWidgetStr, genWidgetStr, WIDGET_DFLT } from '../components/Widget'
-import { WidgetContainerDef,
-	parseContainerStr, genContainerStr } from '../components/WidgetContainer'
-import { A } from '@solidjs/router';
-import { filterParams } from '../helpers/formatting'
-import { XBOX_DFLT_CONTAINER, XBOX_DFLT_WIDGETS } from '../types/xbox'
+import { For, Index, createSignal } from 'solid-js';
+import { A, useSearchParams, useLocation } from '@solidjs/router'
+import { DisplayContainer, WidgetContainerDef,
+	parseContainerStr, genContainerStr } from '../components/containers'
+import { WidgetType, WidgetDef, WIDGET_DFLT, 
+	parseWidgetStr, genWidgetStr } from '../components/Widget'
+import { Gamepad } from '../components/Gamepad'
 import { AddIcon, DeleteIcon, ResetIcon, ConfirmIcon } from '../components/icons'
+import { GamepadInputType } from '../types/gamepad'
+import { XBOX_DFLT_CONTAINER, XBOX_DFLT_WIDGETS } from '../types/layouts'
+import { filterParams } from '../helpers/formatting'
 
 
-const Custom: Component = () => {
+export const Custom: Component = () => {
 	const [params] = useSearchParams();
 	const location = useLocation();
 	const [pad, setPad] = createSignal<GamepadState>()

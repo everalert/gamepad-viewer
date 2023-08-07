@@ -1,8 +1,8 @@
-import { clamp, rc2rad, rc2deg } from '../helpers/math'
 import type { JSXElement } from 'solid-js'
 import { Show } from 'solid-js'
-import { Widget, WidgetProps } from './Widget'
-import { getInputMap } from '../types/gamepad'
+import { Widget, WidgetProps } from '../Widget'
+import { getInputMap } from '../../types/gamepad'
+import { clamp, rc2rad, rc2deg } from '../../helpers/math'
 
 
 export enum TriggerSimpleMode {

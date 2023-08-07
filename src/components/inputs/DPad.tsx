@@ -1,8 +1,8 @@
 import type { JSXElement } from 'solid-js'
 import { Index } from 'solid-js'
-import { Widget, WidgetProps } from './Widget'
-import { getInputMap } from '../types/gamepad'
-import { deg2rad, rotVec2x, rotVec2y } from '../helpers/math'
+import { Widget, WidgetProps } from '../Widget'
+import { getInputMap } from '../../types/gamepad'
+import { deg2rad, rotVec2x, rotVec2y } from '../../helpers/math'
 
 
 interface DPadProps {

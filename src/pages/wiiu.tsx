@@ -1,16 +1,15 @@
 import type { Component } from 'solid-js';
 import type { GamepadState } from '../types/gamepad'
-import DisplayContainer from '../components/DisplayContainer'
 import { createSignal } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
-import { Gamepad } from '../components'
+import { DisplayContainer, WidgetContainerDef } from '../components/containers'
+import { Gamepad } from '../components/Gamepad'
 import { WidgetDef } from '../components/Widget'
-import { WidgetContainerDef } from '../components/WidgetContainer'
 import { WIIU_DFLT_CONTAINER_COMPACT, WIIU_DFLT_CONTAINER,
-	WIIU_DFLT_WIDGETS_COMPACT, WIIU_DFLT_WIDGETS } from '../types/wiiu'
+	WIIU_DFLT_WIDGETS_COMPACT, WIIU_DFLT_WIDGETS } from '../types/layouts'
 
 
-const WiiU: Component = () => {
+export const WiiU: Component = () => {
 	const [params] = useSearchParams();
 	const [pad, setPad] = createSignal<GamepadState>()
 	const padIndex = 0

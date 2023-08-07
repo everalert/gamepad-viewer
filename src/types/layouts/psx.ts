@@ -1,7 +1,7 @@
-import { GamepadInputType as GIT, inputDef } from '../types/gamepad'
-import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
-import { WidgetContainerDef, genContainerStr } from '../components/WidgetContainer'
-import { ButtonShape } from '../components'
+import { GamepadInputType as GIT, inputDef } from '../gamepad'
+import { WidgetType, WidgetDef, genWidgetStr } from '../../components/Widget'
+import { WidgetContainerDef, genContainerStr } from '../../components/containers'
+import { ButtonShape } from '../../components/inputs'
 
 
 // TODO: confirm label-index combos are correct

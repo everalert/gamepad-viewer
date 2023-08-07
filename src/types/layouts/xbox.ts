@@ -1,6 +1,6 @@
-import { GamepadInputType as GIT, inputDef } from '../types/gamepad'
-import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
-import { WidgetContainerDef, genContainerStr } from '../components/WidgetContainer'
+import { GamepadInputType as GIT, inputDef } from '../gamepad'
+import { WidgetType, WidgetDef, genWidgetStr } from '../../components/Widget'
+import { WidgetContainerDef, genContainerStr } from '../../components/containers'
 
 
 export enum XBoxAxis {

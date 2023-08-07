@@ -1,4 +1,4 @@
-import { numf } from '../helpers/formatting'
+import { numf } from '../../helpers/formatting'
 
 
 interface TriggerTextProps {

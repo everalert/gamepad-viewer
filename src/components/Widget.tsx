@@ -1,7 +1,7 @@
 import type { GamepadState, GamepadInputDef } from '../types/gamepad'
 import { GamepadInputType } from '../types/gamepad'
 import type { JSXElement } from 'solid-js';
-import type { WidgetContainerDef } from './WidgetContainer'
+import type { WidgetContainerDef } from './containers/WidgetContainer'
 
 
 // NOTE: keep hardcoded values the same 

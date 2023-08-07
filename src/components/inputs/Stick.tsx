@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js'
-import { Widget, WidgetProps } from './Widget'
-import { AbC2a, AbC2h } from '../helpers/math'
-import { getInputMap } from '../types/gamepad'
+import { Widget, WidgetProps } from '../Widget'
+import { AbC2a, AbC2h } from '../../helpers/math'
+import { getInputMap } from '../../types/gamepad'
 
 
 interface StickProps {

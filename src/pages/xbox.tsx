@@ -1,16 +1,15 @@
 import type { Component } from 'solid-js';
 import type { GamepadState } from '../types/gamepad'
-import type { WidgetContainerDef } from '../components/WidgetContainer'
-import DisplayContainer from '../components/DisplayContainer'
 import { createSignal } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
-import { Gamepad } from '../components'
+import { DisplayContainer, WidgetContainerDef } from '../components/containers'
+import { Gamepad } from '../components/Gamepad'
 import { WidgetDef } from '../components/Widget'
 import { XBOX_DFLT_CONTAINER_COMPACT, XBOX_DFLT_CONTAINER,
-	XBOX_DFLT_WIDGETS_COMPACT, XBOX_DFLT_WIDGETS } from '../types/xbox'
+	XBOX_DFLT_WIDGETS_COMPACT, XBOX_DFLT_WIDGETS } from '../types/layouts'
 
 
-const XBox: Component = () => {
+export const XBox: Component = () => {
 	const [params] = useSearchParams();
 	const [pad, setPad] = createSignal<GamepadState>()
 	const padIndex = 0

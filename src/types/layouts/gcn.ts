@@ -1,8 +1,8 @@
-import { GamepadInputType as GIT, inputDef } from '../types/gamepad'
-import { WidgetType, WidgetDef, genWidgetStr } from '../components/Widget'
-import { WidgetContainerDef, genContainerStr } from '../components/WidgetContainer'
+import { GamepadInputType as GIT, inputDef } from '../gamepad'
+import { WidgetType, WidgetDef, genWidgetStr } from '../../components/Widget'
+import { WidgetContainerDef, genContainerStr } from '../../components/containers'
 import { WiiUAxis as WUA, WiiUButton as WUB } from './wiiu'
-import { ButtonShape } from '../components'
+import { ButtonShape } from '../../components/inputs'
 
 
 const INNER_X = 56

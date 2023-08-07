@@ -1,14 +1,13 @@
 import type { Component } from 'solid-js';
 import type { GamepadState } from '../types/gamepad'
-import DisplayContainer from '../components/DisplayContainer'
 import { createSignal } from 'solid-js';
-import { Gamepad } from '../components'
+import { DisplayContainer, WidgetContainerDef } from '../components/containers'
+import { Gamepad } from '../components/Gamepad'
 import { WidgetDef } from '../components/Widget'
-import { WidgetContainerDef } from '../components/WidgetContainer'
-import { RACING_DFLT_CONTAINER, RACING_DFLT_WIDGETS } from '../types/racing'
+import { RACING_DFLT_CONTAINER, RACING_DFLT_WIDGETS } from '../types/layouts'
 
 
-const Minimal: Component = () => {
+export const Racing: Component = () => {
 	const [pad, setPad] = createSignal<GamepadState>()
 	const padIndex = 0
 
@@ -29,4 +28,4 @@ const Minimal: Component = () => {
 	</>
 }
 
-export default Minimal;
+export default Racing;

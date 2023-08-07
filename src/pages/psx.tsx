@@ -1,16 +1,15 @@
 import type { Component } from 'solid-js';
 import type { GamepadState } from '../types/gamepad'
-import DisplayContainer from '../components/DisplayContainer'
 import { createSignal } from 'solid-js';
 import { useSearchParams } from '@solidjs/router'
-import { Gamepad } from '../components'
+import { DisplayContainer, WidgetContainerDef } from '../components/containers'
+import { Gamepad } from '../components/Gamepad'
 import { WidgetDef } from '../components/Widget'
-import { WidgetContainerDef } from '../components/WidgetContainer'
 import { PSX_DFLT_CONTAINER, PSX_DFLT_CONTAINER_COMPACT,
-	PSX_DFLT_WIDGETS, PSX_DFLT_WIDGETS_COMPACT } from '../types/psx'
+	PSX_DFLT_WIDGETS, PSX_DFLT_WIDGETS_COMPACT } from '../types/layouts'
 
 
-const PSx: Component = () => {
+export const PSx: Component = () => {
 	const [params] = useSearchParams();
 	const [pad, setPad] = createSignal<GamepadState>()
 	const padIndex = 0

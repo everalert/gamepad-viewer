@@ -1,6 +1,6 @@
 import { useSearchParams } from '@solidjs/router'
-import { ang, mag } from '../helpers/math'
-import { numf } from '../helpers/formatting'
+import { ang, mag } from '../../helpers/math'
+import { numf } from '../../helpers/formatting'
 
 
 interface StickTextProps {
