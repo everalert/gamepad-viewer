@@ -6,7 +6,7 @@ import { ButtonShape } from '../../components/inputs'
 
 
 const INNER_X = 56
-const INNER_Y = 28
+const INNER_Y = 32
 const OUTER_X = 160
 const OUTER_Y = -24
 
@@ -62,14 +62,14 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 	{
 		type: WidgetType.Button,
 		x: OUTER_X,
-		y: OUTER_Y,
+		y: OUTER_Y+4,
 		inputs: [inputDef(GIT.Button,WUB.A)],
 		val: [ButtonShape.Circle,24]
 	},
 	{
 		type: WidgetType.ButtonRing,
 		x: OUTER_X,
-		y: OUTER_Y,
+		y: OUTER_Y+4,
 		rot: -22,
 		inputs: [
 			inputDef(GIT.Button,0),
@@ -80,7 +80,7 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 	{
 		type: WidgetType.ButtonRing,
 		x: OUTER_X,
-		y: OUTER_Y,
+		y: OUTER_Y+4,
 		rot: -6,
 		inputs: [
 			inputDef(GIT.Button,WUB.X),
