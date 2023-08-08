@@ -14,7 +14,7 @@ export const inputDef = (t:GamepadInputType,i:number):GamepadInputDef =>
 	{ return {type:t,index:i} }
 
 export const inputDefCmp = (d1:GamepadInputDef, d2:GamepadInputDef) => {
-	const hash = (d:GamepadInputDef) => d.type*1000 + d.index
+	const hash = (d:GamepadInputDef) => d?.type*1000 + d?.index
 	if (hash(d1)>hash(d2)) return 1
 	if (hash(d1)<hash(d2)) return -1
 	return 0
