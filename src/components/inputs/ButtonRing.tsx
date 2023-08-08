@@ -64,8 +64,8 @@ export const WButtonRing = (props: WidgetProps): JSXElement => {
 			rx		= { props.def.val[1] || 16 }
 			ry		= { props.def.val[2] || 16 }
 			rz		= { props.def.val[3] || 0 }
-			rotate	= { props.def.val[4]>0 || false }
-			simple	= { props.def.val[5]>0 || false }
+			simple	= { props.def.val[4]>0 || false }
+			rotate	= { props.def.val[5]>0 || false }
 			shape	= { props.def.val.slice(6) }
 			line	= { props.container.line || 3 }
 		/>
@@ -82,8 +82,8 @@ const WButtonRingShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
 			rx 		= { props.p.def.val[1] || 16 }
 			ry 		= { props.p.def.val[2] || 16 }
 			rz 		= { props.p.def.val[3] || 0 }
-			rotate	= { props.p.def.val[4]>0 || false }
-			simple	= { props.p.def.val[5]>0 || false }
+			simple	= { props.p.def.val[4]>0 || false }
+			rotate	= { true }
 			shape	= { [props.s] }
 			line	= { props.p.container.line || 3 }
 		/>

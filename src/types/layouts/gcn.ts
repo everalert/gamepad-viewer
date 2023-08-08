@@ -88,7 +88,7 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 			inputDef(GIT.Button,0),
 			inputDef(GIT.Button,WUB.Y)
 		],
-		val: [44,44,28,10,1,0,ButtonShape.GCXY,ButtonShape.NONE,ButtonShape.NONE]
+		val: [44,44,28,10,0,1,ButtonShape.GCXY,ButtonShape.NONE,ButtonShape.NONE]
 	},
 	{
 		type: WidgetType.Button,
