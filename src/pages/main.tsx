@@ -1,5 +1,5 @@
 import type { Component } from 'solid-js';
-import { createSignal, For } from 'solid-js';
+import { createSignal, For, Index } from 'solid-js';
 import { A } from '@solidjs/router';
 import { filterParams } from '../helpers/formatting'
 import {
@@ -11,6 +11,7 @@ import {
 	RACING_DFLT_STR
 } from '../types/layouts'
 import { EditIcon } from '../components/icons'
+import { Checkbox } from '../components/ui'
 
 
 type PageDef = {
@@ -49,12 +50,38 @@ const PAGES: PageDef[] = [
 	},
 ]
 
-const PARAMS: string[] = ['compact', 'lesstext', 'notext', 'noimage', 'noguide']
+type ParamDef = {
+	name:string;
+	tooltip?:string;
+}
+
+const PARAMS: ParamDef[] = [
+	{
+		name:'compact', 
+		tooltip:'layouts are smaller and more minimal'
+	}, 
+	{
+		name:'lesstext', 
+		tooltip:'value readout only has essentials'
+	}, 
+	{
+		name:'notext', 
+		tooltip:'value readout off'
+	}, 
+	{
+		name:'noimage', 
+		tooltip:'visualization off'
+	}, 
+	{
+		name:'noguide',
+		tooltip:'obs cropping guide off'
+	},
+]
 
 
 export const Main: Component = () => {
 	const [params, setParams] = createSignal<{[key:string]:boolean}>(
-		PARAMS.reduce((a:any, p:string) => { return {...a, [p]:false}}, {}))
+		PARAMS.reduce((a:any, p:ParamDef) => { return {...a, [p.name]:false}}, {}))
 	
 	const paramstr = () => {
 		const active: string[] = Object.keys(params()).filter(k => params()[k]===true)
@@ -67,11 +94,14 @@ export const Main: Component = () => {
 				<div class='text-gray-400'>select</div>
 				<div class='-mt-2 font-semibold'>options</div>
 			</div>
-			<For each={Object.keys(params())}>{p => <div>
-				<label class={`cursor-pointer ${params()[p]?'text-gray-200':'text-gray-500'}`}>
-					<input type='checkbox' checked={params()[p]} class='w-4 h-4 relative top-0.5'
-						onclick={()=>{setParams({...params(),[p]:!params()[p]})}} /> {p}</label>
-			</div>}</For>
+			<Index each={PARAMS}>{(p,i) => 
+				<Checkbox
+					label={p().name}
+					tooltip={p().tooltip}
+					value={params()[p().name]}
+					onInput={()=>{setParams({...params(),[p().name]:!params()[p().name]})}}
+				/>
+			}</Index>
 		</div>
 		<div class='flex flex-col gap-1 justify-start'>
 			<div>
