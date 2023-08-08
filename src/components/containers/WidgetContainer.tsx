@@ -1,15 +1,7 @@
-import type { Component } from 'solid-js';
-import { For, Switch, Match } from 'solid-js';
-import { WidgetType, WidgetDef, WidgetProps, Widget} from '../Widget'
 import type { GamepadState } from '../../types/gamepad'
-import { 
-	WStick, WStickCircle, WStickSquare, WStickGC, WStickN64, WStickHori, WStickRound,
-	WButtonRing, WButtonRingCircle, WButtonRingRect, WButtonRingTriangle,
-	WButtonRingN64C, WButtonRingGCXY,
-	WButtonGrid, WButtonGridCircle, WButtonGridRect, WButtonGridTriangle,
-	WButtonGridN64C, WButtonGridGCXY,
-	WButton, WDPad, WTrigger, WTriggerCurved, WTriggerFlat,
-} from '../inputs'
+import { For } from 'solid-js';
+import { Dynamic } from 'solid-js/web';
+import { WidgetTypeMap, WidgetDef } from '../Widget'
 
 
 export interface WidgetContainerDef {
@@ -21,6 +13,7 @@ export interface WidgetContainerDef {
 
 const containerdef_re =		/G((?:(?:w|h|m|l)\-?[0-9]+)+)/g
 const containerparam_re =	/(w|h|m|l)(\-?[0-9]+)/g
+
 export const WCONTAINER_DFLT: WidgetContainerDef =
 	{ w:512, h:144, m:32, line:3 }
 
@@ -57,44 +50,19 @@ export interface WidgetContainerProps {
 }
 
 export const WidgetContainer = (props: WidgetContainerProps) => {
-	const widgetMatch = (w:WidgetDef, t:WidgetType, C:Component<WidgetProps>) => (
-		<Match when={w.type===t}>
-			<C pad={props.pad} def={w} container={props.def} />
-		</Match>
-	)
 	return <div
 		class={`relative ${props.class||''}`}
 		style={`width:${props.def.w}px; height:${props.def.h}px; ${props.style||''}`}
 		>
 		<For each={props.widgets}>{w => w.hide ? null : (
-			<Switch fallback={<Widget widget={w} container={props.def}>
-				no {WidgetType[w.type]} widget
-			</Widget>}>
-				{ widgetMatch(w, WidgetType.StickCircle,		WStickCircle) }
-				{ widgetMatch(w, WidgetType.StickSquare,		WStickSquare) }
-				{ widgetMatch(w, WidgetType.StickGC,			WStickGC) }
-				{ widgetMatch(w, WidgetType.StickN64,			WStickN64) }
-				{ widgetMatch(w, WidgetType.StickHori,			WStickHori) }
-				{ widgetMatch(w, WidgetType.StickRound,			WStickRound) }
-				{ widgetMatch(w, WidgetType.Stick,				WStick) }
-				{ widgetMatch(w, WidgetType.Button,				WButton) }
-				{ widgetMatch(w, WidgetType.ButtonRing,			WButtonRing) }
-				{ widgetMatch(w, WidgetType.ButtonRingCircle,	WButtonRingCircle) }
-				{ widgetMatch(w, WidgetType.ButtonRingRect,		WButtonRingRect) }
-				{ widgetMatch(w, WidgetType.ButtonRingTriangle,	WButtonRingTriangle) }
-				{ widgetMatch(w, WidgetType.ButtonRingN64C,		WButtonRingN64C) }
-				{ widgetMatch(w, WidgetType.ButtonRingGCXY,		WButtonRingGCXY) }
-				{ widgetMatch(w, WidgetType.ButtonGrid,			WButtonGrid) }
-				{ widgetMatch(w, WidgetType.ButtonGridCircle,	WButtonGridCircle) }
-				{ widgetMatch(w, WidgetType.ButtonGridRect,		WButtonGridRect) }
-				{ widgetMatch(w, WidgetType.ButtonGridTriangle,	WButtonGridTriangle) }
-				{ widgetMatch(w, WidgetType.ButtonGridN64C,		WButtonGridN64C) }
-				{ widgetMatch(w, WidgetType.ButtonGridGCXY,		WButtonGridGCXY) }
-				{ widgetMatch(w, WidgetType.DPad,				WDPad) }
-				{ widgetMatch(w, WidgetType.Trigger,			WTrigger) }
-				{ widgetMatch(w, WidgetType.TriggerCurved,		WTriggerCurved) }
-				{ widgetMatch(w, WidgetType.TriggerFlat,		WTriggerFlat) }
-			</Switch>
+			<Dynamic
+				component={WidgetTypeMap[w.type]}
+				pad={props.pad}
+				def={w}
+				container={props.def}
+			/>
 		)}</For>
 	</div>
 }
+
+export default WidgetContainer

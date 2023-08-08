@@ -1,7 +1,15 @@
 import type { GamepadState, GamepadInputDef } from '../types/gamepad'
 import { GamepadInputType } from '../types/gamepad'
-import type { JSXElement } from 'solid-js';
+import type { JSXElement, Component } from 'solid-js';
 import type { WidgetContainerDef } from './containers/WidgetContainer'
+import { 
+	WStick, WStickCircle, WStickSquare, WStickGC, WStickN64, WStickHori, WStickRound,
+	WButtonRing, WButtonRingCircle, WButtonRingRect, WButtonRingTriangle,
+	WButtonRingN64C, WButtonRingGCXY,
+	WButtonGrid, WButtonGridCircle, WButtonGridRect, WButtonGridTriangle,
+	WButtonGridN64C, WButtonGridGCXY,
+	WButton, WDPad, WTrigger, WTriggerCurved, WTriggerFlat,
+} from './inputs'
 
 
 // NOTE: keep hardcoded values the same 
@@ -134,4 +142,31 @@ export const Widget = (props: WidgetWrapperProps):JSXElement => {
 		>
 		{props.children}
 	</div>
+}
+
+export const WidgetTypeMap:{[key:number]:Component<WidgetProps>} = {
+	[WidgetType.StickCircle]:			WStickCircle,
+	[WidgetType.StickSquare]:			WStickSquare,
+	[WidgetType.StickGC]:				WStickGC,
+	[WidgetType.StickN64]:				WStickN64,
+	[WidgetType.StickHori]:				WStickHori,
+	[WidgetType.StickRound]:			WStickRound,
+	[WidgetType.Stick]:					WStick,
+	[WidgetType.Button]:				WButton,
+	[WidgetType.ButtonRing]:			WButtonRing,
+	[WidgetType.ButtonRingCircle]:		WButtonRingCircle,
+	[WidgetType.ButtonRingRect]:		WButtonRingRect,
+	[WidgetType.ButtonRingTriangle]:	WButtonRingTriangle,
+	[WidgetType.ButtonRingN64C]:		WButtonRingN64C,
+	[WidgetType.ButtonRingGCXY]:		WButtonRingGCXY,
+	[WidgetType.ButtonGrid]:			WButtonGrid,
+	[WidgetType.ButtonGridCircle]:		WButtonGridCircle,
+	[WidgetType.ButtonGridRect]:		WButtonGridRect,
+	[WidgetType.ButtonGridTriangle]:	WButtonGridTriangle,
+	[WidgetType.ButtonGridN64C]:		WButtonGridN64C,
+	[WidgetType.ButtonGridGCXY]:		WButtonGridGCXY,
+	[WidgetType.DPad]:					WDPad,
+	[WidgetType.Trigger]:				WTrigger,
+	[WidgetType.TriggerCurved]:			WTriggerCurved,
+	[WidgetType.TriggerFlat]:			WTriggerFlat,
 }
