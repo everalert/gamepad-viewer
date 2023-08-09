@@ -19,7 +19,7 @@ export const GCN_DFLT_CONTAINER: WidgetContainerDef = {
 
 export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 	{
-		type: WidgetType.StickCircle,
+		type: WidgetType.StickGC,
 		x: -OUTER_X,
 		y: OUTER_Y,
 		inputs: [
@@ -30,7 +30,7 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		val: [48]
 	},
 	{
-		type: WidgetType.StickCircle,
+		type: WidgetType.StickGC,
 		x: INNER_X,
 		y: INNER_Y,
 		inputs: [
