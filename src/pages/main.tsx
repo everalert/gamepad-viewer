@@ -10,7 +10,7 @@ import {
 	MINIMAL_DFLT_STR, 
 	RACING_DFLT_STR
 } from '../types/layouts'
-import { EditIcon } from '../components/icons'
+import { Edit } from '../components/icons'
 import { Checkbox } from '../components/ui'
 
 
@@ -124,7 +124,7 @@ export const Main: Component = () => {
 						`?settings=${ p.compact && params()['compact']===true ?
 							p.compact : p.layout }`)}`}
 						>
-						<EditIcon />
+						<Edit />
 					</A>
 				</>}</For>
 			</div>
