@@ -133,7 +133,7 @@ export const WStick:Component = (props: WidgetProps) => {
 			button={inputs()[2]?.pressed||false}
 			r={props.def.val[0]>0?props.def.val[0]:48}
 			a={props.def.val[1]>0?props.def.val[1]:67.5}
-			ar={props.def.val[2]>0?props.def.val[2]:48*NICE_FACTOR}
+			ar={props.def.val[2]>=0?props.def.val[2]:64}
 			line={props.container.line||3}
 		/>	
 	</Widget>
