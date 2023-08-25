@@ -2,6 +2,7 @@ import type { GamepadState, GamepadInputDef } from '../types/gamepad'
 import { GamepadInputType } from '../types/gamepad'
 import type { JSXElement, Component } from 'solid-js';
 import type { WidgetContainerDef } from './containers/WidgetContainer'
+import type { InputPickerDef, ValuePickerDef } from './ui'
 import { 
 	WStick, WStickCircle, WStickSquare, WStickGC, WStickN64, WStickHori, WStickRound,
 	WButtonRing, WButtonRingCircle, WButtonRingRect, WButtonRingTriangle,
@@ -9,6 +10,15 @@ import {
 	WButtonGrid, WButtonGridCircle, WButtonGridRect, WButtonGridTriangle,
 	WButtonGridN64C, WButtonGridGCXY,
 	WButton, WDPad, WTrigger, WTriggerCurved, WTriggerFlat,
+	StickInputGroupDef, ButtonInputGroupDef, ButtonGridInputGroupDef, ButtonRingInputGroupDef,
+	DPadInputGroupDef, TriggerInputGroupDef,
+	ButtonValueDef, DPadValueDef,
+	ButtonRingValueDef,
+	ButtonRingCircleValueDef, ButtonRingRectValueDef, ButtonRingTriangleValueDef, ButtonRingN64CValueDef, ButtonRingGCXYValueDef,
+	ButtonGridValueDef, ButtonGridShapeValueDef,
+	ButtonGridCircleValueDef, ButtonGridRectValueDef, ButtonGridTriangleValueDef, ButtonGridN64CValueDef, ButtonGridGCXYValueDef,
+	StickValueDef, StickShapeValueDef,
+	TriggerValueDef, TriggerFlatValueDef,
 } from './inputs'
 
 
@@ -169,4 +179,58 @@ export const WidgetTypeMap:{[key:number]:Component<WidgetProps>} = {
 	[WidgetType.Trigger]:				WTrigger,
 	[WidgetType.TriggerCurved]:			WTriggerCurved,
 	[WidgetType.TriggerFlat]:			WTriggerFlat,
-}
+} as const
+
+export const WidgetInputDefMap:{[key:number]:InputPickerDef} = {
+	[WidgetType.StickCircle]:			StickInputGroupDef,
+	[WidgetType.StickSquare]:			StickInputGroupDef,
+	[WidgetType.StickGC]:				StickInputGroupDef,
+	[WidgetType.StickN64]:				StickInputGroupDef,
+	[WidgetType.StickHori]:				StickInputGroupDef,
+	[WidgetType.StickRound]:			StickInputGroupDef,
+	[WidgetType.Stick]:					StickInputGroupDef,
+	[WidgetType.Button]:				ButtonInputGroupDef,
+	[WidgetType.ButtonRing]:			ButtonRingInputGroupDef,
+	[WidgetType.ButtonRingCircle]:		ButtonRingInputGroupDef,
+	[WidgetType.ButtonRingRect]:		ButtonRingInputGroupDef,
+	[WidgetType.ButtonRingTriangle]:	ButtonRingInputGroupDef,
+	[WidgetType.ButtonRingN64C]:		ButtonRingInputGroupDef,
+	[WidgetType.ButtonRingGCXY]:		ButtonRingInputGroupDef,
+	[WidgetType.ButtonGrid]:			ButtonGridInputGroupDef,
+	[WidgetType.ButtonGridCircle]:		ButtonGridInputGroupDef,
+	[WidgetType.ButtonGridRect]:		ButtonGridInputGroupDef,
+	[WidgetType.ButtonGridTriangle]:	ButtonGridInputGroupDef,
+	[WidgetType.ButtonGridN64C]:		ButtonGridInputGroupDef,
+	[WidgetType.ButtonGridGCXY]:		ButtonGridInputGroupDef,
+	[WidgetType.DPad]:					DPadInputGroupDef,
+	[WidgetType.Trigger]:				TriggerInputGroupDef,
+	[WidgetType.TriggerCurved]:			TriggerInputGroupDef,
+	[WidgetType.TriggerFlat]:			TriggerInputGroupDef,
+} as const
+
+export const WidgetValueDefMap:{[key:number]:ValuePickerDef} = {
+	[WidgetType.StickCircle]:			StickShapeValueDef,
+	[WidgetType.StickSquare]:			StickShapeValueDef,
+	[WidgetType.StickGC]:				StickShapeValueDef,
+	[WidgetType.StickN64]:				StickShapeValueDef,
+	[WidgetType.StickHori]:				StickShapeValueDef,
+	[WidgetType.StickRound]:			StickShapeValueDef,
+	[WidgetType.Stick]:					StickValueDef,
+	[WidgetType.Button]:				ButtonValueDef,
+	[WidgetType.ButtonRing]:			ButtonRingValueDef,
+	[WidgetType.ButtonRingCircle]:		ButtonRingCircleValueDef,
+	[WidgetType.ButtonRingRect]:		ButtonRingRectValueDef,
+	[WidgetType.ButtonRingTriangle]:	ButtonRingTriangleValueDef,
+	[WidgetType.ButtonRingN64C]:		ButtonRingN64CValueDef,
+	[WidgetType.ButtonRingGCXY]:		ButtonRingGCXYValueDef,
+	[WidgetType.ButtonGrid]:			ButtonGridValueDef,
+	[WidgetType.ButtonGridCircle]:		ButtonGridCircleValueDef,
+	[WidgetType.ButtonGridRect]:		ButtonGridRectValueDef,
+	[WidgetType.ButtonGridTriangle]:	ButtonGridTriangleValueDef,
+	[WidgetType.ButtonGridN64C]:		ButtonGridN64CValueDef,
+	[WidgetType.ButtonGridGCXY]:		ButtonGridGCXYValueDef,
+	[WidgetType.DPad]:					DPadValueDef,
+	[WidgetType.Trigger]:				TriggerValueDef,
+	[WidgetType.TriggerCurved]:			TriggerValueDef,
+	[WidgetType.TriggerFlat]:			TriggerFlatValueDef,
+} as const

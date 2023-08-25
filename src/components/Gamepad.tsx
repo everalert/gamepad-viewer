@@ -1,7 +1,6 @@
 import type { Setter, Accessor } from 'solid-js'
 import { onMount, onCleanup } from 'solid-js'
-import type { GamepadState } from '../types/gamepad'
-import { GamepadInputType, resetPool, resizePool } from '../types/gamepad'
+import { GamepadState } from '../types/gamepad'
 
 
 interface GamepadProps {
@@ -12,32 +11,31 @@ interface GamepadProps {
 
 
 export const Gamepad = ({ onUpdate, pad, padIndex }: GamepadProps) => {
-	onMount(() => {
-		function loop(t) {
-			const gamepads = navigator.getGamepads()
+	let frame
 
-			if (gamepads && gamepads[padIndex]) {
-				const gamepad = gamepads[padIndex]
+	function loop(t) {
+		const gamepads = navigator.getGamepads()
+
+		if (gamepads && gamepads[padIndex]) {
+			const gamepad = gamepads[padIndex]
+			if (!pad() || pad().timestamp !== gamepad.timestamp) {
 				const state: GamepadState = pad() ?
-					{...pad()} : { index:padIndex, inputs:[] }
-				resetPool(state.inputs)
-				resizePool(state.inputs, gamepad.axes.length+gamepad.buttons.length)
-				gamepad.axes.forEach((a,i) => state.inputs.find(p => p.free)
-					.init(GamepadInputType.Axis,i,a))
-				gamepad.buttons.forEach((b,i) => state.inputs.find(p => p.free)
-					.init(GamepadInputType.Button,i,b.value,b.pressed))
+					Object.assign(Object.create(Object.getPrototypeOf(pad())),pad()) :
+					new GamepadState(padIndex)
+				state.update(gamepad)
 				onUpdate(state)
 			}
-			
-			requestAnimationFrame(loop)
-
-			// won't ever run even tho this pattern was stolen from solidjs docs? lol
-			//onCleanup(() => cancelAnimationFrame(frame))
 		}
-		requestAnimationFrame(loop)
-	})
+
+		frame = requestAnimationFrame(loop)
+	}
+
+	onMount(() => { frame = requestAnimationFrame(loop) })
+
+	onCleanup(() => cancelAnimationFrame(frame))
 
 	return null
 }
+
 
 export default Gamepad

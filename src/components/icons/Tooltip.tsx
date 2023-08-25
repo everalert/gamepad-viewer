@@ -1,11 +1,11 @@
 import type { Component } from 'solid-js'
-import { InlineInfoCircleIcon, InlineInfoCircleIconOutline } from './shapes'
+import { InlineInfoCircleIconSmall } from './shapes'
 import { IconProps, IconWrapper } from './wrapper'
 
 
 export const Tooltip: Component<IconProps> = (props:IconProps) => <IconWrapper
-	iconOn={InlineInfoCircleIcon}
-	iconOff={InlineInfoCircleIconOutline}
+	iconOn={InlineInfoCircleIconSmall}
+	iconOff={InlineInfoCircleIconSmall}
 	class={props.class||''}
 	style={props.style||''}
 />

@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js'
 
 
-interface InlineIcon {
+export interface InlineIcon {
 	class?: string;
 	style?: string;
 }
@@ -12,7 +12,7 @@ interface InlineIcon {
 
 export const InlinePencilSquareIcon: Component<InlineIcon> = (props: InlineIcon) => <svg
 	xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-	class={`w-full h-full ${props.class||''}`}
+	class={`${props.class||'w-full h-full'}`}
 	style={props.style||''}>
 	<path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
 	<path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
@@ -122,6 +122,24 @@ export const InlineInfoCircleIconOutline: Component<InlineIcon> = (props: Inline
 	style={props.style||''}>
 	<path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
 </svg>
+
+export const InlineInfoCircleIconSmall: Component<InlineIcon> = (props: InlineIcon) => <svg
+	xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+	class={`w-full h-full ${props.class||''}`}
+	style={props.style||''}>
+	<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+</svg>
+
+
+// viewfinder-circle
+export const InlineViewfinderIcon: Component<InlineIcon> = (props: InlineIcon) => <svg
+	xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+	class={`w-full h-full ${props.class||''}`}
+	style={props.style||''}>
+	<path d="M6 3a3 3 0 00-3 3v1.5a.75.75 0 001.5 0V6A1.5 1.5 0 016 4.5h1.5a.75.75 0 000-1.5H6zM16.5 3a.75.75 0 000 1.5H18A1.5 1.5 0 0119.5 6v1.5a.75.75 0 001.5 0V6a3 3 0 00-3-3h-1.5zM12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5zM4.5 16.5a.75.75 0 00-1.5 0V18a3 3 0 003 3h1.5a.75.75 0 000-1.5H6A1.5 1.5 0 014.5 18v-1.5zM21 16.5a.75.75 0 00-1.5 0V18a1.5 1.5 0 01-1.5 1.5h-1.5a.75.75 0 000 1.5H18a3 3 0 003-3v-1.5z" />
+</svg>
+
+
 
 // TODO: COPY
 // 'document-duplicate' or 'clipboard-document' from heroicons

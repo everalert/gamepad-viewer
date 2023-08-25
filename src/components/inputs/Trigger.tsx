@@ -1,7 +1,8 @@
 import type { JSXElement } from 'solid-js'
 import { Show } from 'solid-js'
 import { Widget, WidgetProps } from '../Widget'
-import { getInputMap } from '../../types/gamepad'
+import type { InputPickerDef, ValuePickerDef } from '../ui'
+import { Slider, Checkbox } from '../ui'
 import { clamp, rc2rad, rc2deg } from '../../helpers/math'
 
 
@@ -23,6 +24,31 @@ interface TriggerProps {
 	line: number;
 	style?: string;
 	class?: string;
+}
+
+export const TriggerInputGroupDef: InputPickerDef = {
+	min: 1,
+	max: 2,
+	labels: [
+		'trigger',
+		'bumper',
+	],
+}
+
+export const TriggerValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'height' },
+		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
+}
+
+export const TriggerFlatValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'height' },
+		{ celement:null },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
 }
 
 const MARK_HSCALE = 2.25
@@ -113,7 +139,8 @@ export const Trigger = (props: TriggerProps) => {
 }
 
 export const WTrigger = (props: WidgetProps): JSXElement => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Trigger
@@ -129,7 +156,8 @@ export const WTrigger = (props: WidgetProps): JSXElement => {
 }
 
 export const WTriggerCurved = (props: WidgetProps): JSXElement => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Trigger
@@ -145,7 +173,8 @@ export const WTriggerCurved = (props: WidgetProps): JSXElement => {
 }
 
 export const WTriggerFlat = (props: WidgetProps): JSXElement => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Trigger

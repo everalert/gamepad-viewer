@@ -2,7 +2,8 @@ import type { JSXElement } from 'solid-js'
 import { Index } from 'solid-js'
 import { ButtonShape, ButtonInlineMap } from './'
 import { Widget, WidgetProps } from '../Widget'
-import { getInputMap } from '../../types/gamepad'
+import type { InputPickerDef, ValuePickerDef } from '../ui'
+import { Slider, Checkbox, Dropdown } from '../ui'
 
 
 interface ButtonGridProps {
@@ -18,6 +19,102 @@ interface ButtonGridProps {
 	shape: ButtonShape[];
 	class?: string;
 	style?: string;
+}
+
+export const ButtonGridInputGroupDef: InputPickerDef = {
+	min: 2,
+	labels: ['from top-left by row'],
+}
+
+const ButtonShapeList = Object.keys(ButtonShape)
+.filter(k => Number.isInteger(parseInt(k)) && parseInt(k)<ButtonShape.MAX)
+.map(k => {
+	return { value:parseInt(k), label:ButtonShape[k], faded:parseInt(k)===ButtonShape.NONE }})
+
+export const ButtonGridValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'columns' },
+		{ celement:Slider, cprops:{ min:0 }, label:'x-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'y-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'dimension 1' },
+		{ celement:Slider, cprops:{ min:0 }, label:'dimension 2' },
+		{ celement:Slider, cprops:{ min:0, max:5, stepMove:8 }, label:'dimension 3' },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+		{ celement:Dropdown, cprops:{ list:ButtonShapeList, width:'w-[6.35rem]' }, label:'shape' },
+	],
+	repeatLast: true,
+}
+
+export const ButtonGridShapeValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'columns' },
+		{ celement:Slider, cprops:{ min:0 }, label:'x-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'y-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'dimension 1' },
+		{ celement:Slider, cprops:{ min:0 }, label:'dimension 2' },
+		{ celement:Slider, cprops:{ min:0, max:5, stepMove:8 }, label:'dimension 3' },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
+}
+
+export const ButtonGridCircleValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'columns' },
+		{ celement:Slider, cprops:{ min:0 }, label:'x-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'y-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
+		{ celement:null },
+		{ celement:null },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
+}
+
+export const ButtonGridRectValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'columns' },
+		{ celement:Slider, cprops:{ min:0 }, label:'x-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'y-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'x-size' },
+		{ celement:Slider, cprops:{ min:0 }, label:'y-size' },
+		{ celement:null },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
+}
+
+export const ButtonGridTriangleValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'columns' },
+		{ celement:Slider, cprops:{ min:0 }, label:'x-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'y-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'x-size' },
+		{ celement:Slider, cprops:{ min:0 }, label:'y-size' },
+		{ celement:null },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
+}
+
+export const ButtonGridN64CValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'columns' },
+		{ celement:Slider, cprops:{ min:0 }, label:'x-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'y-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
+		{ celement:null },
+		{ celement:null },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
+}
+
+export const ButtonGridGCXYValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'columns' },
+		{ celement:Slider, cprops:{ min:0 }, label:'x-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'y-step' },
+		{ celement:Slider, cprops:{ min:0 }, label:'curvature' },
+		{ celement:Slider, cprops:{ min:0 }, label:'angle range' },
+		{ celement:Slider, cprops:{ min:0 }, label:'thickness' },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
 }
 
 
@@ -57,7 +154,8 @@ export const ButtonGrid = (props: ButtonGridProps): JSXElement => {
 
 
 export const WButtonGrid = (props: WidgetProps): JSXElement => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<ButtonGrid
@@ -76,7 +174,8 @@ export const WButtonGrid = (props: WidgetProps): JSXElement => {
 }
 
 const WButtonGridShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
-	const inputs = () => getInputMap(props.p.pad?.inputs, props.p.def.inputs)
+	const inputs = () => props.p.pad?.mapInputs(props.p.def.inputs)
+		|| new Array(props.p.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.p.def} container={props.p.container}>
 		<ButtonGrid

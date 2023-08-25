@@ -2,8 +2,9 @@ import type { JSXElement } from 'solid-js'
 import { Index } from 'solid-js'
 import { ButtonShape, ButtonInlineMap } from './'
 import { Widget, WidgetProps } from '../Widget'
+import type { InputPickerDef, ValuePickerDef } from '../ui'
+import { Slider, Checkbox, Dropdown } from '../ui'
 import { deg2rad } from '../../helpers/math'
-import { getInputMap } from '../../types/gamepad'
 
 
 interface ButtonRingProps {
@@ -18,6 +19,89 @@ interface ButtonRingProps {
 	simple?: boolean;
 	class?: string;
 	style?: string;
+}
+
+export const ButtonRingInputGroupDef: InputPickerDef = {
+	min: 2,
+	labels: ['right button','clockwise'],
+}
+
+const ButtonShapeList = Object.keys(ButtonShape)
+.filter(k => Number.isInteger(parseInt(k)) && parseInt(k)<ButtonShape.MAX)
+.map(k => {
+	return { value:parseInt(k), label:ButtonShape[k], faded:parseInt(k)===ButtonShape.NONE }})
+
+export const ButtonRingValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
+		{ celement:Slider, cprops:{ min:0 }, label:'dimension 1' },
+		{ celement:Slider, cprops:{ min:0 }, label:'dimension 2' },
+		{ celement:Slider, cprops:{ min:0 }, label:'dimension 3' },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+		{ celement:Checkbox, cprops:{ label:'rotate' }, isBool:true },
+		{ celement:Dropdown, cprops:{ list:ButtonShapeList, width:'w-[6.35rem]' }, label:'shape' },
+	],
+	repeatLast: true,
+}
+
+export const ButtonRingShapeValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'ring radius' },
+		{ celement:Slider, cprops:{ min:0 }, label:'dimension 1' },
+		{ celement:Slider, cprops:{ min:0 }, label:'dimension 2' },
+		{ celement:Slider, cprops:{ min:0 }, label:'dimension 3' },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
+}
+
+export const ButtonRingCircleValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'ring radius' },
+		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
+		{ celement:null },
+		{ celement:null },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
+}
+
+export const ButtonRingRectValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'ring radius' },
+		{ celement:Slider, cprops:{ min:0 }, label:'x-size' },
+		{ celement:Slider, cprops:{ min:0 }, label:'y-size' },
+		{ celement:Slider, cprops:{ min:0, max:5, stepMove:8 }, label:'rounding' },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
+}
+
+export const ButtonRingTriangleValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'ring radius' },
+		{ celement:Slider, cprops:{ min:0 }, label:'x-size' },
+		{ celement:Slider, cprops:{ min:0 }, label:'y-size' },
+		{ celement:null },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
+}
+
+export const ButtonRingN64CValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'ring radius' },
+		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
+		{ celement:null },
+		{ celement:null },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
+}
+
+export const ButtonRingGCXYValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'ring radius' },
+		{ celement:Slider, cprops:{ min:0 }, label:'curvature' },
+		{ celement:Slider, cprops:{ min:0 }, label:'angle range' },
+		{ celement:Slider, cprops:{ min:0 }, label:'thickness' },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
 }
 
 
@@ -55,7 +139,8 @@ export const ButtonRing = (props: ButtonRingProps): JSXElement => {
 
 
 export const WButtonRing = (props: WidgetProps): JSXElement => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<ButtonRing
@@ -73,7 +158,8 @@ export const WButtonRing = (props: WidgetProps): JSXElement => {
 }
 
 const WButtonRingShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
-	const inputs = () => getInputMap(props.p.pad?.inputs, props.p.def.inputs)
+	const inputs = () => props.p.pad?.mapInputs(props.p.def.inputs)
+		|| new Array(props.p.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.p.def} container={props.p.container}>
 		<ButtonRing

@@ -51,7 +51,7 @@ export interface WidgetContainerProps {
 
 export const WidgetContainer = (props: WidgetContainerProps) => {
 	return <div
-		class={`relative ${props.class||''}`}
+		class={`sticky top-0 ${props.class||''}`}
 		style={`width:${props.def.w}px; height:${props.def.h}px; ${props.style||''}`}
 		>
 		<For each={props.widgets}>{w => w.hide ? null : (

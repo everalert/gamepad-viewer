@@ -1,7 +1,8 @@
 import type { Component } from 'solid-js'
 import { Widget, WidgetProps } from '../Widget'
+import type { InputPickerDef, ValuePickerDef } from '../ui'
+import { Slider } from '../ui'
 import { AbC2a, AbC2h } from '../../helpers/math'
-import { getInputMap } from '../../types/gamepad'
 
 
 interface StickProps {
@@ -14,6 +15,30 @@ interface StickProps {
 	line: number;
 	class?: string;
 	style?: string;
+}
+
+export const StickInputGroupDef: InputPickerDef = {
+	min: 3,
+	max: 3,
+	labels: [
+		'x-axis',
+		'y-axis',
+		'button',
+	],
+}
+
+export const StickValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
+		{ celement:Slider, cprops:{ min:0 }, label:'segment angle' },
+		{ celement:Slider, cprops:{ min:0 }, label:'segment radius' },
+	],
+}
+
+export const StickShapeValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
+	],
 }
 
 const DOT_RSCALE	= 1.25	// radius
@@ -124,7 +149,8 @@ ${props.style||''}`}
 }
 
 export const WStick:Component = (props: WidgetProps) => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
@@ -140,7 +166,8 @@ export const WStick:Component = (props: WidgetProps) => {
 }
 
 export const WStickCircle:Component = (props: WidgetProps) => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
@@ -156,7 +183,8 @@ export const WStickCircle:Component = (props: WidgetProps) => {
 }
 
 export const WStickSquare:Component = (props: WidgetProps) => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
@@ -172,7 +200,8 @@ export const WStickSquare:Component = (props: WidgetProps) => {
 }
 
 export const WStickN64:Component = (props: WidgetProps) => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
@@ -188,7 +217,8 @@ export const WStickN64:Component = (props: WidgetProps) => {
 }
 
 export const WStickHori:Component = (props: WidgetProps) => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
@@ -204,7 +234,8 @@ export const WStickHori:Component = (props: WidgetProps) => {
 }
 
 export const WStickGC:Component = (props: WidgetProps) => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
@@ -220,7 +251,8 @@ export const WStickGC:Component = (props: WidgetProps) => {
 }
 
 export const WStickRound:Component = (props: WidgetProps) => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick

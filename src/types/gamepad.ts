@@ -1,12 +1,19 @@
 export enum GamepadInputType {
-	Axis,
-	Button,
+	NONE	= -2,
+	BLANK	= -1,
+	Axis	= 0,
+	Button	= 1,
 }
 
 
 export type GamepadInputDef = {
 	type: GamepadInputType; 
 	index: number;
+}
+
+export const DFLT_GAMEPADINPUTDEF: GamepadInputDef = {
+	type: GamepadInputType.BLANK,
+	index: 0,
 }
 
 // NOTE: for use as shorthand
@@ -59,21 +66,54 @@ export class GamepadInput {
 
 //FIXME: revisit using a pool/not constantly instantiating objects, for gamepadstate too
 //FIXME: also, need to store input maps and not regenerate them every widget redraw
-export type GamepadState = {
+export class GamepadState {
 	index: number;
-	inputs: GamepadInput[];
-	//getInputMap(defs:GamepadInputDef[]):number[]
-	//getFromPool()
-	//update(pad:Gamepad):null // from the web gamepad api
-}
+	timestamp: DOMHighResTimeStamp;
+	inputs: GamepadInput[] = [];
+	private firstPressedCache:{t:DOMHighResTimeStamp,v:number} = {t:null,v:null};
+	
+	constructor(index:number) {
+		this.index = index
+	}
 
-export const getInputMap = (inputs:GamepadInput[], defs:GamepadInputDef[]): GamepadInput[] => {
-	return defs?.map(d => inputs?.find(i => d.type===i.type && d.index===i.index)) || []
-}
+	update(pad:Gamepad) {
+		this.timestamp = pad.timestamp
+		
+		this.resetPool()
+		this.resizePool(pad.axes.length+pad.buttons.length)
+		pad.axes.forEach((a,i) => this.inputs.find(p => p.free)
+			.init(GamepadInputType.Axis,i,a))
+		pad.buttons.forEach((b,i) => this.inputs.find(p => p.free)
+			.init(GamepadInputType.Button,i,b.value,b.pressed))
 
-export const resetPool = (pool:GamepadInput[]) => pool.forEach(i => i.reset())
+		if (this.firstPressedCache.v !== this.firstPressedIndex) {
+			document.dispatchEvent(new CustomEvent('pad:newFirstPressed', {
+				detail: {
+					index: this.firstPressedIndex,
+					value: this.firstPressed,
+				}
+			}))
+		}
+	}
 
-export const resizePool = (pool:GamepadInput[], size:number) => {
-	while (pool.length < size) pool.push(new GamepadInput())
-	while (pool.length > size) pool.pop()
+	mapInputs(defs:GamepadInputDef[]): GamepadInput[] {
+		return defs?.map(d => this.inputs?.find(i => d.type===i.type && d.index===i.index) || null)
+	}
+
+	resizePool(size:number):void {
+		while (this.inputs.length < size) this.inputs.push(new GamepadInput())
+		while (this.inputs.length > size) this.inputs.pop()
+	}
+
+	resetPool():void { this.inputs.forEach(i => i.reset()) }
+
+	get firstPressedIndex():number {
+		if (this.firstPressedCache.t !== this.timestamp) {
+			this.firstPressedCache.t = this.timestamp
+			this.firstPressedCache.v = this.inputs.findIndex(i => i.pressed)
+		}
+		return this.firstPressedCache.v
+	}
+
+	get firstPressed():GamepadInput { return this.inputs[this.firstPressedIndex] }
 }

@@ -4,7 +4,7 @@ import { clamp, wrap } from '../../helpers/math'
 
 interface SliderProps {
 	value: number;
-	setVal: (n:number)=>void;
+	setValFn: (n:number)=>void;
 	label?: string;
 	unit?: string;
 	min?: number;
@@ -40,7 +40,7 @@ export const Slider: Component<SliderProps> = (props: SliderProps) => {
 	const step = (e:KeyboardEvent|MouseEvent) => (props.step||1)*(e.shiftKey?10:1)
 
 	const realSetVal = (n:number) =>
-		props.setVal(props?.wrap ?
+		props.setValFn(props?.wrap ?
 			wrap(n,min(),range()) : Math.max(min(),Math.min(max(),n)))
 
 	const inc = (e:KeyboardEvent|MouseEvent) =>  {
@@ -129,7 +129,7 @@ export const Slider: Component<SliderProps> = (props: SliderProps) => {
 		class={`flex flex-col items-start`}
 		>
 		<Show when={props.label}>
-			<div class='flex gap-1'>{props.label}</div>
+			<div class='px-1 text-gray-300'>{props.label}</div>
 		</Show>
 		<div class='flex gap-[1px] overflow-hidden rounded-md'>
 			<div

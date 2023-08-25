@@ -1,7 +1,8 @@
 import type { JSXElement } from 'solid-js'
 import { Index } from 'solid-js'
 import { Widget, WidgetProps } from '../Widget'
-import { getInputMap } from '../../types/gamepad'
+import type { InputPickerDef, ValuePickerDef } from '../ui'
+import { Slider } from '../ui'
 import { deg2rad, rotVec2x, rotVec2y } from '../../helpers/math'
 
 
@@ -12,6 +13,18 @@ interface DPadProps {
 	line: number;
 	class?: string;
 	style?: string;
+}
+
+export const DPadInputGroupDef: InputPickerDef = {
+	min: 2,
+	labels: ['right button','clockwise'],
+}
+
+export const DPadValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Slider, cprops:{ min:0 }, label:'length' },
+		{ celement:Slider, cprops:{ min:0 }, label:'thickness' },
+	],
 }
 
 const RADIUS_FACTOR = 0.30  // original design = 8px/28px = 0.285
@@ -45,6 +58,7 @@ Q	${ w()/2 + rv2x(ox(), -oy(), i) }
 	${ w()/2 + rv2y(ox()-rad(), -oy(), i) }`
 
 	const dfull = () => `M ${props.on.map((o,i) => arm(i)).join(' L ')} Z`
+
 	const darm = (i:number) => `M ${arm(i)}
 L	${ w()/2 + rv2x(ix(), -iy(), i) }
 	${ w()/2 + rv2y(ix(), -iy(), i) }
@@ -76,7 +90,8 @@ Z`
 }
 
 export const WDPad = (props: WidgetProps): JSXElement => {
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<DPad

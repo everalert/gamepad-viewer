@@ -1,7 +1,8 @@
 import type { Component } from 'solid-js'
 import { Widget, WidgetProps } from '../Widget'
+import type { InputPickerDef, ValuePickerDef } from '../ui'
+import { Slider, Checkbox, Dropdown } from '../ui'
 import { deg2rad, ang, mag, rotVec2x, rotVec2y } from '../../helpers/math'
-import { getInputMap } from '../../types/gamepad'
 
 
 interface ButtonInlineProps {
@@ -27,6 +28,28 @@ export enum ButtonShape {
 	//Trapezium,
 	N64C	= 5,
 	GCXY	= 6,
+	MAX
+}
+
+export const ButtonInputGroupDef: InputPickerDef = {
+	max: 1,
+	//labels:[]
+}
+
+const ButtonShapeList = Object.keys(ButtonShape)
+.filter(k => Number.isInteger(parseInt(k)) && parseInt(k)<ButtonShape.MAX)
+.map(k => {
+	return { value:parseInt(k), label:ButtonShape[k], faded:parseInt(k)===ButtonShape.NONE }})
+
+export const ButtonValueDef: ValuePickerDef = {
+	defs: [
+		{ celement:Dropdown, cprops:{ list:ButtonShapeList, width:'w-[6.35rem]' }, label:'shape' },
+		{ celement:Slider, cprops:{ min:0 }, label:'dimension 1' },
+		{ celement:Slider, cprops:{ min:0 }, label:'dimension 2' },
+		{ celement:Slider, cprops:{ min:0, max:5, stepMove:8 }, label:'dimension 3' },
+		{ celement:Slider, cprops:{ min:0, max:360, wrap:true, unit:'°' }, label:'rotation' },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+	],
 }
 
 
@@ -201,7 +224,8 @@ export const WButton = (props: WidgetProps) => {
 	const d2 = () => props.def.val[2] || 16
 	const m = () => props.container.line*2
 	const w = () => (m()+Math.max(d1(),d2())*2)*2
-	const inputs = () => getInputMap(props.pad?.inputs, props.def.inputs)
+	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+		|| new Array(props.def.inputs.length).fill(false)
 	const shape = () => ButtonInlineMap[props.def.val[0]] || ButtonInlineMap[ButtonShape.Circle]
 	const Btn = shape()
 	return <Widget

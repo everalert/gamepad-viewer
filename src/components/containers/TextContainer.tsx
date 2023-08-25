@@ -1,7 +1,7 @@
 import type { JSXElement } from 'solid-js';
 import { For, Show } from 'solid-js';
 import type { GamepadState, GamepadInputDef } from '../../types/gamepad'
-import { inputDefCmp, getInputMap } from '../../types/gamepad'
+import { inputDefCmp } from '../../types/gamepad'
 import { StickText, TriggerText } from '../inputs'
 import { WidgetType, WidgetDef } from '../Widget'
 
@@ -18,15 +18,16 @@ export const TextContainer = (props: TextContainerProps):JSXElement => {
 	const sticks = () => props.widgets
 		.filter(w => WidgetType[w.type].includes('Stick'))
 		.map(w => w.inputs)
-		.reduce((a:GamepadInputDef[][], p:GamepadInputDef[]) => { return a.find(e =>
-			inputDefCmp(e[0],p[0])===0 && inputDefCmp(e[1],p[1])===0)
-			? a : [...a, p] }, [])
+		.reduce((a:GamepadInputDef[][], p:GamepadInputDef[]) => 
+			a.find(e => inputDefCmp(e[0],p[0])===0 && inputDefCmp(e[1],p[1])===0) ?
+			a : [...a, p], [])
 	
 	const triggers = () => props.widgets
 		.filter(w => WidgetType[w.type].includes('Trigger'))
 		.map(w => w.inputs)
 	
-	const inputs = (di:GamepadInputDef[]) => getInputMap(props.pad?.inputs, di)
+	const inputs = (di:GamepadInputDef[]) => props.pad?.mapInputs(di)
+		|| new Array(di?.length||0).fill(false)
 
 	return <div
 		class={`flex justify-center gap-4 text-lg ${props.class}`}
