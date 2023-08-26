@@ -1,6 +1,7 @@
 import type { Component } from 'solid-js'
-import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
+import { Show } from 'solid-js'
+import { Widget, WidgetProps } from '../Widget'
 import { Slider, Checkbox, Dropdown } from '../ui'
 import { deg2rad, ang, mag, rotVec2x, rotVec2y } from '../../helpers/math'
 
@@ -43,7 +44,8 @@ const ButtonShapeList = Object.keys(ButtonShape)
 
 export const ButtonValueDef: ValuePickerDef = {
 	defs: [
-		{ celement:Dropdown, cprops:{ list:ButtonShapeList, width:'w-[6.35rem]' }, label:'shape' },
+		{ celement:Dropdown, label:'shape',
+			cprops:{ list:ButtonShapeList, width:'w-[6.35rem]', max:ButtonShape.MAX-1 } },
 		{ celement:Slider, cprops:{ min:0 }, label:'dimension 1' },
 		{ celement:Slider, cprops:{ min:0 }, label:'dimension 2' },
 		{ celement:Slider, cprops:{ min:0, max:5, stepMove:8 }, label:'dimension 3' },
@@ -226,8 +228,9 @@ export const WButton = (props: WidgetProps) => {
 	const w = () => (m()+Math.max(d1(),d2())*2)*2
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
-	const shape = () => ButtonInlineMap[props.def.val[0]] || ButtonInlineMap[ButtonShape.Circle]
-	const Btn = shape()
+//	const shape = () => ButtonInlineMap[props.def.val[0]] || ButtonInlineMap[ButtonShape.Circle]
+//	const Btn = shape()
+	const Btn = ButtonInlineMap[props.def.val[0]] || null
 	return <Widget
 		widget={props.def} container={props.container}>
 		<svg version='1.1' xmlns='http://www.w3.org/2000/svg'
@@ -235,17 +238,19 @@ export const WButton = (props: WidgetProps) => {
 			height={w()}
 			style={`margin-left:-${w()/2}px; margin-top:-${w()/2}px;`}
 			>
-			<Btn
-				x		= { w()/2 }
-				y		= { w()/2 }
-				on		= { inputs()[0]?.pressed || false }
-				d1		= { d1() }
-				d2		= { d2() }
-				d3		= { props.def.val[3] || 0 }
-				angle	= { props.def.val[4] || 0 }
-				simple	= { props.def.val[5]>0 || false }
-				w		= { props.container.line || 3 }
-			/>
+			<Show when={Btn}>
+				<Btn
+					x		= { w()/2 }
+					y		= { w()/2 }
+					on		= { inputs()[0]?.pressed || false }
+					d1		= { d1() }
+					d2		= { d2() }
+					d3		= { props.def.val[3] || 0 }
+					angle	= { props.def.val[4] || 0 }
+					simple	= { props.def.val[5]>0 || false }
+					w		= { props.container.line || 3 }
+				/>
+			</Show>
 		</svg>
 	</Widget>
 }
