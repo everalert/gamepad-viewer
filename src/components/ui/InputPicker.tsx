@@ -62,11 +62,11 @@ export const InputPicker = (props: InputPickerProps): JSXElement => {
 
 	const checkPadReady = (i:number) => {
 		const p = props.pad().firstPressedIndex
-		if (!padReady() && p<0)
-		setPadReady(true)
-		else if (padReady() && p>=0) {
+		if (!padReady() && p<0) {
+			setPadReady(true)
+		} else if (padReady() && p>=0) {
 			const b:GamepadInput = props.pad().firstPressed
-		setVal({ type:b.type, index:b.index }, i)
+			setVal({ type:b.type, index:b.index }, i)
 			setPadReady(false)
 		}
 	}
@@ -94,10 +94,11 @@ export const InputPicker = (props: InputPickerProps): JSXElement => {
 			inputs
 			<Tooltip text='set an input by pressing it on your controller' />
 		</div>
+
 		<Show
 			when={props.pad()?.inputs}
-			fallback=<div class='text-sm text-gray-500 leading-4'>
-				activate a controller<br/>to set inputs</div>
+			fallback={<div class='text-sm text-gray-500 leading-4'>
+				activate a controller<br/>to set inputs</div>}
 			>
 			<Index each={v()}>{(input,i) => {
 				return <div class='flex gap-2 items-center'>
@@ -116,6 +117,7 @@ export const InputPicker = (props: InputPickerProps): JSXElement => {
 					<div class='px-1 text-sm text-gray-500'>{label(i)}</div>
 				</div>
 			}}</Index>
+
 			<Show when={v().length<max()}>
 				<div class='flex gap-2 items-center opacity-75'>
 					<div class='w-[10.65rem]'>

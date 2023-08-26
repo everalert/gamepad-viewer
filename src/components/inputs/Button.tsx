@@ -33,7 +33,7 @@ export enum ButtonShape {
 
 export const ButtonInputGroupDef: InputPickerDef = {
 	max: 1,
-	//labels:[]
+	labels:[]
 }
 
 const ButtonShapeList = Object.keys(ButtonShape)
