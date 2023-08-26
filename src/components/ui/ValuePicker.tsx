@@ -1,7 +1,8 @@
 import type { JSXElement, Component, Accessor } from 'solid-js'
 import type { WidgetDef } from '../Widget'
-import { Index, Show, createEffect, createMemo } from 'solid-js'
+import { For, Index, Show, createSignal, createEffect, createMemo } from 'solid-js'
 import { WidgetValueDefMap } from '../Widget'
+import { clamp } from '../../helpers/math'
 
 
 type BCElem = Component<{value:any;setValFn:(v:boolean)=>void;[key:string]:any}>;
@@ -31,25 +32,37 @@ export const ValuePicker = (props: ValuePickerProps): JSXElement => {
 	const v = () => props.widget().val
 	const vlen = () => v().length
 	const vslice = (i1:number, i2:number) => v().slice(i1,i2)
+	const [vclean, setVclean] = createSignal<boolean>(true)
 	
 	const max = () => drepeat() ? Number.MAX_SAFE_INTEGER : ddefs().length
 	const min = () => ddefs().length
 
-	const setVal = (value:number, i:number) =>
-		props.setVals([...vslice(0,i), value, ...vslice(i+1,vlen())]
-			.filter((val,i) => !(val<0 && i>=min()))
-			.map((val,i) => ddefs()[Math.min(min()-1,i)].celement ? val : 0))
+	const setVal = (value:number, i:number) => {
+		props.setVals([...vslice(0,i), value, ...vslice(i+1,vlen())])
+		setVclean(false)
+	}
 	
 	const clearVal = (i:number) => setVal(v()[i]>0 || i<min() ? 0 : -1, i)
+	
+	createEffect(() => { if (ddefs()) setVclean(false) })
 
 	createEffect(() => {
-		if (vlen()<min() || vlen()>max()) {
+		if (!vclean()){
 			const newVals = [...v()]
 			while (newVals.length < min()) newVals.push(0)
 			while (newVals.length > max()) newVals.pop()
-			props.setVals(newVals)
+			props.setVals(newVals
+				.filter((val,i) => !(val<0 && i>=min()))
+				.map((val,i) => {
+					const def = ddefs()[Math.min(min()-1,i)]
+					if (!def.celement) return 0
+					if (def.isBool) return val>0 ? 1 : 0
+					return clamp(val, def.cprops?.min||0, def.cprops?.max||Number.MAX_SAFE_INTEGER)
+			}))
+			setVclean(true)
 		}
 	})
+
 
 	return <div class='flex flex-col gap-1 w-60'>
 		<div class='px-1 text-gray-300'>values</div>
