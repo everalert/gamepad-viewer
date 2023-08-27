@@ -1,16 +1,18 @@
-import { Show, Component, createSignal } from 'solid-js'
+import { JSXElement, Show, Component, createSignal, children } from 'solid-js'
 import { Portal } from 'solid-js/web'
 import { Tooltip as TooltipIcon } from '../icons'
 
 
 interface TooltipProps {
 	text?: string;
+	children?: JSXElement;
 }
 
 
 export const Tooltip: Component<TooltipProps> = (props: TooltipProps) => {
 	const [hover, setHover] = createSignal<boolean>(false)
 	const [rect, setRect] = createSignal<DOMRect>()
+	const newChildren = children(()=>props.children)
 
 	const position = () => {
 		const x = rect()?.left < window.innerWidth-rect()?.right ?
@@ -29,7 +31,8 @@ export const Tooltip: Component<TooltipProps> = (props: TooltipProps) => {
 				setHover(true)
 			}}
 			onmouseleave={()=>setHover(false)}>
-			<TooltipIcon class='h-6 w-6 relative top-[0.0625rem]' />
+			{ newChildren() ? newChildren() :
+				<TooltipIcon class='h-6 w-6 relative top-[0.0625rem]' /> }
 			<Portal>
 				<div
 					class={`absolute m-2 py-2 px-4 select-none rounded-xl z-50
