@@ -50,7 +50,7 @@ export const LayoutEditor = (props: LayoutEditorProps) => {
 			}}</Index>
 		</div>
 
-		<div class='mt-3 flex gap-2'>
+		<div class='w-full py-1 flex gap-2 sticky bottom-0 z-10 bg-black'>
 			<div
 				class='flex items-center font-bold text-blue-800
 				hover:text-blue-400 cursor-pointer group'
