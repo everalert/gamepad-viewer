@@ -64,8 +64,8 @@ export interface WidgetDef {
 	hide?: boolean;
 }
 
-const widgetdef_re =	/W([0-9]+)((?:(?:(?:x|y|a|b|v|r)(?:\-?[0-9]+))|(?:fx|fy|h))+)/g
-const widgetparam_re =	/(?:(x|y|a|b|v|r)(\-?[0-9]+))|(?:fx|fy|h)/g
+const widgetdef_re =	/W([0-9]+)((?:(?:(?:x|y|a|b|v|r)(?:\-?[0-9]+))|(?:fx|fy|h|k))+)/g
+const widgetparam_re =	/(?:(x|y|a|b|v|r)(\-?[0-9]+))|(?:fx|fy|h|k)/g
 export const WIDGET_DFLT: WidgetDef =
 	{ type:0, x:0, y:0, rot:0, inputs:[], val:[], fx:false, fy:false, hide:false }
 
@@ -79,6 +79,7 @@ export const parseWidgetStr = (str:string):WidgetDef[] => {
 				case 'fx': w_new.fx = true; break;
 				case 'fy': w_new.fy = true; break;
 				case 'h': w_new.hide = true; break;
+				case 'k': w_new.inputs.push({ type:GamepadInputType.BLANK, index:0 }); break;
 				default: {
 					switch (p[1]) {
 						case 'x': w_new.x = Number.parseInt(p[2]); break;
@@ -112,8 +113,9 @@ export const genWidgetStr = (widgets:WidgetDef[]):string => {
 		const y = w.y !== WIDGET_DFLT.y ? `y${Math.round(w.y).toString()}` : ''
 		const r = w.rot !== undefined && w.rot !== WIDGET_DFLT.rot ?
 			`r${Math.round(w.rot).toString()}` : ''
-		const inputs = w.inputs.map(i=>
-			`${i.type===GamepadInputType.Axis?'a':'b'}${Math.round(i.index).toString()}`).join('')
+		const inputs = w.inputs.map(i => `${i.type>=0 ?
+			`${i.type===GamepadInputType.Axis?'a':'b'}${Math.round(i.index).toString()}` :
+			'k'}`).join('')
 		const val = w.val.map(val=>`v${Math.round(val).toString()}`).join('')
 		const fx = w.fx ? 'fx' : ''
 		const fy = w.fy ? 'fy' : ''
