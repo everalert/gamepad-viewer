@@ -50,64 +50,55 @@ const DOT_RSCALE	= 1.25	// radius
 const DOT_LSCALE	= 0.6	// line
 const NICE_FACTOR	= 5		// for preset 'straight' lines that aren't harsh
 const ROUND_FACTOR	= 1.5	// for 'rounded octagon'
-const OCT_N			= 'StickOct'
 
 
 export const Stick = (props: StickProps) => {
-	const octname = () => `${OCT_N}_${props.r}_${props.a}_${props.ar}`
 	const dotR = () => props.line*DOT_RSCALE+props.line*DOT_LSCALE
 	const m = () => props.line+dotR()
 	const angH = () => AbC2h(45,props.r,props.a)
 	const angW = () => Math.sqrt((AbC2a(45,props.r,props.a)**2)-(angH()**2))
-	const pathAR = (a:string, x:number, y:number) => 
+	const pathARnode = (a:string, x:number, y:number) => 
 		`${a} ${props.ar} ${props.ar} 0 0 1 ${x} ${y}`
-	
+	const pathAR = () => `
+		M ${m()+props.r} ${m()}
+		${pathARnode('a',angH(),angW())}
+		${pathARnode('A',m()+props.r*2,m()+props.r)}
+		${pathARnode('a',-angW(),angH())}
+		${pathARnode('A',m()+props.r,m()+props.r*2)}
+		${pathARnode('a',-angH(),-angW())}
+		${pathARnode('A',m(),m()+props.r)}
+		${pathARnode('a',angW(),-angH())}
+		${pathARnode('A',m()+props.r,m())}
+		Z`
+	const pathLine = () => `
+		M ${m()+props.r} ${m()}
+		l ${angH()} ${angW()}
+		L ${m()+props.r*2} ${m()+props.r}
+		l ${-angW()} ${angH()}
+		L ${m()+props.r} ${m()+props.r*2}
+		l ${-angH()} ${-angW()}
+		L ${m()} ${m()+props.r}
+		l ${angW()} ${-angH()}
+		Z`
+	const path = () => props.ar > 0 ? pathAR() : pathLine()
+
 	return <svg
 		version='1.1' xmlns='http://www.w3.org/2000/svg'
 		width={(props.r+m())*2}
 		height={(props.r+m())*2}
 		class={`${props.class||''}`}
 		style={`margin-left:-${(props.r+m())}px;
-margin-top:-${(props.r+m())}px;
-${props.style||''}`}
+			margin-top:-${(props.r+m())}px;
+			${props.style||''}`}
 		>
-		<defs>
-			<symbol id={octname()}>
-				<path
-					// outline
-					d={ props.ar > 0 ? `
-						M ${m()+props.r} ${m()}
-						${pathAR('a',angH(),angW())}
-						${pathAR('A',m()+props.r*2,m()+props.r)}
-						${pathAR('a',-angW(),angH())}
-						${pathAR('A',m()+props.r,m()+props.r*2)}
-						${pathAR('a',-angH(),-angW())}
-						${pathAR('A',m(),m()+props.r)}
-						${pathAR('a',angW(),-angH())}
-						${pathAR('A',m()+props.r,m())}
-						Z
-					` : `
-						M ${m()+props.r} ${m()}
-						l ${angH()} ${angW()}
-						L ${m()+props.r*2} ${m()+props.r}
-						l ${-angW()} ${angH()}
-						L ${m()+props.r} ${m()+props.r*2}
-						l ${-angH()} ${-angW()}
-						L ${m()} ${m()+props.r}
-						l ${angW()} ${-angH()}
-						Z
-					`}
-				/>
-			</symbol>
-		</defs>
-
-		<use
+		<path
 			// bg
 			class={`opacity-50 ${props.simple ?
 				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
 			stroke-width={props.simple?0:props.line*2}
-			href={`#${octname()}`}
+			d={path()}
 		/>
+
 		<line
 			// bg line v
 			class='stroke-gray-900'
@@ -126,11 +117,12 @@ ${props.style||''}`}
 			x1={m()}
 			x2={props.r*2+m()}
 		/>
-		<use
+
+		<path
 			// outline / button input
 			class={`fill-transparent ${props.button?'stroke-gray-300':'stroke-gray-800'}`}
 			stroke-width={props.simple ? 0 : props.line}
-			href={`#${octname()}`}
+			d={path()}
 		/>
 
 		<line
