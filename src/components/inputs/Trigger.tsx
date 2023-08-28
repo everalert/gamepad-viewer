@@ -173,7 +173,7 @@ export const WTrigger = (props: WidgetProps): JSXElement => {
 		widget={props.def} container={props.container}>
 		<Trigger
 			trigger	= { !isNaN(inputs()[0]?.bscalar) ? inputs()[0].bscalar :
-				(TriggerSimpleMode[props.def.val[2]]?.includes('Full') ? 0 : 0.5) }
+				(TriggerSimpleMode[props.def.val[2]]?.includes('Split') ? 0.5 : 0) }
 			bumper	= { inputs()[1]?.pressed || false }
 			trigH	= { props.def.val[0]>=0 ? props.def.val[0] : 64 }
 			trigR	= { props.def.val[1]>=0 ? props.def.val[1] : 256 }
@@ -191,7 +191,7 @@ export const WTriggerCurved = (props: WidgetProps): JSXElement => {
 		widget={props.def} container={props.container}>
 		<Trigger
 			trigger	= { !isNaN(inputs()[0]?.bscalar) ? inputs()[0].bscalar :
-				(TriggerSimpleMode[props.def.val[2]]?.includes('Full') ? 0 : 0.5) }
+				(TriggerSimpleMode[props.def.val[2]]?.includes('Split') ? 0.5 : 0) }
 			bumper	= { inputs()[1]?.pressed || false }
 			trigH	= { props.def.val[0]>=0 ? props.def.val[0] : 64 }
 			trigR	= { props.def.val[1]>=0 ? props.def.val[1] : 256 }
@@ -209,7 +209,7 @@ export const WTriggerFlat = (props: WidgetProps): JSXElement => {
 		widget={props.def} container={props.container}>
 		<Trigger
 			trigger	= { !isNaN(inputs()[0]?.bscalar) ? inputs()[0].bscalar :
-				(TriggerSimpleMode[props.def.val[2]]?.includes('Full') ? 0 : 0.5) }
+				(TriggerSimpleMode[props.def.val[2]]?.includes('Split') ? 0.5 : 0) }
 			bumper	= { inputs()[1]?.pressed || false }
 			trigH	= { props.def.val[0]>=0 ? props.def.val[0] : 64 }
 			trigR	= { 0 }
