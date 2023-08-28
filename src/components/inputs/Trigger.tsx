@@ -100,6 +100,7 @@ export const Trigger = (props: TriggerProps) => {
 		A ${props.trigR} ${props.trigR} 0  0 ${p2<p1?0:1}  ${m()+x(p2)} ${m()+props.trigH/2-y(p2)}`
 	
 	const isThick = () => TriggerSimpleMode[props.simple].includes('Thick')
+	const isFull = () => TriggerSimpleMode[props.simple].includes('Full')
 	const isSimple = () =>
 		props.simple>TriggerSimpleMode.NONE && props.simple<TriggerSimpleMode.MAX
 
@@ -157,7 +158,7 @@ export const Trigger = (props: TriggerProps) => {
 			/>
 			<path
 				// foreground
-				d={path(TriggerSimpleMode[props.simple].includes('Full')?-0.5:0,trig())}	
+				d={path(isFull()?-0.5:0,trig())}	
 				class={`fill-transparent ${props.bumper?'stroke-white':'stroke-gray-300'}`}
 				stroke-width={isThick() ? props.line*4+1 : props.line*2+1}
 			/>
@@ -171,7 +172,8 @@ export const WTrigger = (props: WidgetProps): JSXElement => {
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Trigger
-			trigger	= { inputs()[0]?.bscalar || 0 }
+			trigger	= { !isNaN(inputs()[0]?.bscalar) ? inputs()[0].bscalar :
+				(TriggerSimpleMode[props.def.val[2]]?.includes('Full') ? 0 : 0.5) }
 			bumper	= { inputs()[1]?.pressed || false }
 			trigH	= { props.def.val[0]>=0 ? props.def.val[0] : 64 }
 			trigR	= { props.def.val[1]>=0 ? props.def.val[1] : 256 }
@@ -188,7 +190,8 @@ export const WTriggerCurved = (props: WidgetProps): JSXElement => {
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Trigger
-			trigger	= { inputs()[0]?.bscalar || 0 }
+			trigger	= { !isNaN(inputs()[0]?.bscalar) ? inputs()[0].bscalar :
+				(TriggerSimpleMode[props.def.val[2]]?.includes('Full') ? 0 : 0.5) }
 			bumper	= { inputs()[1]?.pressed || false }
 			trigH	= { props.def.val[0]>=0 ? props.def.val[0] : 64 }
 			trigR	= { props.def.val[1]>=0 ? props.def.val[1] : 256 }
@@ -205,7 +208,8 @@ export const WTriggerFlat = (props: WidgetProps): JSXElement => {
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Trigger
-			trigger	= { inputs()[0]?.bscalar || 0 }
+			trigger	= { !isNaN(inputs()[0]?.bscalar) ? inputs()[0].bscalar :
+				(TriggerSimpleMode[props.def.val[2]]?.includes('Full') ? 0 : 0.5) }
 			bumper	= { inputs()[1]?.pressed || false }
 			trigH	= { props.def.val[0]>=0 ? props.def.val[0] : 64 }
 			trigR	= { 0 }
