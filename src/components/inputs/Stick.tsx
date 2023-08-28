@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js'
 import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
-import { Slider } from '../ui'
+import { Slider, Checkbox } from '../ui'
 import { AbC2a, AbC2h } from '../../helpers/math'
 
 
@@ -13,6 +13,7 @@ interface StickProps {
 	a: number;
 	ar: number;
 	line: number;
+	simple?: boolean;
 	class?: string;
 	style?: string;
 }
@@ -30,14 +31,18 @@ export const StickInputGroupDef: InputPickerDef = {
 export const StickValueDef: ValuePickerDef = {
 	defs: [
 		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
-		{ celement:Slider, cprops:{ min:0 }, label:'segment angle' },
-		{ celement:Slider, cprops:{ min:0 }, label:'segment radius' },
+		{ celement:Slider, cprops:{ min:0, max:90 }, label:'seg angle' },
+		{ celement:Slider, cprops:{ min:0 }, label:'seg radius' },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
 	],
 }
 
 export const StickShapeValueDef: ValuePickerDef = {
 	defs: [
 		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
+		{ celement:null },
+		{ celement:null },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
 	],
 }
 
@@ -98,14 +103,15 @@ ${props.style||''}`}
 
 		<use
 			// bg
-			class='opacity-50 fill-black stroke-black'
-			stroke-width={props.line*2}
+			class={`opacity-50 ${props.simple ?
+				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
+			stroke-width={props.simple?0:props.line*2}
 			href={`#${octname()}`}
 		/>
 		<line
 			// bg line v
 			class='stroke-gray-900'
-			stroke-width={props.line/2}
+			stroke-width={props.simple?0:props.line/2}
 			x1={props.r+m()}
 			x2={props.r+m()}
 			y1={m()}
@@ -114,7 +120,7 @@ ${props.style||''}`}
 		<line
 			// bg line h
 			class='stroke-gray-900'
-			stroke-width={props.line/2}
+			stroke-width={props.simple?0:props.line/2}
 			y1={props.r+m()}
 			y2={props.r+m()}
 			x1={m()}
@@ -123,7 +129,7 @@ ${props.style||''}`}
 		<use
 			// outline / button input
 			class={`fill-transparent ${props.button?'stroke-gray-300':'stroke-gray-800'}`}
-			stroke-width={props.line}
+			stroke-width={props.simple ? 0 : props.line}
 			href={`#${octname()}`}
 		/>
 
@@ -139,8 +145,9 @@ ${props.style||''}`}
 		/>
 		<circle
 			// input dot
-			class='fill-white stroke-black'
-			stroke-width={props.line*DOT_LSCALE}
+			class={`fill-white ${props.simple ? 'stroke-white' : 'stroke-black'}`}
+			stroke-width={props.simple ? (props.button ? props.line*2*DOT_LSCALE : 0) :
+				props.line*DOT_LSCALE}
 			cx={(props.x+1)*props.r+m()}
 			cy={(props.y+1)*props.r+m()}
 			r={dotR()}
@@ -160,6 +167,7 @@ export const WStick:Component = (props: WidgetProps) => {
 			r={props.def.val[0]>0?props.def.val[0]:48}
 			a={props.def.val[1]>0?props.def.val[1]:67.5}
 			ar={props.def.val[2]>=0?props.def.val[2]:64}
+			simple={props.def.val[3]>0||false}
 			line={props.container.line||3}
 		/>	
 	</Widget>
@@ -177,6 +185,7 @@ export const WStickCircle:Component = (props: WidgetProps) => {
 			r={props.def.val[0]>0?props.def.val[0]:48}
 			a={67.5}
 			ar={props.def.val[0]>0?props.def.val[0]:48}
+			simple={props.def.val[3]>0||false}
 			line={props.container.line||3}
 		/>	
 	</Widget>
@@ -194,6 +203,7 @@ export const WStickSquare:Component = (props: WidgetProps) => {
 			r={props.def.val[0]>0?props.def.val[0]:48}
 			a={90}
 			ar={0}
+			simple={props.def.val[3]>0||false}
 			line={props.container.line||3}
 		/>	
 	</Widget>
@@ -211,6 +221,7 @@ export const WStickN64:Component = (props: WidgetProps) => {
 			r={props.def.val[0]>0?props.def.val[0]:48}
 			a={75} //TODO: confirm from notes
 			ar={props.def.val[0]>0?props.def.val[0]*NICE_FACTOR:48*NICE_FACTOR}
+			simple={props.def.val[3]>0||false}
 			line={props.container.line||3}
 		/>
 	</Widget>
@@ -228,6 +239,7 @@ export const WStickHori:Component = (props: WidgetProps) => {
 			r={props.def.val[0]>0?props.def.val[0]:48}
 			a={73} //TODO: confirm from notes
 			ar={props.def.val[0]>0?props.def.val[0]*NICE_FACTOR:48*NICE_FACTOR}
+			simple={props.def.val[3]>0||false}
 			line={props.container.line||3}
 		/>
 	</Widget>
@@ -245,6 +257,7 @@ export const WStickGC:Component = (props: WidgetProps) => {
 			r={props.def.val[0]>0?props.def.val[0]:48}
 			a={67.5}
 			ar={props.def.val[0]>0?props.def.val[0]*NICE_FACTOR:48*NICE_FACTOR}
+			simple={props.def.val[3]>0||false}
 			line={props.container.line||3}
 		/>
 	</Widget>
@@ -262,6 +275,7 @@ export const WStickRound:Component = (props: WidgetProps) => {
 			r={props.def.val[0]>0?props.def.val[0]:48}
 			a={67.5}
 			ar={props.def.val[0]>0?props.def.val[0]*ROUND_FACTOR:48*ROUND_FACTOR}
+			simple={props.def.val[3]>0||false}
 			line={props.container.line||3}
 		/>
 	</Widget>

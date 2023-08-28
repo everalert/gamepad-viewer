@@ -23,7 +23,7 @@ interface ButtonGridProps {
 
 export const ButtonGridInputGroupDef: InputPickerDef = {
 	min: 2,
-	labels: ['from top-left by row'],
+	labels: ['top-left','to right'],
 }
 
 const ButtonShapeList = Object.keys(ButtonShape)
@@ -76,7 +76,7 @@ export const ButtonGridRectValueDef: ValuePickerDef = {
 		{ celement:Slider, cprops:{ min:0 }, label:'y-step' },
 		{ celement:Slider, cprops:{ min:0 }, label:'x-size' },
 		{ celement:Slider, cprops:{ min:0 }, label:'y-size' },
-		{ celement:null },
+		{ celement:Slider, cprops:{ min:0, max:5, stepMove:8 }, label:'rounding' },
 		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
 	],
 }

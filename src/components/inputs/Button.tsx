@@ -57,7 +57,8 @@ export const ButtonValueDef: ValuePickerDef = {
 
 export const ButtonInlineCircle = (props: ButtonInlineProps) => <>
 	<circle
-		class='opacity-50 fill-black stroke-black'
+		class={`opacity-50 ${props.simple ?
+			'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
 		stroke-width={props.simple?0:props.w*2}
 		cx={props.x}
 		cy={props.y}
@@ -79,7 +80,8 @@ export const ButtonInlineTriEqu = (props: ButtonInlineProps) => {
 		` }).join(' ')
 	return <>
 		<polygon
-			class='opacity-50 fill-black stroke-black'
+			class={`opacity-50 ${props.simple ?
+				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
 			stroke-width={props.simple?0:props.w*2} stroke-linejoin='round'
 			points={points()}
 		/>
@@ -104,7 +106,8 @@ export const ButtonInlineTriIso = (props: ButtonInlineProps) => {
 		`
 	return <>
 		<polygon
-			class='opacity-50 fill-black stroke-black'
+			class={`opacity-50 ${props.simple ?
+				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
 			stroke-width={props.simple?0:props.w*2} stroke-linejoin='round'
 			points={points()}
 		/>
@@ -134,7 +137,8 @@ export const ButtonInlineRect = (props: ButtonInlineProps) => {
 	Z`
 	return <>
 		<path
-			class='opacity-50 fill-black stroke-black'
+			class={`opacity-50 ${props.simple ?
+				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
 			stroke-width={props.simple?0:props.w*2} stroke-linejoin='round'
 			d={d()}
 		/>
@@ -156,7 +160,8 @@ export const ButtonInlineN64C = (props: ButtonInlineProps) => {
 		` }).join(' ')
 	return <>
 		<circle
-			class='opacity-50 fill-black stroke-black'
+			class={`opacity-50 ${props.simple ?
+				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
 			stroke-width={props.simple?0:props.w*2}
 			cx={props.x}
 			cy={props.y}
@@ -198,7 +203,8 @@ export const ButtonInlineGCXY = (props: ButtonInlineProps) => {
 	Z`
 	return <>
 		<path
-			class='opacity-50 fill-black stroke-black'
+			class={`opacity-50 ${props.simple ?
+				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
 			stroke-width={props.simple?0:props.w*2} stroke-linejoin='round'
 			d={d()}
 		/>
@@ -228,8 +234,6 @@ export const WButton = (props: WidgetProps) => {
 	const w = () => (m()+Math.max(d1(),d2())*2)*2
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
-//	const shape = () => ButtonInlineMap[props.def.val[0]] || ButtonInlineMap[ButtonShape.Circle]
-//	const Btn = shape()
 	const Btn = ButtonInlineMap[props.def.val[0]] || null
 	return <Widget
 		widget={props.def} container={props.container}>

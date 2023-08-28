@@ -2,7 +2,7 @@ import type { JSXElement } from 'solid-js'
 import { Index } from 'solid-js'
 import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
-import { Slider } from '../ui'
+import { Slider, Checkbox } from '../ui'
 import { deg2rad, rotVec2x, rotVec2y } from '../../helpers/math'
 
 
@@ -11,6 +11,7 @@ interface DPadProps {
 	length: number;
 	thickness: number;
 	line: number;
+	simple?: boolean;
 	class?: string;
 	style?: string;
 }
@@ -24,6 +25,7 @@ export const DPadValueDef: ValuePickerDef = {
 	defs: [
 		{ celement:Slider, cprops:{ min:0 }, label:'length' },
 		{ celement:Slider, cprops:{ min:0 }, label:'thickness' },
+		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
 	],
 }
 
@@ -74,8 +76,9 @@ Z`
 			${props.style||''}`}
 		>
 		<path
-			class='opacity-50 fill-black stroke-black'
-			stroke-width={props.line*2}
+			class={`opacity-50 ${props.simple ?
+				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
+			stroke-width={props.simple?0:props.line*2}
 			d={dfull()}
 		/>
 		<Index each={props.on}>{(o,i) =>
@@ -83,7 +86,7 @@ Z`
 		}</Index>
 		<path
 			class={`stroke-gray-300 fill-transparent`}
-			stroke-width={props.line}
+			stroke-width={props.simple?0:props.line}
 			d={dfull()}
 		/>
 	</svg>
@@ -96,9 +99,10 @@ export const WDPad = (props: WidgetProps): JSXElement => {
 		widget={props.def} container={props.container}>
 		<DPad
 			on			= { inputs().map(i => i?.pressed) }
-			length=		{props.def.val[0]||80}
-			thickness=	{props.def.val[1]||28}
-			line=		{props.container.line||3}
+			length		= { props.def.val[0] || 80 }
+			thickness	= { props.def.val[1] || 28 }
+			simple		= { props.def.val[2]>0 || false }
+			line		= { props.container.line || 3 }
 		/>
 	</Widget>
 }

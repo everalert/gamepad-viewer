@@ -2,16 +2,17 @@ import type { JSXElement } from 'solid-js'
 import { Show } from 'solid-js'
 import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
-import { Slider, Checkbox } from '../ui'
+import { Slider, Dropdown } from '../ui'
 import { clamp, rc2rad, rc2deg } from '../../helpers/math'
 
 
 export enum TriggerSimpleMode {
-	None,
+	NONE,
 	Full,
 	Split,
 	FullThick,
 	SplitThick,
+	MAX
 }
 
 
@@ -35,11 +36,24 @@ export const TriggerInputGroupDef: InputPickerDef = {
 	],
 }
 
+const SModeList = Object.keys(TriggerSimpleMode)
+.filter(k => Number.isInteger(parseInt(k)) && parseInt(k)<TriggerSimpleMode.MAX)
+.map(k => {
+	return { value:parseInt(k), label:TriggerSimpleMode[k], faded:parseInt(k)===TriggerSimpleMode.NONE }})
+
 export const TriggerValueDef: ValuePickerDef = {
 	defs: [
 		{ celement:Slider, cprops:{ min:0 }, label:'height' },
 		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
-		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+		{
+			celement:Dropdown,
+			cprops:{
+				list:SModeList,
+				max:SModeList.length-1,
+				width:'w-[6.35rem]'
+			},
+			label:'simple mode'
+		},
 	],
 }
 
@@ -47,7 +61,15 @@ export const TriggerFlatValueDef: ValuePickerDef = {
 	defs: [
 		{ celement:Slider, cprops:{ min:0 }, label:'height' },
 		{ celement:null },
-		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
+		{
+			celement:Dropdown,
+			cprops:{
+				list:SModeList,
+				max:SModeList.length-1,
+				width:'w-[6.35rem]'
+			},
+			label:'simple mode'
+		},
 	],
 }
 
@@ -64,17 +86,22 @@ export const Trigger = (props: TriggerProps) => {
 						props.trigR*(1-Math.cos(rad()*m))
 	const y			= (m:number) => props.trigR===0 ? props.trigH*m :
 						props.trigR*Math.sin(rad()*m)
+
 	const markL		= () => props.line*MARK_VSCALE
 	const markW		= () => markL()+props.line*MARK_HSCALE
 	const markH		= () => markL()+props.line*MARK_HSCALE*MARK_VSCALE
 	const markR		= () => markW()*MARK_RSCALE
 	const markContW = () => Math.sqrt(markW()**2+markW()**2)
+	
 	const trig		= () => props.trigger-0.5
 	const path = (p1:number, p2:number) => props.trigR===0 ?
 		`M ${m()} ${m()+props.trigH/2-y(p1)} V ${m()+props.trigH/2-y(p2)}` :
 		`M ${m()+x(p1)} ${m()+props.trigH/2-y(p1)}
 		A ${props.trigR} ${props.trigR} 0  0 ${p2<p1?0:1}  ${m()+x(p2)} ${m()+props.trigH/2-y(p2)}`
+	
 	const isThick = () => TriggerSimpleMode[props.simple].includes('Thick')
+	const isSimple = () =>
+		props.simple>TriggerSimpleMode.NONE && props.simple<TriggerSimpleMode.MAX
 
 	return <svg
 		version='1.1' xmlns='http://www.w3.org/2000/svg'
@@ -84,7 +111,7 @@ export const Trigger = (props: TriggerProps) => {
 		style={`margin-left:-${m()}px;margin-top:-${m()+props.trigH/2}px;${props.style||''}`}
 		>
 
-		<Show when={props.simple===TriggerSimpleMode.None}>
+		<Show when={!isSimple()}>
 			<path
 				// outline
 				d={path(-0.5,0.5)}	
@@ -120,12 +147,12 @@ export const Trigger = (props: TriggerProps) => {
 			</svg>
 		</Show>
 
-		<Show when={props.simple!==TriggerSimpleMode.None}>
+		<Show when={isSimple()}>
 			<path
 				// background
 				d={path(-0.5,0.5)}	
 				class={`fill-transparent ${ props.bumper ?
-					'stroke-black/[0.75]' : 'stroke-black/[0.5]' }`}
+					'stroke-gray-900/[0.85]' : 'stroke-gray-900/[0.5]' }`}
 				stroke-width={isThick() ? props.line*4 : props.line*2}
 			/>
 			<path
@@ -149,7 +176,7 @@ export const WTrigger = (props: WidgetProps): JSXElement => {
 			trigH	= { props.def.val[0]>=0 ? props.def.val[0] : 64 }
 			trigR	= { props.def.val[1]>=0 ? props.def.val[1] : 256 }
 			simple	= { TriggerSimpleMode[props.def.val[2]] ?
-				props.def.val[2] : TriggerSimpleMode.None }
+				props.def.val[2] : TriggerSimpleMode.NONE }
 			line	= { props.container.line || 3 }
 		/>	
 	</Widget>
@@ -166,7 +193,7 @@ export const WTriggerCurved = (props: WidgetProps): JSXElement => {
 			trigH	= { props.def.val[0]>=0 ? props.def.val[0] : 64 }
 			trigR	= { props.def.val[1]>=0 ? props.def.val[1] : 256 }
 			simple	= { TriggerSimpleMode[props.def.val[2]] ?
-				props.def.val[2] : TriggerSimpleMode.None }
+				props.def.val[2] : TriggerSimpleMode.NONE }
 			line	= { props.container.line || 3 }
 		/>	
 	</Widget>
@@ -183,7 +210,7 @@ export const WTriggerFlat = (props: WidgetProps): JSXElement => {
 			trigH	= { props.def.val[0]>=0 ? props.def.val[0] : 64 }
 			trigR	= { 0 }
 			simple	= { TriggerSimpleMode[props.def.val[2]] ?
-				props.def.val[2] : TriggerSimpleMode.None }
+				props.def.val[2] : TriggerSimpleMode.NONE }
 			line	= { props.container.line || 3 }
 		/>	
 	</Widget>
