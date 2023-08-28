@@ -46,6 +46,7 @@ export const Slider2D: Component<Slider2DProps> = (props: Slider2DProps) => {
 	const rangex = () => maxx()-minx()
 	const rangey = () => maxy()-miny()
 	const step = (e:KeyboardEvent|MouseEvent) => (props.step||1)*(e.shiftKey?10:1)
+	const stepMove = () => props.stepMove || 1
 
 	const realSetVal = (x:number, y:number) => {
 		props.setValFnX(props?.wrap ?
@@ -89,8 +90,22 @@ export const Slider2D: Component<Slider2DProps> = (props: Slider2DProps) => {
 			) setDragging({ ...dragging(), editable:true })
 
 			if (dragging().editable) {
-				realSetVal(dragging().startValX+Math.round(difX/(props.stepMove||1))*step(e),
-					dragging().startValY+Math.round(difY/(props.stepMove||1))*step(e))
+				const amountX = Math.round(difX/stepMove())
+				const amountY = Math.round(difY/stepMove())
+				if (amountX !== 0 || amountY !== 0) {
+					realSetVal(dragging().startValX+amountX*step(e),
+						dragging().startValY+amountY*step(e))
+					setDragging({ ...dragging(),
+						startPosX:dragging().startPosX+amountX*stepMove(),
+						startPosY:dragging().startPosY+amountY*stepMove(),
+						startValX:props?.wrap ?
+							wrap(dragging().startValX+amountX*step(e),minx(),rangex()) :
+							Math.max(minx(),Math.min(maxx(),dragging().startValX+amountX*step(e))),
+						startValY:props?.wrap ?
+							wrap(dragging().startValY+amountY*step(e),miny(),rangey()) :
+							Math.max(miny(),Math.min(maxy(),dragging().startValY+amountY*step(e))),
+					})
+				}
 			}
 		}
 	}

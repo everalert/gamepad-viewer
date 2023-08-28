@@ -38,6 +38,7 @@ export const Slider: Component<SliderProps> = (props: SliderProps) => {
 	const userange = () => props.min !== undefined && props.max !== undefined
 	const percent = () => clamp((1-(-min()+props.value)/range())*100,0,100)
 	const step = (e:KeyboardEvent|MouseEvent) => (props.step||1)*(e.shiftKey?10:1)
+	const stepMove = () => props.stepMove || 1
 
 	const realSetVal = (n:number) =>
 		props.setValFn(props?.wrap ?
@@ -97,7 +98,16 @@ export const Slider: Component<SliderProps> = (props: SliderProps) => {
 			) setDragging({ ...dragging(), editable:true })
 
 			if (dragging().editable) {
-				realSetVal(dragging().startVal+Math.round(difX/(props.stepMove||1))*step(e))
+				const amount = Math.round(difX/stepMove())
+				if (amount !== 0) {
+					realSetVal(dragging().startVal+amount*step(e))
+					setDragging({ ...dragging(),
+						startPosX:dragging().startPosX+amount*stepMove(),
+						startVal:props?.wrap ?
+							wrap(dragging().startVal+amount*step(e),min(),range()) :
+							Math.max(min(),Math.min(max(),dragging().startVal+amount*step(e)))
+					})
+				}
 			}
 		}
 	}
