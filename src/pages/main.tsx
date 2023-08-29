@@ -99,7 +99,7 @@ export const Main: Component = () => {
 					label={p().name}
 					tooltip={p().tooltip}
 					value={params()[p().name]}
-					onInput={()=>{setParams({...params(),[p().name]:!params()[p().name]})}}
+					setValFn={()=>{setParams({...params(),[p().name]:!params()[p().name]})}}
 				/>
 			}</Index>
 		</div>
