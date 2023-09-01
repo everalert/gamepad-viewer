@@ -3,6 +3,7 @@ import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Checkbox } from '../ui'
 import { AbC2a, AbC2h } from '../../helpers/math'
+import { Color, getColorDef, resolveColor } from '../../types/colors'
 
 
 interface StickProps {
@@ -14,6 +15,7 @@ interface StickProps {
 	ar: number;
 	line: number;
 	simple?: boolean;
+	color?: Color;
 	class?: string;
 	style?: string;
 }
@@ -53,6 +55,7 @@ const ROUND_FACTOR	= 1.5	// for 'rounded octagon'
 
 
 export const Stick = (props: StickProps) => {
+	const color = () => getColorDef(props.color)
 	const dotR = () => props.line*DOT_RSCALE+props.line*DOT_LSCALE
 	const m = () => props.line+dotR()
 	const angH = () => AbC2h(45,props.r,props.a)
@@ -94,14 +97,14 @@ export const Stick = (props: StickProps) => {
 		<path
 			// bg
 			class={`opacity-50 ${props.simple ?
-				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
+				`${color().sBg} ${color().sBgOl}` : `${color().bg} ${color().bgOl}`}`}
 			stroke-width={props.simple?0:props.line*2}
 			d={path()}
 		/>
 
 		<line
 			// bg line v
-			class='stroke-gray-900'
+			class={color().bgOl}
 			stroke-width={props.simple?0:props.line/2}
 			x1={props.r+m()}
 			x2={props.r+m()}
@@ -110,7 +113,7 @@ export const Stick = (props: StickProps) => {
 		/>
 		<line
 			// bg line h
-			class='stroke-gray-900'
+			class={color().bgOl}
 			stroke-width={props.simple?0:props.line/2}
 			y1={props.r+m()}
 			y2={props.r+m()}
@@ -120,14 +123,14 @@ export const Stick = (props: StickProps) => {
 
 		<path
 			// outline / button input
-			class={`fill-transparent ${props.button?'stroke-gray-300':'stroke-gray-800'}`}
+			class={`fill-transparent ${props.button ? color().lineOn : color().lineOff}`}
 			stroke-width={props.simple ? 0 : props.line}
 			d={path()}
 		/>
 
 		<line
 			// input line
-			class={`stroke-gray-500`}
+			class={color().detail} // 500 before
 			stroke-width={props.line}
 			stroke-linecap='round'
 			x1={props.r+m()}
@@ -137,7 +140,7 @@ export const Stick = (props: StickProps) => {
 		/>
 		<circle
 			// input dot
-			class={`fill-white ${props.simple ? 'stroke-white' : 'stroke-black'}`}
+			class={`${color().hl} ${props.simple ? color().hlOl : color().bgOl}`}
 			stroke-width={props.simple ? (props.button ? props.line*2*DOT_LSCALE : 0) :
 				props.line*DOT_LSCALE}
 			cx={(props.x+1)*props.r+m()}
@@ -148,127 +151,141 @@ export const Stick = (props: StickProps) => {
 }
 
 export const WStick:Component = (props: WidgetProps) => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x={inputs()[0]?.ascalar||0}
-			y={inputs()[1]?.ascalar||0}
-			button={inputs()[2]?.pressed||false}
-			r={props.def.val[0]>0?props.def.val[0]:48}
-			a={props.def.val[1]>0?props.def.val[1]:67.5}
-			ar={props.def.val[2]>=0?props.def.val[2]:64}
-			simple={props.def.val[3]>0||false}
-			line={props.container.line||3}
+			x		= { inputs()[0]?.ascalar || 0 }
+			y		= { inputs()[1]?.ascalar || 0 }
+			button	= { inputs()[2]?.pressed || false }
+			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
+			a		= { props.def.val[1]>0 ? props.def.val[1] : 67.5 }
+			ar		= { props.def.val[2]>=0 ? props.def.val[2] : 64 }
+			simple	= { props.def.val[3]>0 || false }
+			line	= { props.container.line || 3 }
+			color	= { color() }
 		/>	
 	</Widget>
 }
 
 export const WStickCircle:Component = (props: WidgetProps) => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x={inputs()[0]?.ascalar||0}
-			y={inputs()[1]?.ascalar||0}
-			button={inputs()[2]?.pressed||false}
-			r={props.def.val[0]>0?props.def.val[0]:48}
-			a={67.5}
-			ar={props.def.val[0]>0?props.def.val[0]:48}
-			simple={props.def.val[3]>0||false}
-			line={props.container.line||3}
+			x		= { inputs()[0]?.ascalar || 0 }
+			y		= { inputs()[1]?.ascalar || 0 }
+			button	= { inputs()[2]?.pressed || false }
+			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
+			a		= { 67.5 }
+			ar		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
+			simple	= { props.def.val[3]>0 || false }
+			line	= { props.container.line || 3 }
+			color	= { color() }
 		/>	
 	</Widget>
 }
 
 export const WStickSquare:Component = (props: WidgetProps) => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x={inputs()[0]?.ascalar||0}
-			y={inputs()[1]?.ascalar||0}
-			button={inputs()[2]?.pressed||false}
-			r={props.def.val[0]>0?props.def.val[0]:48}
-			a={90}
-			ar={0}
-			simple={props.def.val[3]>0||false}
-			line={props.container.line||3}
+			x		= { inputs()[0]?.ascalar || 0 }
+			y		= { inputs()[1]?.ascalar || 0 }
+			button	= { inputs()[2]?.pressed || false }
+			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
+			a		= { 90 }
+			ar		= { 0 }
+			simple	= { props.def.val[3]>0 || false }
+			line	= { props.container.line || 3 }
+			color	= { color() }
 		/>	
 	</Widget>
 }
 
 export const WStickN64:Component = (props: WidgetProps) => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x={inputs()[0]?.ascalar||0}
-			y={inputs()[1]?.ascalar||0}
-			button={inputs()[2]?.pressed||false}
-			r={props.def.val[0]>0?props.def.val[0]:48}
-			a={75} //TODO: confirm from notes
-			ar={props.def.val[0]>0?props.def.val[0]*NICE_FACTOR:48*NICE_FACTOR}
-			simple={props.def.val[3]>0||false}
-			line={props.container.line||3}
+			x		= { inputs()[0]?.ascalar || 0 }
+			y		= { inputs()[1]?.ascalar || 0 }
+			button	= { inputs()[2]?.pressed || false }
+			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
+			a		= { 75 } //TODO: confirm from notes
+			ar		= { props.def.val[0]>0 ? props.def.val[0]*NICE_FACTOR : 48*NICE_FACTOR}
+			simple	= { props.def.val[3]>0 || false }
+			line	= { props.container.line || 3 }
+			color	= { color() }
 		/>
 	</Widget>
 }
 
 export const WStickHori:Component = (props: WidgetProps) => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x={inputs()[0]?.ascalar||0}
-			y={inputs()[1]?.ascalar||0}
-			button={inputs()[2]?.pressed||false}
-			r={props.def.val[0]>0?props.def.val[0]:48}
-			a={73} //TODO: confirm from notes
-			ar={props.def.val[0]>0?props.def.val[0]*NICE_FACTOR:48*NICE_FACTOR}
-			simple={props.def.val[3]>0||false}
-			line={props.container.line||3}
+			x		= { inputs()[0]?.ascalar || 0 }
+			y		= { inputs()[1]?.ascalar || 0 }
+			button	= { inputs()[2]?.pressed || false }
+			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
+			a		= { 73 } //TODO: confirm from notes
+			ar		= { props.def.val[0]>0 ? props.def.val[0]*NICE_FACTOR : 48*NICE_FACTOR }
+			simple	= { props.def.val[3]>0 || false }
+			line	= { props.container.line || 3 }
+			color	= { color() }
 		/>
 	</Widget>
 }
 
 export const WStickGC:Component = (props: WidgetProps) => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x={inputs()[0]?.ascalar||0}
-			y={inputs()[1]?.ascalar||0}
-			button={inputs()[2]?.pressed||false}
-			r={props.def.val[0]>0?props.def.val[0]:48}
-			a={67.5}
-			ar={props.def.val[0]>0?props.def.val[0]*NICE_FACTOR:48*NICE_FACTOR}
-			simple={props.def.val[3]>0||false}
-			line={props.container.line||3}
+			x		= { inputs()[0]?.ascalar || 0 }
+			y		= { inputs()[1]?.ascalar || 0 }
+			button	= { inputs()[2]?.pressed || false }
+			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
+			a		= { 67.5 }
+			ar		= { props.def.val[0]>0 ? props.def.val[0]*NICE_FACTOR : 48*NICE_FACTOR }
+			simple	= { props.def.val[3]>0 || false }
+			line	= { props.container.line || 3 }
+			color	= { color() }
 		/>
 	</Widget>
 }
 
 export const WStickRound:Component = (props: WidgetProps) => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x={inputs()[0]?.ascalar||0}
-			y={inputs()[1]?.ascalar||0}
-			button={inputs()[2]?.pressed||false}
-			r={props.def.val[0]>0?props.def.val[0]:48}
-			a={67.5}
-			ar={props.def.val[0]>0?props.def.val[0]*ROUND_FACTOR:48*ROUND_FACTOR}
-			simple={props.def.val[3]>0||false}
-			line={props.container.line||3}
+			x		= { inputs()[0]?.ascalar || 0 }
+			y		= { inputs()[1]?.ascalar || 0 }
+			button	= { inputs()[2]?.pressed || false }
+			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
+			a		= { 67.5 }
+			ar		= { props.def.val[0]>0 ? props.def.val[0]*ROUND_FACTOR : 48*ROUND_FACTOR }
+			simple	= { props.def.val[3]>0 || false }
+			line	= { props.container.line || 3 }
+			color	= { color() }
 		/>
 	</Widget>
 }

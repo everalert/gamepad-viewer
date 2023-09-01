@@ -23,7 +23,7 @@ interface InputPickerProps {
 export const InputPicker = (props: InputPickerProps): JSXElement => {
 	const d = createMemo(()=>WidgetInputDefMap[props.widget().type])
 	const v = () => props.widget().inputs
-	const max = () => d().max||Number.MAX_SAFE_INTEGER
+	const max = () => d().max || Number.MAX_SAFE_INTEGER
 	const min = () => d().min > 0 ? d().min : 1
 	const label = (i:number) => d()?.labels[i]
 

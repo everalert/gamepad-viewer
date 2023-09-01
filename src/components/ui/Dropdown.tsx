@@ -5,8 +5,9 @@ import { Portal } from 'solid-js/web'
 
 export type DropdownItem = {
 	value: any;
-	label: string;
+	label: JSXElement;
 	faded?: boolean;
+	accent?: string; // border color
 }
 
 
@@ -100,12 +101,13 @@ export const Dropdown = (props: DropdownProps): JSXElement => {
 		class={`flex flex-col items-start`}
 		>
 		<Show when={props?.label}>
-			<div class='px-1 text-sm text-gray-500'>{props.label}</div>
+			<div class='px-1 text-gray-300'>{props.label}</div>
 		</Show>
 		<div class='inline-flex gap-[1px] rounded-md overflow-hidden'>
 			<div
 				ref={field}
 				class={`${props.width||'w-28'} h-7 px-2 py-0.5 flex gap-1 justify-between
+					border-l-4 ${valueListItem().accent || 'border-transparent'}
 					select-none cursor-pointer outline-none
 					bg-gray-800 hover:bg-gray-600 focus:bg-gray-700
 					${valueListItem()?.faded ? 'text-gray-500 hover:text-gray-300' : ''}`}
@@ -156,6 +158,7 @@ export const Dropdown = (props: DropdownProps): JSXElement => {
 				<For each={props.list}>{p => {
 					return <div
 						class={`py-0.5 px-2 select-none cursor-pointer
+							border-l-4 ${p.accent || 'border-transparent'}
 							bg-gray-800 hover:bg-gray-600
 							${p.faded ? 'text-gray-400 hover:text-gray-200' :
 								'text-gray-300 hover:text-white'}`}

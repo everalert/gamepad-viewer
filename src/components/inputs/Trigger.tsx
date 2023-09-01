@@ -4,6 +4,7 @@ import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Dropdown } from '../ui'
 import { clamp, rc2rad, rc2deg } from '../../helpers/math'
+import { Color, getColorDef, resolveColor } from '../../types/colors'
 
 
 export enum TriggerSimpleMode {
@@ -23,6 +24,7 @@ interface TriggerProps {
 	trigH: number;
 	simple: TriggerSimpleMode;
 	line: number;
+	color?: Color;
 	style?: string;
 	class?: string;
 }
@@ -79,6 +81,7 @@ const MARK_RSCALE = 1/3
 
 
 export const Trigger = (props: TriggerProps) => {
+	const color		= () => getColorDef(props.color)
 	const rad		= () => rc2rad(props.trigR,props.trigH)
 	const deg		= () => rc2deg(props.trigR,props.trigH)
 	const m			= () => props.line*2
@@ -116,14 +119,14 @@ export const Trigger = (props: TriggerProps) => {
 			<path
 				// outline
 				d={path(-0.5,0.5)}	
-				class={`fill-transparent stroke-black/[0.35]`}
+				class={`opacity-[0.35] fill-transparent ${color().bgOl}`}
 				stroke-width={props.line*3}
 				stroke-linecap='square'
 			/>
 			<path
 				// main line
 				d={path(-0.5,0.5)}	
-				class={`fill-transparent ${props.bumper?'stroke-gray-300':'stroke-gray-800'}`}
+				class={`fill-transparent ${props.bumper ? color().lineOn : color().lineOff}`}
 				stroke-width={props.line}
 				stroke-linecap='square'
 			/>
@@ -135,7 +138,7 @@ export const Trigger = (props: TriggerProps) => {
 				height={markContW()}
 				>
 				<rect
-					class='fill-white stroke-black'
+					class={`${color().hl} ${color().bgOl}`}
 					stroke-width={markL()}
 					transform={`rotate(${deg()*trig()} ${markContW()/2} ${markContW()/2})`}
 					x={(markContW()-markW())/2}
@@ -153,13 +156,13 @@ export const Trigger = (props: TriggerProps) => {
 				// background
 				d={path(-0.5,0.5)}	
 				class={`fill-transparent ${ props.bumper ?
-					'stroke-gray-900/[0.85]' : 'stroke-gray-900/[0.5]' }`}
+					'opacity-[0.85]' : 'opacity-50' } ${color().sBgOl}`}
 				stroke-width={isThick() ? props.line*4 : props.line*2}
 			/>
 			<path
 				// foreground
-				d={path(isFull()?-0.5:0,trig())}	
-				class={`fill-transparent ${props.bumper?'stroke-white':'stroke-gray-300'}`}
+				d={path(isFull()?-0.5:0,trig())}
+				class={`fill-transparent ${props.bumper ? color().hlOl : color().ol}`}
 				stroke-width={isThick() ? props.line*4+1 : props.line*2+1}
 			/>
 		</Show>
@@ -167,6 +170,7 @@ export const Trigger = (props: TriggerProps) => {
 }
 
 export const WTrigger = (props: WidgetProps): JSXElement => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
@@ -180,11 +184,13 @@ export const WTrigger = (props: WidgetProps): JSXElement => {
 			simple	= { TriggerSimpleMode[props.def.val[2]] ?
 				props.def.val[2] : TriggerSimpleMode.NONE }
 			line	= { props.container.line || 3 }
+			color	= { color() }
 		/>	
 	</Widget>
 }
 
 export const WTriggerCurved = (props: WidgetProps): JSXElement => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
@@ -198,11 +204,13 @@ export const WTriggerCurved = (props: WidgetProps): JSXElement => {
 			simple	= { TriggerSimpleMode[props.def.val[2]] ?
 				props.def.val[2] : TriggerSimpleMode.NONE }
 			line	= { props.container.line || 3 }
+			color	= { color() }
 		/>	
 	</Widget>
 }
 
 export const WTriggerFlat = (props: WidgetProps): JSXElement => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
@@ -216,6 +224,7 @@ export const WTriggerFlat = (props: WidgetProps): JSXElement => {
 			simple	= { TriggerSimpleMode[props.def.val[2]] ?
 				props.def.val[2] : TriggerSimpleMode.NONE }
 			line	= { props.container.line || 3 }
+			color	= { color() }
 		/>	
 	</Widget>
 }

@@ -4,6 +4,7 @@ import { ButtonShape, ButtonInlineMap } from './'
 import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Checkbox, Dropdown } from '../ui'
+import { Color, resolveColor } from '../../types/colors'
 
 
 interface ButtonGridProps {
@@ -19,6 +20,7 @@ interface ButtonGridProps {
 	shape: ButtonShape[];
 	class?: string;
 	style?: string;
+	color?: Color;
 }
 
 export const ButtonGridInputGroupDef: InputPickerDef = {
@@ -147,6 +149,7 @@ export const ButtonGrid = (props: ButtonGridProps): JSXElement => {
 				angle={0}
 				on={on()}
 				w={props.line}
+				color={props.color}
 			/> : null
 		}}</Index>
 	</svg>
@@ -154,6 +157,7 @@ export const ButtonGrid = (props: ButtonGridProps): JSXElement => {
 
 
 export const WButtonGrid = (props: WidgetProps): JSXElement => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
@@ -169,11 +173,13 @@ export const WButtonGrid = (props: WidgetProps): JSXElement => {
 			simple	= { props.def.val[6]>0 || false }
 			shape	= { props.def.val.slice(7) }
 			line	= { props.container.line || 3 }
+			color	= { color() }
 		/>
 	</Widget>
 }
 
 const WButtonGridShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
+	const color = () => resolveColor(props.p.def, props.p.container)
 	const inputs = () => props.p.pad?.mapInputs(props.p.def.inputs)
 		|| new Array(props.p.def.inputs.length).fill(false)
 	return <Widget
@@ -189,6 +195,7 @@ const WButtonGridShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
 			simple	= { props.p.def.val[6]>0 || false }
 			shape	= { [props.s] }
 			line	= { props.p.container.line || 3 }
+			color	= { color() }
 		/>
 	</Widget>
 }

@@ -5,6 +5,7 @@ import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Checkbox, Dropdown } from '../ui'
 import { deg2rad } from '../../helpers/math'
+import { Color, resolveColor } from '../../types/colors'
 
 
 interface ButtonRingProps {
@@ -19,6 +20,7 @@ interface ButtonRingProps {
 	simple?: boolean;
 	class?: string;
 	style?: string;
+	color?: Color;
 }
 
 export const ButtonRingInputGroupDef: InputPickerDef = {
@@ -132,6 +134,7 @@ export const ButtonRing = (props: ButtonRingProps): JSXElement => {
 				angle={props.rotate?(360/props.on.length)*i:0}
 				on={on()}
 				w={props.line}
+				color={props.color}
 			/> : null
 		}}</Index>
 	</svg>
@@ -139,6 +142,7 @@ export const ButtonRing = (props: ButtonRingProps): JSXElement => {
 
 
 export const WButtonRing = (props: WidgetProps): JSXElement => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
@@ -153,11 +157,13 @@ export const WButtonRing = (props: WidgetProps): JSXElement => {
 			rotate	= { props.def.val[5]>0 || false }
 			shape	= { props.def.val.slice(6) }
 			line	= { props.container.line || 3 }
+			color	= { color() }
 		/>
 	</Widget>
 }
 
 const WButtonRingShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
+	const color = () => resolveColor(props.p.def, props.p.container)
 	const inputs = () => props.p.pad?.mapInputs(props.p.def.inputs)
 		|| new Array(props.p.def.inputs.length).fill(false)
 	return <Widget
@@ -172,6 +178,7 @@ const WButtonRingShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
 			rotate	= { true }
 			shape	= { [props.s] }
 			line	= { props.p.container.line || 3 }
+			color	= { color() }
 		/>
 	</Widget>
 }

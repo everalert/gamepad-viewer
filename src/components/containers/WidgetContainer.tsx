@@ -2,6 +2,7 @@ import type { GamepadState } from '../../types/gamepad'
 import { For } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { WidgetTypeMap, WidgetDef } from '../Widget'
+import { Color } from '../../types/colors'
 
 
 export interface WidgetContainerDef {
@@ -9,10 +10,11 @@ export interface WidgetContainerDef {
 	h: number;
 	m: number;
 	line: number;
+	color?: Color;
 }
 
-const containerdef_re =		/G((?:(?:w|h|m|l)\-?[0-9]+)+)/g
-const containerparam_re =	/(w|h|m|l)(\-?[0-9]+)/g
+const containerdef_re =		/G((?:(?:w|h|m|l|c)\-?[0-9]+)+)/g
+const containerparam_re =	/(w|h|m|l|c)(\-?[0-9]+)/g
 
 export const WCONTAINER_DFLT: WidgetContainerDef =
 	{ w:512, h:144, m:32, line:3 }
@@ -26,6 +28,7 @@ export const parseContainerStr = (str: string):WidgetContainerDef => {
 				case 'h': c_out.h = Number.parseInt(p[2]); break;
 				case 'm': c_out.m = Number.parseInt(p[2]); break;
 				case 'l': c_out.line = Number.parseInt(p[2]); break;
+				case 'c': c_out.color = Number.parseInt(p[2]); break;
 			}
 		}
 	}
@@ -37,7 +40,8 @@ export const genContainerStr = (container:WidgetContainerDef):string => {
 	const h = `h${container.h.toString()}`
 	const m = `m${container.m.toString()}`
 	const l = `l${container.line.toString()}`
-	return `G${w}${h}${m}${l}`
+	const c = container.color > 0 ? `c${container.color.toString()}` : ''
+	return `G${w}${h}${m}${l}${c}`
 }
 
 

@@ -4,6 +4,7 @@ import { Show } from 'solid-js'
 import { Widget, WidgetProps } from '../Widget'
 import { Slider, Checkbox, Dropdown } from '../ui'
 import { deg2rad, ang, mag, rotVec2x, rotVec2y } from '../../helpers/math'
+import { Color, getColorDef, resolveColor } from '../../types/colors'
 
 
 interface ButtonInlineProps {
@@ -16,6 +17,7 @@ interface ButtonInlineProps {
 	angle: number;
 	w: number;
 	on: boolean;
+	color?: Color;
 }
 
 //NOTE: same deal as with widget types,
@@ -55,25 +57,29 @@ export const ButtonValueDef: ValuePickerDef = {
 }
 
 
-export const ButtonInlineCircle = (props: ButtonInlineProps) => <>
-	<circle
-		class={`opacity-50 ${props.simple ?
-			'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
-		stroke-width={props.simple?0:props.w*2}
-		cx={props.x}
-		cy={props.y}
-		r={props.d1}
-	/>
-	<circle
-		class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
-		stroke-width={props.simple?0:props.w}
-		cx={props.x}
-		cy={props.y}
-		r={props.d1}
-	/>
-</>
+export const ButtonInlineCircle = (props: ButtonInlineProps) => {
+	const color = () => getColorDef(props.color)
+	return <>
+		<circle
+			class={`opacity-50 ${props.simple ?
+				`${color().sBg} ${color().sBgOl}` : `${color().bg} ${color().bgOl}`}`}
+			stroke-width={props.simple?0:props.w*2}
+			cx={props.x}
+			cy={props.y}
+			r={props.d1}
+		/>
+		<circle
+			class={`${color().ol} ${props.on ? color().hl : 'fill-transparent'}`}
+			stroke-width={props.simple?0:props.w}
+			cx={props.x}
+			cy={props.y}
+			r={props.d1}
+		/>
+	</>
+}
 
 export const ButtonInlineTriEqu = (props: ButtonInlineProps) => {
+	const color = () => getColorDef(props.color)
 	const points = () => [0,1,2].map((k,i) => { return `
 		${props.x+props.d1*Math.cos(deg2rad(120*i+props.angle))}
 		${props.y+props.d1*Math.sin(deg2rad(120*i+props.angle))}
@@ -81,12 +87,12 @@ export const ButtonInlineTriEqu = (props: ButtonInlineProps) => {
 	return <>
 		<polygon
 			class={`opacity-50 ${props.simple ?
-				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
+				`${color().sBg} ${color().sBgOl}` : `${color().bg} ${color().bgOl}`}`}
 			stroke-width={props.simple?0:props.w*2} stroke-linejoin='round'
 			points={points()}
 		/>
 		<polygon
-			class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
+			class={`${color().ol} ${props.on ? color().hl : 'fill-transparent'}`}
 			stroke-width={props.simple?0:props.w} stroke-linejoin='round'
 			points={points()}
 		/>
@@ -94,6 +100,7 @@ export const ButtonInlineTriEqu = (props: ButtonInlineProps) => {
 }
 
 export const ButtonInlineTriIso = (props: ButtonInlineProps) => {
+	const color = () => getColorDef(props.color)
 	const a = () => ang(props.d1,props.d2)
 	const m = () => mag(props.d1,props.d2)
 	const points = () => `
@@ -107,12 +114,12 @@ export const ButtonInlineTriIso = (props: ButtonInlineProps) => {
 	return <>
 		<polygon
 			class={`opacity-50 ${props.simple ?
-				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
+				`${color().sBg} ${color().sBgOl}` : `${color().bg} ${color().bgOl}`}`}
 			stroke-width={props.simple?0:props.w*2} stroke-linejoin='round'
 			points={points()}
 		/>
 		<polygon
-			class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
+			class={`${color().ol} ${props.on ? color().hl : 'fill-transparent'}`}
 			stroke-width={props.simple?0:props.w} stroke-linejoin='round'
 			points={points()}
 		/>
@@ -120,6 +127,7 @@ export const ButtonInlineTriIso = (props: ButtonInlineProps) => {
 }
 
 export const ButtonInlineRect = (props: ButtonInlineProps) => {
+	const color = () => getColorDef(props.color)
 	const xx = (d:number) => d*Math.cos(deg2rad(props.angle))
 	const xy = (d:number) => d*Math.sin(deg2rad(props.angle))
 	const yx = (d:number) => d*Math.cos(deg2rad(props.angle+90))
@@ -138,12 +146,12 @@ export const ButtonInlineRect = (props: ButtonInlineProps) => {
 	return <>
 		<path
 			class={`opacity-50 ${props.simple ?
-				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
+				`${color().sBg} ${color().sBgOl}` : `${color().bg} ${color().bgOl}`}`}
 			stroke-width={props.simple?0:props.w*2} stroke-linejoin='round'
 			d={d()}
 		/>
 		<path
-			class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
+			class={`${color().ol} ${props.on ? color().hl : 'fill-transparent'}`}
 			stroke-width={props.simple?0:props.w} stroke-linejoin='round'
 			d={d()}
 		/>
@@ -154,6 +162,7 @@ const N64C_TRISIZE = 0.65
 const N64C_TRISTROKE = 0.65
 
 export const ButtonInlineN64C = (props: ButtonInlineProps) => {
+	const color = () => getColorDef(props.color)
 	const points = () => [0,1,2].map((k,i) => { return `
 		${props.x+props.d1*N64C_TRISIZE*Math.cos(deg2rad(120*i+props.angle))}
 		${props.y+props.d1*N64C_TRISIZE*Math.sin(deg2rad(120*i+props.angle))}
@@ -161,22 +170,21 @@ export const ButtonInlineN64C = (props: ButtonInlineProps) => {
 	return <>
 		<circle
 			class={`opacity-50 ${props.simple ?
-				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
+				`${color().sBg} ${color().sBgOl}` : `${color().bg} ${color().bgOl}`}`}
 			stroke-width={props.simple?0:props.w*2}
 			cx={props.x}
 			cy={props.y}
 			r={props.d1}
 		/>
 		<circle
-			class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
+			class={`${color().ol} ${props.on ? color().hl : 'fill-transparent'}`}
 			stroke-width={props.simple?0:props.w}
 			cx={props.x}
 			cy={props.y}
 			r={props.d1}
 		/>
 		<polygon
-			class={`${props.simple?'stroke-gray-800':'stroke-gray-300'}
-				${props.on?'fill-white':'fill-transparent'}`}
+			class={`opacity-50 ${props.simple ? color().sDetail : color().detail} fill-transparent`}
 			stroke-width={props.w*N64C_TRISTROKE} stroke-linejoin='round'
 			points={points()}
 		/>
@@ -187,6 +195,7 @@ export const ButtonInlineGCXY = (props: ButtonInlineProps) => {
 	// d1 = main radius
 	// d2 = angle spread
 	// d3 = thickness (i.e. cap radius)
+	const color = () => getColorDef(props.color)
 	const x = () => props.x+props.d1*Math.cos(deg2rad(180+props.angle))
 	const y = () => props.y+props.d1*Math.sin(deg2rad(180+props.angle))
 	const rv2x = (x:number, y:number) => rotVec2x(x,y,90+props.angle)
@@ -204,12 +213,12 @@ export const ButtonInlineGCXY = (props: ButtonInlineProps) => {
 	return <>
 		<path
 			class={`opacity-50 ${props.simple ?
-				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
+				`${color().sBg} ${color().sBgOl}` : `${color().bg} ${color().bgOl}`}`}
 			stroke-width={props.simple?0:props.w*2} stroke-linejoin='round'
 			d={d()}
 		/>
 		<path
-			class={`stroke-gray-300 ${props.on?'fill-white':'fill-transparent'}`}
+			class={`${color().ol} ${props.on ? color().hl : 'fill-transparent'}`}
 			stroke-width={props.simple?0:props.w} stroke-linejoin='round'
 			d={d()}
 		/>
@@ -228,6 +237,7 @@ export const ButtonInlineMap:{[key:number]:Component<ButtonInlineProps>} = {
 
 
 export const WButton = (props: WidgetProps) => {
+	const color = () => resolveColor(props.def, props.container)
 	const d1 = () => props.def.val[1] || 16
 	const d2 = () => props.def.val[2] || 16
 	const m = () => props.container.line*2
@@ -253,6 +263,7 @@ export const WButton = (props: WidgetProps) => {
 					angle	= { props.def.val[4] || 0 }
 					simple	= { props.def.val[5]>0 || false }
 					w		= { props.container.line || 3 }
+					color	= { color() }
 				/>
 			</Show>
 		</svg>

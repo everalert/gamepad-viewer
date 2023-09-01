@@ -3,9 +3,10 @@ import type { WidgetContainerDef } from '../containers'
 import type { GamepadState } from '../../types/gamepad'
 import type { WidgetDef } from '../Widget'
 import { For, Show } from 'solid-js'
-import { Slider, Slider2D, Checkbox, InputPicker, ValuePicker } from '../ui'
+import { Dropdown, Slider, Slider2D, Checkbox, InputPicker, ValuePicker } from '../ui'
 import { WidgetType } from '../Widget'
 import { Delete } from '../icons'
+import { ColorList } from '../../types/colors'
 
 
 interface WidgetEditorProps {
@@ -97,6 +98,12 @@ export const WidgetEditor = (props: WidgetEditorProps): JSXElement => {
 					setValFn={(n:number)=>{setVal({rot:n})}}
 					width='w-[3.5rem]'
 				/> 
+				<Dropdown
+					list={ColorList}
+					value={props.widget().color || 0}
+					setValFn={(v)=>{setVal({color:v})}}
+					label='color'
+				/>
 				<div class='flex gap-2'>
 					<Checkbox
 						label='flip x'

@@ -20,6 +20,7 @@ import {
 	StickValueDef, StickShapeValueDef,
 	TriggerValueDef, TriggerFlatValueDef,
 } from './inputs'
+import { Color } from '../types/colors'
 
 
 // NOTE: keep hardcoded values the same 
@@ -62,10 +63,11 @@ export interface WidgetDef {
 	fx?: boolean;
 	fy?: boolean;
 	hide?: boolean;
+	color?: Color;
 }
 
-const widgetdef_re =	/W([0-9]+)((?:(?:(?:x|y|a|b|v|r)(?:\-?[0-9]+))|(?:fx|fy|h|k))+)/g
-const widgetparam_re =	/(?:(x|y|a|b|v|r)(\-?[0-9]+))|(?:fx|fy|h|k)/g
+const widgetdef_re =	/W([0-9]+)((?:(?:(?:x|y|a|b|v|r|c)(?:\-?[0-9]+))|(?:fx|fy|h|k))+)/g
+const widgetparam_re =	/(?:(x|y|a|b|v|r|c)(\-?[0-9]+))|(?:fx|fy|h|k)/g
 export const WIDGET_DFLT: WidgetDef =
 	{ type:0, x:0, y:0, rot:0, inputs:[], val:[], fx:false, fy:false, hide:false }
 
@@ -85,6 +87,8 @@ export const parseWidgetStr = (str:string):WidgetDef[] => {
 						case 'x': w_new.x = Number.parseInt(p[2]); break;
 						case 'y': w_new.y = Number.parseInt(p[2]); break;
 						case 'r': w_new.rot = Number.parseInt(p[2]); break;
+						case 'c': w_new.color = Number.parseInt(p[2]); break;
+						case 'v': w_new.val.push(Number.parseInt(p[2])); break;
 						case 'a':
 							w_new.inputs.push({
 								type:GamepadInputType.Axis,
@@ -97,7 +101,6 @@ export const parseWidgetStr = (str:string):WidgetDef[] => {
 								index:Number.parseInt(p[2])
 							});
 							break;
-						case 'v': w_new.val.push(Number.parseInt(p[2])); break;
 					}
 				}
 			}
@@ -111,6 +114,7 @@ export const genWidgetStr = (widgets:WidgetDef[]):string => {
 	return widgets.map(w => {
 		const x = w.x !== WIDGET_DFLT.x ? `x${Math.round(w.x).toString()}` : ''
 		const y = w.y !== WIDGET_DFLT.y ? `y${Math.round(w.y).toString()}` : ''
+		const c = w.color > 0 ? `c${Math.round(w.color).toString()}` : ''
 		const r = w.rot !== undefined && w.rot !== WIDGET_DFLT.rot ?
 			`r${Math.round(w.rot).toString()}` : ''
 		const inputs = w.inputs.map(i => `${i.type>=0 ?
@@ -120,7 +124,7 @@ export const genWidgetStr = (widgets:WidgetDef[]):string => {
 		const fx = w.fx ? 'fx' : ''
 		const fy = w.fy ? 'fy' : ''
 		const hide = w.hide ? 'h' : ''
-		return `W${w.type.toString()}${x}${y}${r}${inputs}${val}${fx}${fy}${hide}`
+		return `W${w.type.toString()}${x}${y}${r}${c}${inputs}${val}${fx}${fy}${hide}`
 	}).join('|')
 }
 

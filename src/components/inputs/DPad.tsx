@@ -4,6 +4,7 @@ import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Checkbox } from '../ui'
 import { deg2rad, rotVec2x, rotVec2y } from '../../helpers/math'
+import { Color, getColorDef, resolveColor } from '../../types/colors'
 
 
 interface DPadProps {
@@ -12,6 +13,7 @@ interface DPadProps {
 	thickness: number;
 	line: number;
 	simple?: boolean;
+	color?: Color;
 	class?: string;
 	style?: string;
 }
@@ -33,6 +35,7 @@ const RADIUS_FACTOR = 0.30  // original design = 8px/28px = 0.285
 
 
 export const DPad = (props: DPadProps) => {
+	const color = () => getColorDef(props.color)
 	const w = () => props.length+props.line*2
 	const ang = () => 360/props.on.length
 	const rad = () => props.thickness*RADIUS_FACTOR
@@ -77,15 +80,15 @@ Z`
 		>
 		<path
 			class={`opacity-50 ${props.simple ?
-				'fill-gray-900 stroke-gray-900' : 'fill-black stroke-black'}`}
+				`${color().sBg} ${color().sBgOl}` : `${color().bg} ${color().bgOl}`}`}
 			stroke-width={props.simple?0:props.line*2}
 			d={dfull()}
 		/>
 		<Index each={props.on}>{(o,i) =>
-			 <path class={`${o()?'fill-white':'fill-transparent'}`} d={darm(i)} />
+			 <path class={`${o() ? color().hl : 'fill-transparent'}`} d={darm(i)} />
 		}</Index>
 		<path
-			class={`stroke-gray-300 fill-transparent`}
+			class={`${color().ol} fill-transparent`}
 			stroke-width={props.simple?0:props.line}
 			d={dfull()}
 		/>
@@ -93,6 +96,7 @@ Z`
 }
 
 export const WDPad = (props: WidgetProps): JSXElement => {
+	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => props.pad?.mapInputs(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
@@ -103,6 +107,7 @@ export const WDPad = (props: WidgetProps): JSXElement => {
 			thickness	= { props.def.val[1] || 28 }
 			simple		= { props.def.val[2]>0 || false }
 			line		= { props.container.line || 3 }
+			color	= { color() }
 		/>
 	</Widget>
 }

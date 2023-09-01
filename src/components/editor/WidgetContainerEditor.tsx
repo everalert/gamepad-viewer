@@ -1,6 +1,7 @@
 import type { Accessor, Setter, JSXElement } from 'solid-js'
 import type { WidgetContainerDef } from '../containers'
-import { Slider, Slider2D } from '../ui'
+import { Dropdown, Slider, Slider2D } from '../ui'
+import { ColorList } from '../../types/colors'
 
 
 interface WidgetContainerProps {
@@ -32,13 +33,19 @@ export const WidgetContainerEditor = (props: WidgetContainerProps): JSXElement =
 			setValFn={(n:number)=>{props.setContainer({...props.container(),m:n})}}
 		/>
 		<Slider
-			label='line-width'
+			label='line width'
 			unit='px'
 			value={props.container().line}
 			min={1}
 			max={8}
 			stepMove={8}
 			setValFn={(n:number)=>{props.setContainer({...props.container(),line:n})}}
+		/>
+		<Dropdown
+			list={ColorList}
+			value={props.container().color || 0}
+			setValFn={(c)=>{props.setContainer({...props.container(),color:c})}}
+			label='base color'
 		/>
 	</div>
 }
