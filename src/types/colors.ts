@@ -30,18 +30,18 @@ export enum Color {
 
 export type ColorDef = {
 	// regular
-	ol: string;	// stroke-gray-300
-	lineOn: string;		// stroke-gray-300
-	lineOff: string;	// stroke-gray-800
-	hl: string;			// fill-white (stick dot, trigger dot, button on)
-	hlOl: string;			// fill-white (stick dot, trigger dot, button on)
-	bg: string;			
+	ol: string;
+	lineOn: string;
+	lineOff: string;
+	hl: string;
+	hlOl: string;
+	bg: string;
 	bgOl: string;
-	detail: string;		// stroke-gray-300 (n64tri)
+	detail: string;
 	// simple
-	sBg: string;		// fill-gray-900
-	sBgOl: string;		// stroke-gray-900
-	sDetail: string;	// stroke-gray-800 (n64tri)
+	sBg: string;
+	sBgOl: string;
+	sDetail: string;
 	// color picker
 	uiBdr?: string;
 }
@@ -71,6 +71,7 @@ export const WidgetColors: Readonly<{[K in Color]:ColorDef}> = {
 	[Color.Pink]: { ol:'stroke-pink-300', lineOn:'stroke-pink-300', lineOff:'stroke-pink-800', hl:'fill-pink-50', hlOl:'stroke-pink-50', bg:'fill-pink-950', bgOl:'stroke-pink-950', detail:'stroke-pink-300', sBg:'fill-pink-900', sBgOl:'stroke-pink-900', sDetail:'stroke-pink-800', uiBdr:'border-pink-500' },
 	[Color.Rose]: { ol:'stroke-rose-300', lineOn:'stroke-rose-300', lineOff:'stroke-rose-800', hl:'fill-rose-50', hlOl:'stroke-rose-50', bg:'fill-rose-950', bgOl:'stroke-rose-950', detail:'stroke-rose-300', sBg:'fill-rose-900', sBgOl:'stroke-rose-900', sDetail:'stroke-rose-800', uiBdr:'border-rose-500' },
 } as const
+
 
 export const getColorDef = (d?:Color) => WidgetColors[d] || WidgetColors[Color.Neutral]
 

@@ -107,7 +107,7 @@ export const Dropdown = (props: DropdownProps): JSXElement => {
 			<div
 				ref={field}
 				class={`${props.width||'w-28'} h-7 px-2 py-0.5 flex gap-1 justify-between
-					border-l-4 ${valueListItem().accent || 'border-transparent'}
+					border-l-4 ${valueListItem()?.accent || 'border-transparent'}
 					select-none cursor-pointer outline-none
 					bg-gray-800 hover:bg-gray-600 focus:bg-gray-700
 					${valueListItem()?.faded ? 'text-gray-500 hover:text-gray-300' : ''}`}

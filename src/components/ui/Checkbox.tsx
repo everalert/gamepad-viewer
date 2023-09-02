@@ -26,7 +26,7 @@ export const Checkbox: Component<CheckboxProps> = (props: CheckboxProps) => {
 				type='checkbox'
 				onInput={()=>props.setValFn(!props.value)}
 				checked={props.value}
-				class='w-5 h-5 px-1.5 pt-0.5 bg-gray-800'
+				class='w-5 h-5 px-1.5 bg-gray-800'
 			/>
 			{props.label}
 		</label>
