@@ -1,7 +1,7 @@
 import { Accessor, Setter, Index, For } from 'solid-js'
 import { A } from '@solidjs/router'
 import { WidgetEditor, WidgetContainerEditor } from './'
-import { Add, Reset, Confirm } from '../icons'
+import { Add, Copy, Reset, Confirm } from '../icons'
 import { filterParams } from '../../helpers/formatting'
 import { WidgetContainerDef,
 	parseContainerStr, genContainerStr } from '../containers'
@@ -40,12 +40,18 @@ export const LayoutEditor = (props: LayoutEditorProps) => {
 					...props.widgets().slice(0,-props.widgets().length+i),
 					...props.widgets().slice(i+1,props.widgets().length),
 				])
+				const copyWidget = () => props.setWidgets([
+					...props.widgets().slice(0,-props.widgets().length+i),
+					w(), {...w()},
+					...props.widgets().slice(i+1,props.widgets().length),
+				])
 				return <WidgetEditor 
 					pad={props.pad}
 					container={props.container}
 					widget={w}
-					setWidget={setWidget}
-					deleteWidget={deleteWidget}
+					setWidgetFn={setWidget}
+					delFn={deleteWidget}
+					copyFn={copyWidget}
 				/>
 			}}</Index>
 		</div>

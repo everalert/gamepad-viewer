@@ -5,7 +5,7 @@ import type { WidgetDef } from '../Widget'
 import { For, Show } from 'solid-js'
 import { Dropdown, Slider, Slider2D, Checkbox, InputPicker, ValuePicker } from '../ui'
 import { WidgetType } from '../Widget'
-import { Delete } from '../icons'
+import { Copy, Delete } from '../icons'
 import { ColorList } from '../../types/colors'
 
 
@@ -13,8 +13,9 @@ interface WidgetEditorProps {
 	pad: Accessor<GamepadState>;
 	container: Accessor<WidgetContainerDef>;
 	widget: Accessor<WidgetDef>;
-	setWidget: (w:WidgetDef) => WidgetDef[];
-	deleteWidget?: () => WidgetDef[];
+	setWidgetFn: (w:WidgetDef) => WidgetDef[];
+	delFn?: () => WidgetDef[];
+	copyFn?: () => WidgetDef[];
 }
 
 
@@ -23,7 +24,7 @@ export const WidgetEditor = (props: WidgetEditorProps): JSXElement => {
 	const ymin = () => -props.container().h/2
 	const xmax = () => props.container().w/2
 	const ymax = () => props.container().h/2
-	const setVal = (c:{[key:string]:any}) => props.setWidget({...props.widget(),...c}) 
+	const setVal = (c:{[key:string]:any}) => props.setWidgetFn({...props.widget(),...c}) 
 
 	return <div class='flex flex-col gap-2 p-3 bg-gray-900 rounded-md'>
 		<div class='mb-2 flex justify-between gap-4'>
@@ -47,12 +48,21 @@ export const WidgetEditor = (props: WidgetEditorProps): JSXElement => {
 					setValFn={(v)=>{setVal({hide:v})}}
 				/>
 			</div>
-			<div class='flex gap-4 items-center'>
-				<Show when={props.deleteWidget}>
+			<div class='flex gap-2 items-center'>
+				<Show when={props.copyFn}>
+					<div
+						class='h-7 w-7 text-sky-800 relative
+						hover:text-sky-400 cursor-pointer'
+						onClick={props.copyFn} 
+						>
+						<Copy />
+					</div>
+				</Show>
+				<Show when={props.delFn}>
 					<div
 						class='h-7 w-7 text-red-800 relative
 						hover:text-red-400 cursor-pointer'
-						onClick={props.deleteWidget} 
+						onClick={props.delFn} 
 						>
 						<Delete />
 					</div>
