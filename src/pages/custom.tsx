@@ -9,7 +9,6 @@ import {
 import { WidgetDef, parseWidgetStr, genWidgetStr } from '../components/Widget'
 import { Gamepad } from '../components/Gamepad'
 import { LayoutEditor } from '../components/editor'
-import { XBOX_DFLT_CONTAINER, XBOX_DFLT_WIDGETS } from '../types/layouts'
 
 
 export const Custom: Component = () => {
@@ -20,10 +19,10 @@ export const Custom: Component = () => {
 
 	const MODE_EDIT	= location.pathname.slice(-5) === '/edit'
 
-	const SETTINGS	= params.settings ? params.settings :
-		`${genContainerStr(XBOX_DFLT_CONTAINER)}|${genWidgetStr(XBOX_DFLT_WIDGETS)}`
-	const [container, setContainer] = createSignal<WidgetContainerDef>(parseContainerStr(SETTINGS))
-	const [widgets, setWidgets] = createSignal<WidgetDef[]>(parseWidgetStr(SETTINGS))
+	const SETTINGS_CONTAINER	= parseContainerStr(params?.settings) ?? null
+	const SETTINGS_WIDGETS	= parseWidgetStr(params?.settings) ?? null
+	const [container, setContainer] = createSignal<WidgetContainerDef>(SETTINGS_CONTAINER)
+	const [widgets, setWidgets] = createSignal<WidgetDef[]>(SETTINGS_WIDGETS)
 
 	return <>
 		<Gamepad
@@ -43,7 +42,7 @@ export const Custom: Component = () => {
 					setContainer={setContainer}
 					widgets={widgets}
 					setWidgets={setWidgets}
-					baseSettings={SETTINGS}
+					baseSettings={`${genContainerStr(SETTINGS_CONTAINER)}|${genWidgetStr(SETTINGS_WIDGETS)}`}
 				/>
 			</Show>
 		</DisplayContainer>

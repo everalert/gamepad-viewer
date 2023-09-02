@@ -19,8 +19,9 @@ const containerparam_re =	/(w|h|m|l|c)(\-?[0-9]+)/g
 export const WCONTAINER_DFLT: WidgetContainerDef =
 	{ w:512, h:144, m:32, line:3 }
 
-export const parseContainerStr = (str: string):WidgetContainerDef => {
+export const parseContainerStr = (str:string):WidgetContainerDef => {
 	const c_out:WidgetContainerDef = JSON.parse(JSON.stringify(WCONTAINER_DFLT))
+	if (!str) return c_out
 	for (const c of str.matchAll(containerdef_re)) {
 		for (const p of c[1].matchAll(containerparam_re)) {
 			switch (p[1]) {

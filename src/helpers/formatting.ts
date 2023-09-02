@@ -12,6 +12,7 @@ export const numf = (n:number, sign:boolean=false, p:number=precision) => {
 // search params
 
 export const ps2obj = (params:string):{[key:string]:string} => {
+	if (!params) return {}
 	return params.slice(params.startsWith('?')?1:0)
 	.split('&')
 	.reduce((a:any, p:string) => {

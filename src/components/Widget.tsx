@@ -73,6 +73,7 @@ export const WIDGET_DFLT: WidgetDef =
 
 export const parseWidgetStr = (str:string):WidgetDef[] => {
 	const w_out:WidgetDef[] = []
+	if (!str) return w_out
 	for (const w of str.matchAll(widgetdef_re)) {
 		const w_new:WidgetDef = JSON.parse(JSON.stringify(WIDGET_DFLT))
 		w_new.type = Number.parseInt(w[1])

@@ -127,6 +127,12 @@ export const Main: Component = () => {
 						<Edit />
 					</A>
 				</>}</For>
+				<A
+					class='flex gap-2 m-1 text-blue-800 hover:text-blue-400 col-span-full'
+					href={`/custom/edit${paramstr()}`}
+					>
+					custom <Edit class='w-5 h-5' />
+				</A>
 			</div>
 		</div>
 	</div>
