@@ -43,6 +43,21 @@ export const Dropdown = (props: DropdownProps): JSXElement => {
 	const valueListItem = () => props.list.find(val => props.cmpFn ?
 		props.cmpFn(val.value, props.value) : val.value===props.value)
 
+	const valueListIndex = () => props.list.findIndex(val => props.cmpFn ?
+		props.cmpFn(val.value, props.value) : val.value===props.value)
+
+	const inc = () => {
+		const next = valueListIndex()+1
+		if (next < props.list.length)
+			props.setValFn(props.list[next].value)
+	}
+
+	const dec = () => {
+		const next = valueListIndex()-1
+		if (next >= 0)
+			props.setValFn(props.list[next].value)
+	}
+
 	const handleOpenMenuClick = (event:MouseEvent) => {
 		const x = event.clientX, y = event.clientY
 		const rm = menu.getBoundingClientRect()
@@ -69,8 +84,16 @@ export const Dropdown = (props: DropdownProps): JSXElement => {
 
 	const clickMenu = () => showlist() ? closeMenu() : openMenu()
 
+	const handleKeyDown = (e:KeyboardEvent) => {
+		if (e.code === 'ArrowUp' || e.code === 'ArrowDown')
+			e.preventDefault()
+		if (e.code === 'ArrowUp') dec()
+		if (e.code === 'ArrowDown') inc()
+	}
+
 	const handleFocus = (event:FocusEvent) => {
 		field.addEventListener('blur', handleBlur, true)
+		field.addEventListener('keydown', handleKeyDown, true)
 		if (props.focusActionFn) {
 			props.focusActionFn(event)
 			document.addEventListener(props.focusActionEv, props.focusActionFn, true)
@@ -78,6 +101,7 @@ export const Dropdown = (props: DropdownProps): JSXElement => {
 	}
 
 	const handleBlur = (event:FocusEvent) => {
+		field.removeEventListener('keydown', handleKeyDown, true)
 		field.removeEventListener('blur', handleBlur, true)
 		if (props.focusActionFn) {
 			//setReady(false) // TODO: decide if there needs to be a cleanup function
