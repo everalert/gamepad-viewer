@@ -24,15 +24,27 @@ export const InputReader = () => {
 	function loop(t) {
 		const gamepads = navigator.getGamepads()
 
-		const index = 0 //pad().index ?? 0
-		if (gamepads && gamepads[index]) {
-			const gamepad = gamepads[index]
-			if (gamepad && (!pad() || pad().timestamp !== gamepad.timestamp)) {
-				const state: GamepadState = pad() ?
-					Object.assign(Object.create(Object.getPrototypeOf(pad())),pad()) :
-					new GamepadState(index)
-				state.update(gamepad)
-				setPad(state)
+		if (gamepads) {
+			if (typeof pad()?.index !== 'number') {
+				for (let i = 0; i < gamepads.length; i++) {
+					if (gamepads[i]?.timestamp) {
+						const state = new GamepadState(i)
+						state.update(gamepads[i])
+						if (state.firstPressedIndex >= 0) {
+							setPad(state)
+							break
+						}
+					}
+				}
+			} else {
+				const gamepad = gamepads[pad().index]
+				if (gamepad && (!pad() || pad().timestamp !== gamepad.timestamp)) {
+					const state: GamepadState = pad() ?
+						Object.assign(Object.create(Object.getPrototypeOf(pad())),pad()) :
+						new GamepadState(pad().index)
+					state.update(gamepad)
+					setPad(state)
+				}
 			}
 		}
 
