@@ -7,11 +7,10 @@ import { WidgetContainerDef,
 	parseContainerStr, genContainerStr } from '../containers'
 import { WidgetDef, WIDGET_DFLT, 
 	parseWidgetStr, genWidgetStr } from '../Widget'
-import type { GamepadState } from '../../types/gamepad'
+import { useInputReaderContext } from '../InputReader'
 
 
 interface LayoutEditorProps {
-	pad: Accessor<GamepadState>;
 	container: Accessor<WidgetContainerDef>;
 	setContainer: Setter<WidgetContainerDef>;
 	widgets: Accessor<WidgetDef[]>;
@@ -21,6 +20,8 @@ interface LayoutEditorProps {
 
 
 export const LayoutEditor = (props: LayoutEditorProps) => {
+	const [pad] = useInputReaderContext();
+
 	return <div class='relative flex flex-col items-baseline'>
 		<div class='mt-3 mb-1 font-semibold'>global</div>
 		<WidgetContainerEditor
@@ -46,7 +47,7 @@ export const LayoutEditor = (props: LayoutEditorProps) => {
 					...props.widgets().slice(i+1,props.widgets().length),
 				])
 				return <WidgetEditor 
-					pad={props.pad}
+					pad={pad}
 					container={props.container}
 					widget={w}
 					setWidgetFn={setWidget}

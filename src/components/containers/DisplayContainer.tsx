@@ -1,6 +1,6 @@
-import type { JSXElement, Accessor } from 'solid-js';
+import type { JSXElement } from 'solid-js';
 import type { WidgetContainerDef } from './WidgetContainer'
-import type { GamepadState } from '../../types/gamepad'
+import { useInputReaderContext } from '../InputReader'
 import { useSearchParams, useLocation } from '@solidjs/router'
 import { WidgetContainer } from './WidgetContainer'
 import { TextContainer } from './TextContainer'
@@ -10,13 +10,14 @@ import { WidgetDef } from '../Widget'
 export interface DisplayContainerProps {
 	container: WidgetContainerDef;
 	widgets: WidgetDef[];
-	pad: Accessor<GamepadState>;
+//	pad: Accessor<GamepadState>;
 	children?: JSXElement;
 }
 
 
 export const DisplayContainer = (props: DisplayContainerProps): JSXElement => {
 	const [params] = useSearchParams();
+	const [pad] = useInputReaderContext();
 	const location = useLocation();
 	
 	const NOTEXT	= params.notext !== undefined
@@ -36,13 +37,13 @@ export const DisplayContainer = (props: DisplayContainerProps): JSXElement => {
 			style={`padding:${props.container.m}px; gap:${props.container.m/2}px;`}
 			>
 			{ NOTEXT || <TextContainer
-				widgets={props.widgets} pad={props.pad()}
+				widgets={props.widgets} pad={pad()}
 				class={`${MODE_EDIT ? 'bg-gray-950' : ''}`}
 			/> }
 			{ NOIMAGE || <WidgetContainer
 				def={props.container}
 				widgets={props.widgets}
-				pad={props.pad()}
+				pad={pad()}
 				class={`${MODE_EDIT ? 'bg-gray-950' : ''}`}
 			/> }
 		</div>
