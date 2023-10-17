@@ -30,7 +30,7 @@ export const DisplayContainer = (props: DisplayContainerProps): JSXElement => {
 			'bg-black min-w-full min-h-screen items-center' : 'items-start'}`}
 		>
 		<div
-			class={`inline-flex flex-col items-center sticky top-0 z-10
+			class={`inline-flex flex-col items-center sticky top-0 z-10 overflow-hidden
 				${MODE_EDIT ? 'bg-gray-900 outline outline-4 outline-black' : ''}
 				${NOGUIDE || MODE_EDIT ? '' : 'outline outline-4 outline-red-500'}
 			`}
