@@ -1,12 +1,19 @@
 /* @refresh reload */
 import './index.css';
-import { createSignal } from 'solid-js';
+import { createSignal, lazy } from 'solid-js';
 import { render } from 'solid-js/web';
 import { Router, Route, Routes } from '@solidjs/router'
-import { Main, XBox, PSx, WiiU, 
-	GCN, Racing, Minimal, Custom } from './pages'
 import { InputReaderContext, InputReader } from './components/InputReader'
 import type { GamepadState } from './types/gamepad'
+
+const Main = lazy(() => import('./pages/main'))
+const XBox = lazy(() => import('./pages/xbox'))
+const PSx = lazy(() => import('./pages/psx'))
+const WiiU = lazy(() => import('./pages/wiiu'))
+const GCN = lazy(() => import('./pages/gcn'))
+const Racing = lazy(() => import('./pages/racing'))
+const Minimal = lazy(() => import('./pages/minimal'))
+const Custom = lazy(() => import('./pages/custom'))
 
 const root = document.getElementById('root');
 
