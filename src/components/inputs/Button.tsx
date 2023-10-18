@@ -1,6 +1,7 @@
 import type { Component } from 'solid-js'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Show } from 'solid-js'
+import { useInputReaderContext } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'
 import { Slider, Checkbox, Dropdown } from '../ui'
 import { deg2rad, ang, mag, rotVec2x, rotVec2y } from '../../helpers/math'
@@ -237,12 +238,13 @@ export const ButtonInlineMap:{[key:number]:Component<ButtonInlineProps>} = {
 
 
 export const WButton = (props: WidgetProps) => {
+	const [pad] = useInputReaderContext()
 	const color = () => resolveColor(props.def, props.container)
 	const d1 = () => props.def.val[1] || 16
 	const d2 = () => props.def.val[2] || 16
 	const m = () => props.container.line*2
 	const w = () => (m()+Math.max(d1(),d2())*2)*2
-	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	const Btn = ButtonInlineMap[props.def.val[0]] || null
 	return <Widget

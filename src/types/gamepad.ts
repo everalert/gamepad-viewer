@@ -70,10 +70,13 @@ export class GamepadState {
 	index: number;
 	timestamp: DOMHighResTimeStamp;
 	inputs: GamepadInput[] = [];
+	private inputMap: {};
+	private inputToRemap: boolean;
 	private firstPressedCache:{t:DOMHighResTimeStamp,v:number} = {t:null,v:null};
 	
 	constructor(index:number) {
 		this.index = index
+		this.inputToRemap = true
 	}
 
 	update(pad:Gamepad) {
@@ -97,7 +100,19 @@ export class GamepadState {
 	}
 
 	mapInputs(defs:GamepadInputDef[]): GamepadInput[] {
-		return defs?.map(d => this.inputs?.find(i => d.type===i.type && d.index===i.index) || null)
+		return defs?.map(d =>
+			this.inputs?.find(i => d.type===i.type && d.index===i.index) ?? null)
+	}
+
+	getInputMap(defs:GamepadInputDef[]): GamepadInput[] {
+		if (this.inputToRemap)
+			this.inputMap = {}
+		const id = defs
+			.map(def => `${GamepadInputType[def.type].substring(0,2)}${def.index}`)
+			.join('')
+		if (this.inputMap[id] === undefined)
+			this.inputMap[id] = this.mapInputs(defs)
+		return this.inputMap[id]
 	}
 
 	resizePool(size:number):void {

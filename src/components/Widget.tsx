@@ -137,7 +137,6 @@ export interface WidgetWrapperProps {
 }
 
 export interface WidgetProps {
-	pad: GamepadState;
 	def: WidgetDef;
 	container: WidgetContainerDef;
 }

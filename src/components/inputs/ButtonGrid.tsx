@@ -1,6 +1,7 @@
 import type { JSXElement } from 'solid-js'
 import { Index } from 'solid-js'
 import { ButtonShape, ButtonInlineMap } from './'
+import { useInputReaderContext } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Checkbox, Dropdown } from '../ui'
@@ -157,8 +158,9 @@ export const ButtonGrid = (props: ButtonGridProps): JSXElement => {
 
 
 export const WButtonGrid = (props: WidgetProps): JSXElement => {
+	const [pad] = useInputReaderContext()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+	const inputs = () => props.pad?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
@@ -179,8 +181,9 @@ export const WButtonGrid = (props: WidgetProps): JSXElement => {
 }
 
 const WButtonGridShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
+	const [pad] = useInputReaderContext()
 	const color = () => resolveColor(props.p.def, props.p.container)
-	const inputs = () => props.p.pad?.mapInputs(props.p.def.inputs)
+	const inputs = () => pad()?.getInputMap(props.p.def.inputs)
 		|| new Array(props.p.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.p.def} container={props.p.container}>

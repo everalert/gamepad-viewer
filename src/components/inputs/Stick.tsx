@@ -1,4 +1,5 @@
 import type { Component } from 'solid-js'
+import { useInputReaderContext } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Checkbox } from '../ui'
@@ -151,8 +152,9 @@ export const Stick = (props: StickProps) => {
 }
 
 export const WStick:Component = (props: WidgetProps) => {
+	const [pad] = useInputReaderContext()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
@@ -171,8 +173,9 @@ export const WStick:Component = (props: WidgetProps) => {
 }
 
 export const WStickCircle:Component = (props: WidgetProps) => {
+	const [pad] = useInputReaderContext()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
@@ -191,8 +194,9 @@ export const WStickCircle:Component = (props: WidgetProps) => {
 }
 
 export const WStickSquare:Component = (props: WidgetProps) => {
+	const [pad] = useInputReaderContext()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
@@ -211,8 +215,9 @@ export const WStickSquare:Component = (props: WidgetProps) => {
 }
 
 export const WStickN64:Component = (props: WidgetProps) => {
+	const [pad] = useInputReaderContext()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
@@ -231,8 +236,9 @@ export const WStickN64:Component = (props: WidgetProps) => {
 }
 
 export const WStickHori:Component = (props: WidgetProps) => {
+	const [pad] = useInputReaderContext()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
@@ -251,8 +257,9 @@ export const WStickHori:Component = (props: WidgetProps) => {
 }
 
 export const WStickGC:Component = (props: WidgetProps) => {
+	const [pad] = useInputReaderContext()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
@@ -271,8 +278,9 @@ export const WStickGC:Component = (props: WidgetProps) => {
 }
 
 export const WStickRound:Component = (props: WidgetProps) => {
+	const [pad] = useInputReaderContext()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => props.pad?.mapInputs(props.def.inputs)
+	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
 	return <Widget
 		widget={props.def} container={props.container}>
