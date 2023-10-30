@@ -1,23 +1,26 @@
-import type { Setter, Accessor } from 'solid-js'
-import { createContext, useContext } from "solid-js"
-import { onMount, onCleanup } from 'solid-js'
+import {
+	type Setter,
+	type Accessor,
+	createContext,
+	createSignal,
+	useContext,
+	onMount,
+	onCleanup,
+	JSX,
+} from "solid-js"
 import { GamepadState } from '../types/gamepad'
 
 
-export const InputReaderContext =
-	createContext<[Accessor<GamepadState>, Setter<GamepadState>]>()
+export const InputReaderContext = createContext<[Accessor<GamepadState>, Setter<GamepadState>]>()
 
+export const useInputReader = () => useContext(InputReaderContext)
 
-export const useInputReaderContext = () => {
-	const hook = useContext(InputReaderContext)
-	if (hook === undefined)
-		throw new Error("useInputReaderContext must be user within InputReaderContext.Provider")
-	return hook
+export interface InputReaderProps {
+	children: JSX.Element;
 }
 
-
-export const InputReader = () => {
-	const [pad, setPad] = useInputReaderContext()
+export const InputReader = (props: InputReaderProps) => {
+	const [pad, setPad] = createSignal<GamepadState>()
 
 	let frame
 
@@ -55,5 +58,7 @@ export const InputReader = () => {
 
 	onCleanup(() => cancelAnimationFrame(frame))
 
-	return null
+	return <InputReaderContext.Provider value={[pad, setPad]}>
+		{ props.children }
+	</InputReaderContext.Provider>
 }

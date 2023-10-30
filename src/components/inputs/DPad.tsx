@@ -1,6 +1,6 @@
 import type { JSXElement } from 'solid-js'
 import { Index } from 'solid-js'
-import { useInputReaderContext } from '../InputReader'
+import { useInputReader } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Checkbox } from '../ui'
@@ -97,7 +97,7 @@ Z`
 }
 
 export const WDPad = (props: WidgetProps): JSXElement => {
-	const [pad] = useInputReaderContext()
+	const [pad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)

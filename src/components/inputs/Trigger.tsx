@@ -1,6 +1,6 @@
 import type { JSXElement } from 'solid-js'
 import { Show } from 'solid-js'
-import { useInputReaderContext } from '../InputReader'
+import { useInputReader } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Dropdown } from '../ui'
@@ -171,7 +171,7 @@ export const Trigger = (props: TriggerProps) => {
 }
 
 export const WTrigger = (props: WidgetProps): JSXElement => {
-	const [pad] = useInputReaderContext()
+	const [pad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
@@ -192,7 +192,7 @@ export const WTrigger = (props: WidgetProps): JSXElement => {
 }
 
 export const WTriggerCurved = (props: WidgetProps): JSXElement => {
-	const [pad] = useInputReaderContext()
+	const [pad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
@@ -213,7 +213,7 @@ export const WTriggerCurved = (props: WidgetProps): JSXElement => {
 }
 
 export const WTriggerFlat = (props: WidgetProps): JSXElement => {
-	const [pad] = useInputReaderContext()
+	const [pad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)

@@ -1,5 +1,5 @@
 import type { Component } from 'solid-js'
-import { useInputReaderContext } from '../InputReader'
+import { useInputReader } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Checkbox } from '../ui'
@@ -152,7 +152,7 @@ export const Stick = (props: StickProps) => {
 }
 
 export const WStick:Component = (props: WidgetProps) => {
-	const [pad] = useInputReaderContext()
+	const [pad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
@@ -173,7 +173,7 @@ export const WStick:Component = (props: WidgetProps) => {
 }
 
 export const WStickCircle:Component = (props: WidgetProps) => {
-	const [pad] = useInputReaderContext()
+	const [pad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
@@ -194,7 +194,7 @@ export const WStickCircle:Component = (props: WidgetProps) => {
 }
 
 export const WStickSquare:Component = (props: WidgetProps) => {
-	const [pad] = useInputReaderContext()
+	const [pad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
@@ -215,7 +215,7 @@ export const WStickSquare:Component = (props: WidgetProps) => {
 }
 
 export const WStickN64:Component = (props: WidgetProps) => {
-	const [pad] = useInputReaderContext()
+	const [pad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
@@ -236,7 +236,7 @@ export const WStickN64:Component = (props: WidgetProps) => {
 }
 
 export const WStickHori:Component = (props: WidgetProps) => {
-	const [pad] = useInputReaderContext()
+	const [pad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
@@ -257,7 +257,7 @@ export const WStickHori:Component = (props: WidgetProps) => {
 }
 
 export const WStickGC:Component = (props: WidgetProps) => {
-	const [pad] = useInputReaderContext()
+	const [pad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)
@@ -278,7 +278,7 @@ export const WStickGC:Component = (props: WidgetProps) => {
 }
 
 export const WStickRound:Component = (props: WidgetProps) => {
-	const [pad] = useInputReaderContext()
+	const [pad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const inputs = () => pad()?.getInputMap(props.def.inputs)
 		|| new Array(props.def.inputs.length).fill(false)

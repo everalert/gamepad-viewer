@@ -1,6 +1,6 @@
 import type { JSXElement } from 'solid-js';
 import type { WidgetContainerDef } from './WidgetContainer'
-import { useInputReaderContext } from '../InputReader'
+import { useInputReader } from '../InputReader'
 import { useSearchParams, useLocation } from '@solidjs/router'
 import { WidgetContainer } from './WidgetContainer'
 import { TextContainer } from './TextContainer'
@@ -17,7 +17,7 @@ export interface DisplayContainerProps {
 
 export const DisplayContainer = (props: DisplayContainerProps): JSXElement => {
 	const [params] = useSearchParams();
-	const [pad] = useInputReaderContext();
+	const [pad] = useInputReader();
 	const location = useLocation();
 	
 	const NOTEXT	= params.notext !== undefined

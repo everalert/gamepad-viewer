@@ -7,7 +7,7 @@ import { WidgetContainerDef,
 	parseContainerStr, genContainerStr } from '../containers'
 import { WidgetDef, WIDGET_DFLT, 
 	parseWidgetStr, genWidgetStr } from '../Widget'
-import { useInputReaderContext } from '../InputReader'
+import { useInputReader } from '../InputReader'
 
 
 interface LayoutEditorProps {
@@ -20,7 +20,7 @@ interface LayoutEditorProps {
 
 
 export const LayoutEditor = (props: LayoutEditorProps) => {
-	const [pad] = useInputReaderContext();
+	const [pad] = useInputReader();
 
 	return <div class='relative flex flex-col items-baseline'>
 		<div class='mt-3 mb-1 font-semibold'>global</div>

@@ -1,10 +1,9 @@
 /* @refresh reload */
 import './index.css';
-import { createSignal, lazy } from 'solid-js';
+import { lazy } from 'solid-js';
 import { render } from 'solid-js/web';
 import { Router, Route, Routes } from '@solidjs/router'
-import { InputReaderContext, InputReader } from './components/InputReader'
-import type { GamepadState } from './types/gamepad'
+import { InputReader } from './components/InputReader'
 
 const Main = lazy(() => import('./pages/main'))
 const XBox = lazy(() => import('./pages/xbox'))
@@ -23,8 +22,6 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 	);
 }
 
-const [pad, setPad] = createSignal<GamepadState>()
-
 render(
 	() => {
 		return <Router>
@@ -32,8 +29,7 @@ render(
 				href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap"
 				rel="stylesheet"
 			/>
-			<InputReaderContext.Provider value={[pad, setPad]}>
-				<InputReader />
+			<InputReader>
 				<Routes>
 					<Route path='/' component={Main} />
 					<Route path='/xbox' component={XBox} />
@@ -45,7 +41,7 @@ render(
 					<Route path='/custom' component={Custom} />
 					<Route path='/custom/edit' component={Custom} />
 				</Routes>
-			</InputReaderContext.Provider>
+			</InputReader>
 		</Router>
 	}, 
 	root!
