@@ -1,7 +1,7 @@
 import type { JSXElement, Component, Accessor } from 'solid-js'
-import type { WidgetDef } from '../Widget'
+import { type WidgetDef} from '../../types/widget'
+import { WidgetValueDefMap } from '../../types/widgetmap'
 import { Index, Show, createSignal, createEffect, createMemo, on } from 'solid-js'
-import { WidgetValueDefMap } from '../Widget'
 import { clamp } from '../../helpers/math'
 
 

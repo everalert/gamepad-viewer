@@ -1,11 +1,9 @@
-import type { JSXElement } from 'solid-js'
+import type { JSX } from 'solid-js'
 import { Index } from 'solid-js'
 import { ButtonShape, ButtonInlineMap } from './'
-import { useInputReader } from '../InputReader'
-import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Checkbox, Dropdown } from '../ui'
-import { Color, resolveColor } from '../../types/colors'
+import { Color } from '../../types/colors'
 
 
 interface ButtonGridProps {
@@ -121,7 +119,7 @@ export const ButtonGridGCXYValueDef: ValuePickerDef = {
 }
 
 
-export const ButtonGrid = (props: ButtonGridProps): JSXElement => {
+export const ButtonGrid = (props: ButtonGridProps): JSX.Element => {
 	const wi = () => (props.cols-1)*props.stepx
 	const hi = () => (Math.ceil(props.on.length/props.cols)-1)*props.stepy
 	const m = () => props.line*2
@@ -156,67 +154,4 @@ export const ButtonGrid = (props: ButtonGridProps): JSXElement => {
 	</svg>
 }
 
-
-export const WButtonGrid = (props: WidgetProps): JSXElement => {
-	const [pad] = useInputReader()
-	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => props.pad?.getInputMap(props.def.inputs)
-		|| new Array(props.def.inputs.length).fill(false)
-	return <Widget
-		widget={props.def} container={props.container}>
-		<ButtonGrid
-			on		= { inputs().map(i => i?.pressed) }
-			cols	= { props.def.val[0] || props.def.inputs.length }
-			stepx	= { props.def.val[1] || 41 }
-			stepy	= { props.def.val[2] || 41 }
-			rx		= { props.def.val[3] || 16 }
-			ry		= { props.def.val[4] || 16 }
-			rz		= { props.def.val[5] || 0 }
-			simple	= { props.def.val[6]>0 || false }
-			shape	= { props.def.val.slice(7) }
-			line	= { props.container.line || 3 }
-			color	= { color() }
-		/>
-	</Widget>
-}
-
-const WButtonGridShape = (props: {p:WidgetProps,s:ButtonShape}): JSXElement => {
-	const [pad] = useInputReader()
-	const color = () => resolveColor(props.p.def, props.p.container)
-	const inputs = () => pad()?.getInputMap(props.p.def.inputs)
-		|| new Array(props.p.def.inputs.length).fill(false)
-	return <Widget
-		widget={props.p.def} container={props.p.container}>
-		<ButtonGrid
-			on		= { inputs().map(i => i?.pressed) }
-			cols	= { props.p.def.val[0] || props.p.def.inputs.length }
-			stepx	= { props.p.def.val[1] || 41 }
-			stepy	= { props.p.def.val[2] || 41 }
-			rx		= { props.p.def.val[3] || 16 }
-			ry		= { props.p.def.val[4] || 16 }
-			rz		= { props.p.def.val[5] || 0 }
-			simple	= { props.p.def.val[6]>0 || false }
-			shape	= { [props.s] }
-			line	= { props.p.container.line || 3 }
-			color	= { color() }
-		/>
-	</Widget>
-}
-
-export const WButtonGridCircle = (props: WidgetProps): JSXElement => 
-	<WButtonGridShape p={props} s={ButtonShape.Circle} />
-
-export const WButtonGridRect = (props: WidgetProps): JSXElement => 
-	<WButtonGridShape p={props} s={ButtonShape.Rect} />
-
-export const WButtonGridTriangle = (props: WidgetProps): JSXElement => 
-	<WButtonGridShape p={props} s={ButtonShape.TriIso} />
-
-export const WButtonGridN64C = (props: WidgetProps): JSXElement => 
-	<WButtonGridShape p={props} s={ButtonShape.N64C} />
-
-export const WButtonGridGCXY = (props: WidgetProps): JSXElement => 
-	<WButtonGridShape p={props} s={ButtonShape.GCXY} />
-
-
-export default ButtonGrid;
+export default ButtonGrid

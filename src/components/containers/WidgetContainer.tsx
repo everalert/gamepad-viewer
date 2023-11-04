@@ -1,17 +1,9 @@
 import { For } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
-import { WidgetTypeMap } from '../Widget'
-import { Color } from '../../types/colors'
+import { WidgetContainerDef } from '../../types/widget'
+import { WidgetTypeMap } from '../../types/widgetmap'
 import { useInputLayout } from '../InputLayout'
 
-
-export interface WidgetContainerDef {
-	w: number;
-	h: number;
-	m: number;
-	line: number;
-	color?: Color;
-}
 
 const containerdef_re =		/G((?:(?:w|h|m|l|c)\-?[0-9]+)+)/g
 const containerparam_re =	/(w|h|m|l|c)(\-?[0-9]+)/g
@@ -60,8 +52,6 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
 		<For each={layout.widgets}>{w => w.hide ? null : (
 			<Dynamic
 				component={WidgetTypeMap[w.type]}
-				def={w}
-				container={layout.container}
 			/>
 		)}</For>
 	</div>

@@ -2,7 +2,7 @@ import type { JSXElement } from 'solid-js';
 import { For, Show } from 'solid-js';
 import { type GamepadInputDef, inputDefCmp } from '../../types/gamepad'
 import { StickText, TriggerText } from '../inputs'
-import { WidgetType } from '../Widget'
+import { WidgetType } from '../../types/widget'
 import { useInputLayout } from '../InputLayout'
 import { useInputReader } from '../InputReader'
 

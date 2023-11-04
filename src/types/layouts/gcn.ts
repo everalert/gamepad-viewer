@@ -1,6 +1,5 @@
 import { GamepadInputType as GIT, inputDef } from '../gamepad'
-import { WidgetType, WidgetDef } from '../../components/Widget'
-import { WidgetContainerDef } from '../../components/containers'
+import { WidgetType, WidgetDef, WidgetContainerDef } from '../widget'
 import { WiiUAxis as WUA, WiiUButton as WUB } from './wiiu'
 import { ButtonShape } from '../../components/inputs'
 

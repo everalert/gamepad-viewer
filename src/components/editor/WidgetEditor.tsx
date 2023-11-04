@@ -1,8 +1,7 @@
-import type { Accessor, JSXElement } from 'solid-js'
-import type { WidgetDef } from '../Widget'
+import type { Accessor, JSX } from 'solid-js'
 import { For, Show } from 'solid-js'
 import { Dropdown, Slider, Slider2D, Checkbox, InputPicker, ValuePicker } from '../ui'
-import { WidgetType } from '../Widget'
+import { type WidgetDef, WidgetType } from '../../types/widget'
 import { Copy, Delete } from '../icons'
 import { ColorList } from '../../types/colors'
 import { useInputLayout } from '../InputLayout'
@@ -16,7 +15,7 @@ interface WidgetEditorProps {
 }
 
 
-export const WidgetEditor = (props: WidgetEditorProps): JSXElement => {
+export const WidgetEditor = (props: WidgetEditorProps): JSX.Element => {
 	const [layout] = useInputLayout()
 	const xmin = () => -layout.container.w/2
 	const ymin = () => -layout.container.h/2

@@ -1,5 +1,4 @@
-import { WidgetDef } from '../components/Widget'
-import { WidgetContainerDef } from '../components/containers/'
+import { WidgetDef, WidgetContainerDef } from './widget'
 
 
 export enum Color {

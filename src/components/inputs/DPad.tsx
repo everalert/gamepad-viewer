@@ -1,11 +1,9 @@
-import type { JSXElement } from 'solid-js'
+import type { JSX } from 'solid-js'
 import { Index } from 'solid-js'
-import { useInputReader } from '../InputReader'
-import { Widget, WidgetProps } from '../Widget'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Checkbox } from '../ui'
 import { deg2rad, rotVec2x, rotVec2y } from '../../helpers/math'
-import { Color, getColorDef, resolveColor } from '../../types/colors'
+import { Color, getColorDef } from '../../types/colors'
 
 
 interface DPadProps {
@@ -35,7 +33,7 @@ export const DPadValueDef: ValuePickerDef = {
 const RADIUS_FACTOR = 0.30  // original design = 8px/28px = 0.285
 
 
-export const DPad = (props: DPadProps) => {
+export const DPad = (props: DPadProps): JSX.Element => {
 	const color = () => getColorDef(props.color)
 	const w = () => props.length+props.line*2
 	const ang = () => 360/props.on.length
@@ -94,24 +92,6 @@ Z`
 			d={dfull()}
 		/>
 	</svg>
-}
-
-export const WDPad = (props: WidgetProps): JSXElement => {
-	const [pad] = useInputReader()
-	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => pad()?.getInputMap(props.def.inputs)
-		|| new Array(props.def.inputs.length).fill(false)
-	return <Widget
-		widget={props.def} container={props.container}>
-		<DPad
-			on			= { inputs().map(i => i?.pressed) }
-			length		= { props.def.val[0] || 80 }
-			thickness	= { props.def.val[1] || 28 }
-			simple		= { props.def.val[2]>0 || false }
-			line		= { props.container.line || 3 }
-			color	= { color() }
-		/>
-	</Widget>
 }
 
 export default DPad;
