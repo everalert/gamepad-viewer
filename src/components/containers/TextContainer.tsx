@@ -1,32 +1,39 @@
 import type { JSXElement } from 'solid-js';
 import { For, Show } from 'solid-js';
-import type { GamepadState, GamepadInputDef } from '../../types/gamepad'
-import { inputDefCmp } from '../../types/gamepad'
+import { type GamepadInputDef, inputDefCmp } from '../../types/gamepad'
 import { StickText, TriggerText } from '../inputs'
-import { WidgetType, WidgetDef } from '../Widget'
+import { WidgetType } from '../Widget'
+import { useInputLayout } from '../InputLayout'
+import { useInputReader } from '../InputReader'
 
 
-export interface TextContainerProps {
-	widgets: WidgetDef[];
-	pad: GamepadState
+interface TextContainerProps {
 	class?: string;
 	style?: string;
 }
 
-
 export const TextContainer = (props: TextContainerProps):JSXElement => {
-	const sticks = () => props.widgets
-		.filter(w => WidgetType[w.type].includes('Stick'))
-		.map(w => w.inputs)
-		.reduce((a:GamepadInputDef[][], p:GamepadInputDef[]) => 
-			a.find(e => inputDefCmp(e[0],p[0])===0 && inputDefCmp(e[1],p[1])===0) ?
-			a : [...a, p], [])
+	const [pad] = useInputReader()
+	const [layout] = useInputLayout()
+
+	const sticks = () => {
+		if (!layout.widgets) return []
+		return layout.widgets
+			.filter(w => WidgetType[w.type].includes('Stick'))
+			.map(w => w.inputs)
+			.reduce((a:GamepadInputDef[][], p:GamepadInputDef[]) => 
+				a.find(e => inputDefCmp(e[0],p[0])===0 && inputDefCmp(e[1],p[1])===0) ?
+					a : [...a, p], [])
+	}
 	
-	const triggers = () => props.widgets
-		.filter(w => WidgetType[w.type].includes('Trigger'))
-		.map(w => w.inputs)
+	const triggers = () => {
+		if (!layout.widgets) return []
+		return layout.widgets
+			.filter(w => WidgetType[w.type].includes('Trigger'))
+			.map(w => w.inputs)
+	}
 	
-	const inputs = (di:GamepadInputDef[]) => props.pad?.mapInputs(di)
+	const inputs = (di:GamepadInputDef[]) => pad()?.mapInputs(di)
 		|| new Array(di?.length||0).fill(false)
 
 	return <div

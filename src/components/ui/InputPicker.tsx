@@ -1,11 +1,12 @@
 import type { Accessor, JSXElement } from 'solid-js'
-import type { GamepadState, GamepadInputDef } from '../../types/gamepad'
+import type { GamepadInputDef } from '../../types/gamepad'
 import type { WidgetDef } from '../Widget'
 import { Index, Show, createSignal, createEffect, createMemo, onMount } from 'solid-js'
 import { GamepadInput, GamepadInputType } from '../../types/gamepad'
 import { WidgetInputDefMap } from '../Widget'
 import { clamp } from '../../helpers/math'
 import { Dropdown, Tooltip } from './'
+import { useInputReader } from '../InputReader'
 
 
 export type InputPickerDef = {
@@ -15,12 +16,12 @@ export type InputPickerDef = {
 }
 
 interface InputPickerProps {
-	pad: Accessor<GamepadState>;
 	widget: Accessor<WidgetDef>;
 	setValFn: (w:GamepadInputDef[]) => void;
 }
 
 export const InputPicker = (props: InputPickerProps): JSXElement => {
+	const [pad] = useInputReader();
 	const d = createMemo(()=>WidgetInputDefMap[props.widget().type])
 	const v = () => props.widget().inputs
 	const max = () => d().max || Number.MAX_SAFE_INTEGER
@@ -28,7 +29,7 @@ export const InputPicker = (props: InputPickerProps): JSXElement => {
 	const label = (i:number) => d()?.labels[i]
 
 	const inputList = () => {
-		const inputs = props.pad()?.inputs.map((k,i) => { return {
+		const inputs = pad()?.inputs.map((k,i) => { return {
 			value: {type:k.type, index:k.index},
 			label: `${GamepadInputType[k.type]} ${k.index}`,
 		} } )
@@ -61,11 +62,11 @@ export const InputPicker = (props: InputPickerProps): JSXElement => {
 	const [padReady, setPadReady] = createSignal<boolean>(false)
 
 	const checkPadReady = (i:number) => {
-		const p = props.pad().firstPressedIndex
+		const p = pad().firstPressedIndex
 		if (!padReady() && p<0) {
 			setPadReady(true)
 		} else if (padReady() && p>=0) {
-			const b:GamepadInput = props.pad().firstPressed
+			const b:GamepadInput = pad().firstPressed
 			setVal({ type:b.type, index:b.index }, i)
 			setPadReady(false)
 		}
@@ -96,7 +97,7 @@ export const InputPicker = (props: InputPickerProps): JSXElement => {
 		</div>
 
 		<Show
-			when={props.pad()?.inputs}
+			when={pad()?.inputs}
 			fallback={<div class='text-sm text-gray-500 leading-4'>
 				activate a controller<br/>to set inputs</div>}
 			>

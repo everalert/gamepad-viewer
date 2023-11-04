@@ -1,6 +1,6 @@
 import { GamepadInputType as GIT, inputDef } from '../gamepad'
-import { WidgetType, WidgetDef, genWidgetStr } from '../../components/Widget'
-import { WidgetContainerDef, genContainerStr } from '../../components/containers'
+import { WidgetType, WidgetDef } from '../../components/Widget'
+import { WidgetContainerDef } from '../../components/containers'
 
 
 export enum XBoxAxis {
@@ -128,9 +128,6 @@ export const XBOX_DFLT_WIDGETS: WidgetDef[] = [
 	},
 ]
 
-export const XBOX_DFLT_STR: string =
-	`${genContainerStr(XBOX_DFLT_CONTAINER)}|${genWidgetStr(XBOX_DFLT_WIDGETS)}`
-
 export const XBOX_DFLT_CONTAINER_COMPACT: WidgetContainerDef = {
 	w: 396,
 	h: 80,
@@ -217,6 +214,3 @@ export const XBOX_DFLT_WIDGETS_COMPACT: WidgetDef[] = [
 		fx: true
 	},
 ]
-
-export const XBOX_DFLT_STR_COMPACT: string =
-	`${genContainerStr(XBOX_DFLT_CONTAINER_COMPACT)}|${genWidgetStr(XBOX_DFLT_WIDGETS_COMPACT)}`

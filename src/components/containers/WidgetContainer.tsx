@@ -1,8 +1,8 @@
-import type { GamepadState } from '../../types/gamepad'
 import { For } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
-import { WidgetTypeMap, WidgetDef } from '../Widget'
+import { WidgetTypeMap } from '../Widget'
 import { Color } from '../../types/colors'
+import { useInputLayout } from '../InputLayout'
 
 
 export interface WidgetContainerDef {
@@ -16,11 +16,11 @@ export interface WidgetContainerDef {
 const containerdef_re =		/G((?:(?:w|h|m|l|c)\-?[0-9]+)+)/g
 const containerparam_re =	/(w|h|m|l|c)(\-?[0-9]+)/g
 
-export const WCONTAINER_DFLT: WidgetContainerDef =
+export const WIDGET_CONTAINER_DFLT: WidgetContainerDef =
 	{ w:512, h:144, m:32, line:3 }
 
 export const parseContainerStr = (str:string):WidgetContainerDef => {
-	const c_out:WidgetContainerDef = JSON.parse(JSON.stringify(WCONTAINER_DFLT))
+	const c_out:WidgetContainerDef = JSON.parse(JSON.stringify(WIDGET_CONTAINER_DFLT))
 	if (!str) return c_out
 	for (const c of str.matchAll(containerdef_re)) {
 		for (const p of c[1].matchAll(containerparam_re)) {
@@ -47,23 +47,21 @@ export const genContainerStr = (container:WidgetContainerDef):string => {
 
 
 export interface WidgetContainerProps {
-	def: WidgetContainerDef;
-	widgets: WidgetDef[];
-	pad: GamepadState
 	class?: string;
 	style?: string;
 }
 
 export const WidgetContainer = (props: WidgetContainerProps) => {
+	const [layout] = useInputLayout()
 	return <div
 		class={`sticky top-0 ${props.class||''}`}
-		style={`width:${props.def.w}px; height:${props.def.h}px; ${props.style||''}`}
+		style={`width:${layout.container.w}px; height:${layout.container.h}px; ${props.style||''}`}
 		>
-		<For each={props.widgets}>{w => w.hide ? null : (
+		<For each={layout.widgets}>{w => w.hide ? null : (
 			<Dynamic
 				component={WidgetTypeMap[w.type]}
 				def={w}
-				container={props.def}
+				container={layout.container}
 			/>
 		)}</For>
 	</div>

@@ -1,54 +1,40 @@
-import type { JSXElement } from 'solid-js';
-import type { WidgetContainerDef } from './WidgetContainer'
-import { useInputReader } from '../InputReader'
-import { useSearchParams, useLocation } from '@solidjs/router'
+import { type JSX } from 'solid-js';
+import { useSearchParams, useParams } from '@solidjs/router'
 import { WidgetContainer } from './WidgetContainer'
 import { TextContainer } from './TextContainer'
-import { WidgetDef } from '../Widget'
+import { useInputLayout } from '../InputLayout'
 
 
 export interface DisplayContainerProps {
-	container: WidgetContainerDef;
-	widgets: WidgetDef[];
-//	pad: Accessor<GamepadState>;
-	children?: JSXElement;
+	children?: JSX.Element;
 }
 
 
-export const DisplayContainer = (props: DisplayContainerProps): JSXElement => {
-	const [params] = useSearchParams();
-	const [pad] = useInputReader();
-	const location = useLocation();
+export const DisplayContainer = (props: DisplayContainerProps): JSX.Element => {
+	const [params] = useSearchParams()
+	const [layout] = useInputLayout()
 	
-	const NOTEXT	= params.notext !== undefined
-	const NOIMAGE	= params.noimage !== undefined
-	const NOGUIDE	= params.noguide !== undefined
-	const MODE_EDIT	= location.pathname === '/custom/edit'
+	const setNoText = () => params.notext !== undefined
+	const setNoImage = () => params.noimage !== undefined
+	const setNoGuide = () => params.noguide !== undefined
+	const modeEdit = () => useParams().edit !== undefined
 
 	return <div
-		class={`flex flex-col gap-4 ${MODE_EDIT ?
+		class={`flex flex-col gap-4 ${modeEdit() ?
 			'bg-black min-w-full min-h-screen items-center' : 'items-start'}`}
 		>
 		<div
 			class={`inline-flex flex-col items-center sticky top-0 z-10 overflow-hidden
-				${MODE_EDIT ? 'bg-gray-900 outline outline-4 outline-black' : ''}
-				${NOGUIDE || MODE_EDIT ? '' : 'outline outline-4 outline-red-500'}
-			`}
-			style={`padding:${props.container.m}px; gap:${props.container.m/2}px;`}
+				${modeEdit() ? 'bg-gray-900 outline outline-4 outline-black' : ''}
+				${setNoGuide() || modeEdit() ? '' : 'outline outline-4 outline-red-500'}`}
+			style={`padding:${layout.container.m}px; gap:${layout.container.m/2}px;`}
 			>
-			{ NOTEXT || <TextContainer
-				widgets={props.widgets} pad={pad()}
-				class={`${MODE_EDIT ? 'bg-gray-950' : ''}`}
-			/> }
-			{ NOIMAGE || <WidgetContainer
-				def={props.container}
-				widgets={props.widgets}
-				pad={pad()}
-				class={`${MODE_EDIT ? 'bg-gray-950' : ''}`}
-			/> }
+			{ setNoText() || <TextContainer class={`${modeEdit() ? 'bg-gray-950' : ''}`} /> }
+			{ setNoImage() || <WidgetContainer class={`${modeEdit() ? 'bg-gray-950' : ''}`} /> }
 		</div>
 		{props.children}
 	</div>
 }
+
 
 export default DisplayContainer

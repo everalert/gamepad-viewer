@@ -1,29 +1,27 @@
 import type { Accessor, JSXElement } from 'solid-js'
-import type { WidgetContainerDef } from '../containers'
-import type { GamepadState } from '../../types/gamepad'
 import type { WidgetDef } from '../Widget'
 import { For, Show } from 'solid-js'
 import { Dropdown, Slider, Slider2D, Checkbox, InputPicker, ValuePicker } from '../ui'
 import { WidgetType } from '../Widget'
 import { Copy, Delete } from '../icons'
 import { ColorList } from '../../types/colors'
+import { useInputLayout } from '../InputLayout'
 
 
 interface WidgetEditorProps {
-	pad: Accessor<GamepadState>;
-	container: Accessor<WidgetContainerDef>;
 	widget: Accessor<WidgetDef>;
-	setWidgetFn: (w:WidgetDef) => WidgetDef[];
-	delFn?: () => WidgetDef[];
-	copyFn?: () => WidgetDef[];
+	setWidgetFn: (w:WidgetDef) => void;
+	delFn?: () => void;
+	copyFn?: () => void;
 }
 
 
 export const WidgetEditor = (props: WidgetEditorProps): JSXElement => {
-	const xmin = () => -props.container().w/2
-	const ymin = () => -props.container().h/2
-	const xmax = () => props.container().w/2
-	const ymax = () => props.container().h/2
+	const [layout] = useInputLayout()
+	const xmin = () => -layout.container.w/2
+	const ymin = () => -layout.container.h/2
+	const xmax = () => layout.container.w/2
+	const ymax = () => layout.container.h/2
 	const setVal = (c:{[key:string]:any}) => props.setWidgetFn({...props.widget(),...c}) 
 
 	return <div class='flex flex-col gap-2 p-3 bg-gray-900 rounded-md'>
@@ -72,7 +70,6 @@ export const WidgetEditor = (props: WidgetEditorProps): JSXElement => {
 
 		<div class='mb-2 flex justify-between gap-4'>
 			<InputPicker
-				pad={props.pad}
 				widget={props.widget}
 				setValFn={(e)=>{setVal({inputs:e})}}
 			/>
@@ -101,7 +98,7 @@ export const WidgetEditor = (props: WidgetEditorProps): JSXElement => {
 				<Slider
 					label='rotation'
 					unit='&deg;'
-					value={props.widget()?.rot}
+					value={props.widget()?.rot || 0}
 					min={0}
 					max={360}
 					wrap={true}

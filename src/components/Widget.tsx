@@ -1,5 +1,4 @@
-import type { GamepadState, GamepadInputDef } from '../types/gamepad'
-import { GamepadInputType } from '../types/gamepad'
+import { type GamepadInputDef, GamepadInputType } from '../types/gamepad'
 import type { JSXElement, Component } from 'solid-js';
 import type { WidgetContainerDef } from './containers/WidgetContainer'
 import type { InputPickerDef, ValuePickerDef } from './ui'
@@ -15,7 +14,7 @@ import {
 	ButtonValueDef, DPadValueDef,
 	ButtonRingValueDef,
 	ButtonRingCircleValueDef, ButtonRingRectValueDef, ButtonRingTriangleValueDef, ButtonRingN64CValueDef, ButtonRingGCXYValueDef,
-	ButtonGridValueDef, ButtonGridShapeValueDef,
+	ButtonGridValueDef, 
 	ButtonGridCircleValueDef, ButtonGridRectValueDef, ButtonGridTriangleValueDef, ButtonGridN64CValueDef, ButtonGridGCXYValueDef,
 	StickValueDef, StickShapeValueDef,
 	TriggerValueDef, TriggerFlatValueDef,

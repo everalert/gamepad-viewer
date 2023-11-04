@@ -1,6 +1,6 @@
 import { GamepadInputType as GIT, inputDef } from '../gamepad'
-import { WidgetType, WidgetDef, genWidgetStr } from '../../components/Widget'
-import { WidgetContainerDef, genContainerStr } from '../../components/containers'
+import { WidgetType, WidgetDef } from '../../components/Widget'
+import { WidgetContainerDef } from '../../components/containers'
 import { WiiUAxis as WUA, WiiUButton as WUB } from './wiiu'
 import { ButtonShape } from '../../components/inputs'
 
@@ -119,6 +119,3 @@ export const GCN_DFLT_WIDGETS: WidgetDef[] = [
 		fx: true
 	},
 ]
-
-export const GCN_DFLT_STR: string =
-	`${genContainerStr(GCN_DFLT_CONTAINER)}|${genWidgetStr(GCN_DFLT_WIDGETS)}`

@@ -1,6 +1,6 @@
 import { GamepadInputType as GIT, inputDef } from '../gamepad'
-import { WidgetType, WidgetDef, genWidgetStr } from '../../components/Widget'
-import { WidgetContainerDef, genContainerStr } from '../../components/containers'
+import { WidgetType, WidgetDef } from '../../components/Widget'
+import { WidgetContainerDef } from '../../components/containers'
 import { TriggerSimpleMode } from '../../components/inputs'
 import { XBoxButton as XBB } from './xbox'
 
@@ -113,6 +113,3 @@ export const MINIMAL_DFLT_WIDGETS: WidgetDef[] = [
 		val: [8,68,16,32,6,0,1]
 	},
 ]
-
-export const MINIMAL_DFLT_STR: string =
-	`${genContainerStr(MINIMAL_DFLT_CONTAINER)}|${genWidgetStr(MINIMAL_DFLT_WIDGETS)}`

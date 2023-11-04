@@ -5,14 +5,8 @@ import { render } from 'solid-js/web';
 import { Router, Route, Routes } from '@solidjs/router'
 import { InputReader } from './components/InputReader'
 
-const Main = lazy(() => import('./pages/main'))
-const XBox = lazy(() => import('./pages/xbox'))
-const PSx = lazy(() => import('./pages/psx'))
-const WiiU = lazy(() => import('./pages/wiiu'))
-const GCN = lazy(() => import('./pages/gcn'))
-const Racing = lazy(() => import('./pages/racing'))
-const Minimal = lazy(() => import('./pages/minimal'))
-const Custom = lazy(() => import('./pages/custom'))
+const MainPage = lazy(() => import('./pages/main'))
+const DisplayPage = lazy(() => import('./pages/display'))
 
 const root = document.getElementById('root');
 
@@ -31,15 +25,8 @@ render(
 			/>
 			<InputReader>
 				<Routes>
-					<Route path='/' component={Main} />
-					<Route path='/xbox' component={XBox} />
-					<Route path='/psx' component={PSx} />
-					<Route path='/wiiu' component={WiiU} />
-					<Route path='/gcn' component={GCN} />
-					<Route path='/racing' component={Racing} />
-					<Route path='/minimal' component={Minimal} />
-					<Route path='/custom' component={Custom} />
-					<Route path='/custom/edit' component={Custom} />
+					<Route path='/' component={MainPage} />
+					<Route path='/:layout/:edit?' component={DisplayPage} />
 				</Routes>
 			</InputReader>
 		</Router>

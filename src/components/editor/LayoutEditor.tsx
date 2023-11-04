@@ -1,54 +1,44 @@
-import { Accessor, Setter, Index, For } from 'solid-js'
+import { Index } from 'solid-js'
 import { A } from '@solidjs/router'
 import { WidgetEditor, WidgetContainerEditor } from './'
-import { Add, Copy, Reset, Confirm } from '../icons'
+import { Add, Reset, Confirm } from '../icons'
 import { filterParams } from '../../helpers/formatting'
 import { WidgetContainerDef,
 	parseContainerStr, genContainerStr } from '../containers'
 import { WidgetDef, WIDGET_DFLT, 
 	parseWidgetStr, genWidgetStr } from '../Widget'
-import { useInputReader } from '../InputReader'
+import { useInputLayout } from '../InputLayout'
 
 
-interface LayoutEditorProps {
-	container: Accessor<WidgetContainerDef>;
-	setContainer: Setter<WidgetContainerDef>;
-	widgets: Accessor<WidgetDef[]>;
-	setWidgets: Setter<WidgetDef[]>;
-	baseSettings: string;
-}
-
-
-export const LayoutEditor = (props: LayoutEditorProps) => {
-	const [pad] = useInputReader();
+export const LayoutEditor = () => {
+	const [layout, setLayout] = useInputLayout()
+	const setContainer = (c:WidgetContainerDef) => setLayout({ container:c })
+	const setWidgets = (w:WidgetDef[]) => setLayout({ widgets:w })
+	const baseSettings = () =>
+		`${genContainerStr(layout.container)}|${genWidgetStr(layout.widgets)}`
 
 	return <div class='relative flex flex-col items-baseline'>
 		<div class='mt-3 mb-1 font-semibold'>global</div>
-		<WidgetContainerEditor
-			container={props.container}
-			setContainer={props.setContainer}
-		/>
+		<WidgetContainerEditor />
 
 		<div class='mt-4 font-semibold'>widgets</div>
 		<div class='flex flex-col gap-y-2'>
-			<Index each={props.widgets()}>{(w,i) => {
-				const setWidget = (w:WidgetDef) => props.setWidgets([
-					...props.widgets().slice(0,-props.widgets().length+i),
+			<Index each={layout.widgets}>{(w,i) => {
+				const setWidget = (w:WidgetDef) => setWidgets([
+					...layout.widgets.slice(0,-layout.widgets.length+i),
 					w,
-					...props.widgets().slice(i+1,props.widgets().length),
+					...layout.widgets.slice(i+1,layout.widgets.length),
 				]) 
-				const deleteWidget = () => props.setWidgets([
-					...props.widgets().slice(0,-props.widgets().length+i),
-					...props.widgets().slice(i+1,props.widgets().length),
+				const deleteWidget = () => setWidgets([
+					...layout.widgets.slice(0,-layout.widgets.length+i),
+					...layout.widgets.slice(i+1,layout.widgets.length),
 				])
-				const copyWidget = () => props.setWidgets([
-					...props.widgets().slice(0,-props.widgets().length+i),
+				const copyWidget = () => setWidgets([
+					...layout.widgets.slice(0,-layout.widgets.length+i),
 					w(), {...w()},
-					...props.widgets().slice(i+1,props.widgets().length),
+					...layout.widgets.slice(i+1,layout.widgets.length),
 				])
 				return <WidgetEditor 
-					pad={pad}
-					container={props.container}
 					widget={w}
 					setWidgetFn={setWidget}
 					delFn={deleteWidget}
@@ -61,7 +51,7 @@ export const LayoutEditor = (props: LayoutEditorProps) => {
 			<div
 				class='flex items-center font-bold text-blue-800
 				hover:text-blue-400 cursor-pointer group'
-				onClick={()=>props.setWidgets([...props.widgets(),
+				onClick={()=>setWidgets([...layout.widgets,
 					JSON.parse(JSON.stringify(WIDGET_DFLT))])}
 				>
 				<Add class='h-9 w-9 p-1' />add
@@ -71,8 +61,8 @@ export const LayoutEditor = (props: LayoutEditorProps) => {
 				class='flex items-center font-bold text-red-800 rounded
 				hover:text-red-400 cursor-pointer group'
 				onClick={()=>{
-					props.setContainer(parseContainerStr(props.baseSettings))
-					props.setWidgets(parseWidgetStr(props.baseSettings))
+					setContainer(parseContainerStr(baseSettings()))
+					setWidgets(parseWidgetStr(baseSettings()))
 				}}
 				>
 				<Reset class='h-9 w-9 p-1' /> reset
@@ -80,7 +70,7 @@ export const LayoutEditor = (props: LayoutEditorProps) => {
 
 			<A
 				href={`/custom${filterParams(location.search,
-				`settings=${genContainerStr(props.container())}|${genWidgetStr(props.widgets())}`
+				`settings=${genContainerStr(layout.container)}|${genWidgetStr(layout.widgets)}`
 				)}`}
 				class='flex items-center font-bold text-green-800 rounded
 				hover:text-green-400 group'

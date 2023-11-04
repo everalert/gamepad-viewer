@@ -1,6 +1,6 @@
 import { GamepadInputType as GIT, inputDef } from '../gamepad'
-import { WidgetType, WidgetDef, genWidgetStr } from '../../components/Widget'
-import { WidgetContainerDef, genContainerStr } from '../../components/containers'
+import { WidgetType, WidgetDef } from '../../components/Widget'
+import { WidgetContainerDef } from '../../components/containers'
 
 
 // TODO: confirm label-index combos are correct
@@ -127,9 +127,6 @@ export const WIIU_DFLT_WIDGETS: WidgetDef[] = [
 	},
 ]
 
-export const WIIU_DFLT_STR: string =
-	`${genContainerStr(WIIU_DFLT_CONTAINER)}|${genWidgetStr(WIIU_DFLT_WIDGETS)}`
-
 export const WIIU_DFLT_CONTAINER_COMPACT: WidgetContainerDef = {
 	w: 396,
 	h: 80,
@@ -216,6 +213,3 @@ export const WIIU_DFLT_WIDGETS_COMPACT: WidgetDef[] = [
 		fx: true
 	},
 ]
-
-export const WIIU_DFLT_STR_COMPACT: string =
-	`${genContainerStr(WIIU_DFLT_CONTAINER_COMPACT)}|${genWidgetStr(WIIU_DFLT_WIDGETS_COMPACT)}`
