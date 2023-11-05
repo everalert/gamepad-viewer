@@ -1,5 +1,4 @@
-import type { JSX } from 'solid-js'
-import { Index } from 'solid-js'
+import { type JSX, Index, createMemo } from 'solid-js'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Checkbox } from '../ui'
 import { deg2rad, rotVec2x, rotVec2y } from '../../helpers/math'
@@ -34,15 +33,15 @@ const RADIUS_FACTOR = 0.30  // original design = 8px/28px = 0.285
 
 
 export const DPad = (props: DPadProps): JSX.Element => {
-	const color = () => getColorDef(props.color)
-	const w = () => props.length+props.line*2
-	const ang = () => 360/props.on.length
-	const rad = () => props.thickness*RADIUS_FACTOR
+	const color = createMemo(() => getColorDef(props.color))
+	const w = createMemo(() => props.length+props.line*2)
+	const ang = createMemo(() => 360/props.on.length)
+	const rad = createMemo(() => props.thickness*RADIUS_FACTOR)
 	const rv2x = (x:number, y:number, i:number) => rotVec2x(x,y,-90+ang()*i)
 	const rv2y = (x:number, y:number, i:number) => rotVec2y(x,y,-90+ang()*i)
-	const halft = () => props.thickness*0.5
-	const ix = () => Math.sqrt((halft()/Math.sin(deg2rad(ang()/2)))**2 - halft()**2)
-	const ox = () => props.length/2
+	const halft = createMemo(() => props.thickness*0.5)
+	const ix = createMemo(() => Math.sqrt((halft()/Math.sin(deg2rad(ang()/2)))**2 - halft()**2))
+	const ox = createMemo(() => props.length/2)
 	const iy = halft, oy = halft
 
 	const arm = (i:number) => 
@@ -61,7 +60,7 @@ Q	${ w()/2 + rv2x(ox(), -oy(), i) }
 	${ w()/2 + rv2x(ox()-rad(), -oy(), i) }
 	${ w()/2 + rv2y(ox()-rad(), -oy(), i) }`
 
-	const dfull = () => `M ${props.on.map((o,i) => arm(i)).join(' L ')} Z`
+	const dfull = createMemo(() => `M ${props.on.map((o,i) => arm(i)).join(' L ')} Z`)
 
 	const darm = (i:number) => `M ${arm(i)}
 L	${ w()/2 + rv2x(ix(), -iy(), i) }

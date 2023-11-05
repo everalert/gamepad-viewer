@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js'
+import { type JSX, createMemo } from 'solid-js'
 import { Index } from 'solid-js'
 import { ButtonShape, ButtonInlineMap } from './'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
@@ -120,12 +120,12 @@ export const ButtonGridGCXYValueDef: ValuePickerDef = {
 
 
 export const ButtonGrid = (props: ButtonGridProps): JSX.Element => {
-	const wi = () => (props.cols-1)*props.stepx
-	const hi = () => (Math.ceil(props.on.length/props.cols)-1)*props.stepy
-	const m = () => props.line*2
-	const w = () => (m()+props.rx+props.ry)*2+wi()
-	const h = () => (m()+props.rx+props.ry)*2+hi()
-	const mi = () => (w()-wi())*0.5
+	const wi	= createMemo(() => (props.cols-1)*props.stepx)
+	const hi	= createMemo(() => (Math.ceil(props.on.length/props.cols)-1)*props.stepy)
+	const m		= createMemo(() => props.line*2)
+	const w		= createMemo(() => (m()+props.rx+props.ry)*2+wi())
+	const h		= createMemo(() => (m()+props.rx+props.ry)*2+hi())
+	const mi	= createMemo(() => (w()-wi())*0.5)
 
 	return <svg
 		version='1.1' xmlns='http://www.w3.org/2000/svg'

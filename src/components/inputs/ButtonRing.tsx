@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js'
+import { type JSX, createMemo } from 'solid-js'
 import { Index } from 'solid-js'
 import { ButtonShape, ButtonInlineMap } from './'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
@@ -107,10 +107,10 @@ export const ButtonRingGCXYValueDef: ValuePickerDef = {
 
 
 export const ButtonRing = (props: ButtonRingProps): JSX.Element => {
-	const angle = () => deg2rad(360/props.on.length)
-	const m = () => props.line*2
-	const w = () => (m()+props.r+props.rx)*2
-	const lenMult = () => props.on.length!==1?1:0
+	const angle		= createMemo(() => deg2rad(360/props.on.length))
+	const m			= createMemo(() => props.line*2)
+	const w			= createMemo(() => (m()+props.r+props.rx)*2)
+	const lenMult	= createMemo(() => props.on.length!==1?1:0)
 
 	return <svg
 		version='1.1' xmlns='http://www.w3.org/2000/svg'

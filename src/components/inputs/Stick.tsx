@@ -1,4 +1,5 @@
-import type { InputPickerDef, ValuePickerDef } from '../ui'
+import { createMemo } from 'solid-js'
+import { type InputPickerDef, type ValuePickerDef } from '../ui'
 import { Slider, Checkbox } from '../ui'
 import { AbC2a, AbC2h } from '../../helpers/math'
 import { Color, getColorDef } from '../../types/colors'
@@ -53,14 +54,14 @@ export const ROUND_FACTOR	= 1.5	// for 'rounded octagon'
 
 
 export const Stick = (props: StickProps) => {
-	const color = () => getColorDef(props.color)
-	const dotR = () => props.line*DOT_RSCALE+props.line*DOT_LSCALE
-	const m = () => props.line+dotR()
-	const angH = () => AbC2h(45,props.r,props.a)
-	const angW = () => Math.sqrt((AbC2a(45,props.r,props.a)**2)-(angH()**2))
+	const color	= createMemo(() => getColorDef(props.color))
+	const dotR	= createMemo(() => props.line*DOT_RSCALE+props.line*DOT_LSCALE)
+	const m		= createMemo(() => props.line+dotR())
+	const angH	= createMemo(() => AbC2h(45,props.r,props.a))
+	const angW	= createMemo(() => Math.sqrt((AbC2a(45,props.r,props.a)**2)-(angH()**2)))
 	const pathARnode = (a:string, x:number, y:number) => 
 		`${a} ${props.ar} ${props.ar} 0 0 1 ${x} ${y}`
-	const pathAR = () => `
+	const pathAR = createMemo(() => `
 		M ${m()+props.r} ${m()}
 		${pathARnode('a',angH(),angW())}
 		${pathARnode('A',m()+props.r*2,m()+props.r)}
@@ -70,8 +71,8 @@ export const Stick = (props: StickProps) => {
 		${pathARnode('A',m(),m()+props.r)}
 		${pathARnode('a',angW(),-angH())}
 		${pathARnode('A',m()+props.r,m())}
-		Z`
-	const pathLine = () => `
+		Z`)
+	const pathLine = createMemo(() => `
 		M ${m()+props.r} ${m()}
 		l ${angH()} ${angW()}
 		L ${m()+props.r*2} ${m()+props.r}
@@ -80,8 +81,8 @@ export const Stick = (props: StickProps) => {
 		l ${-angH()} ${-angW()}
 		L ${m()} ${m()+props.r}
 		l ${angW()} ${-angH()}
-		Z`
-	const path = () => props.ar > 0 ? pathAR() : pathLine()
+		Z`)
+	const path = createMemo(() => props.ar > 0 ? pathAR() : pathLine())
 
 	return <svg
 		version='1.1' xmlns='http://www.w3.org/2000/svg'

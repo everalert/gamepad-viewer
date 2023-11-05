@@ -1,4 +1,4 @@
-import type { JSX } from 'solid-js'
+import { type JSX, createMemo } from 'solid-js'
 import { Show } from 'solid-js'
 import type { InputPickerDef, ValuePickerDef } from '../ui'
 import { Slider, Dropdown } from '../ui'
@@ -80,31 +80,31 @@ const MARK_RSCALE = 1/3
 
 
 export const Trigger = (props: TriggerProps): JSX.Element => {
-	const color		= () => getColorDef(props.color)
-	const rad		= () => rc2rad(props.trigR,props.trigH)
-	const deg		= () => rc2deg(props.trigR,props.trigH)
-	const m			= () => props.line*2
+	const color		= createMemo(() => getColorDef(props.color))
+	const rad		= createMemo(() => rc2rad(props.trigR,props.trigH))
+	const deg		= createMemo(() => rc2deg(props.trigR,props.trigH))
+	const m			= createMemo(() => props.line*2)
 	const x			= (m:number) => props.trigR===0 ? 0 :
 						props.trigR*(1-Math.cos(rad()*m))
 	const y			= (m:number) => props.trigR===0 ? props.trigH*m :
 						props.trigR*Math.sin(rad()*m)
 
-	const markL		= () => props.line*MARK_VSCALE
-	const markW		= () => markL()+props.line*MARK_HSCALE
-	const markH		= () => markL()+props.line*MARK_HSCALE*MARK_VSCALE
-	const markR		= () => markW()*MARK_RSCALE
-	const markContW = () => Math.sqrt(markW()**2+markW()**2)
+	const markL		= createMemo(() => props.line*MARK_VSCALE)
+	const markW		= createMemo(() => markL()+props.line*MARK_HSCALE)
+	const markH		= createMemo(() => markL()+props.line*MARK_HSCALE*MARK_VSCALE)
+	const markR		= createMemo(() => markW()*MARK_RSCALE)
+	const markContW = createMemo(() => Math.sqrt(markW()**2+markW()**2))
 	
-	const trig		= () => props.trigger-0.5
+	const trig		= createMemo(() => props.trigger-0.5)
 	const path = (p1:number, p2:number) => props.trigR===0 ?
 		`M ${m()} ${m()+props.trigH/2-y(p1)} V ${m()+props.trigH/2-y(p2)}` :
 		`M ${m()+x(p1)} ${m()+props.trigH/2-y(p1)}
 		A ${props.trigR} ${props.trigR} 0  0 ${p2<p1?0:1}  ${m()+x(p2)} ${m()+props.trigH/2-y(p2)}`
 	
-	const isThick = () => TriggerSimpleMode[props.simple].includes('Thick')
-	const isFull = () => TriggerSimpleMode[props.simple].includes('Full')
-	const isSimple = () =>
-		props.simple>TriggerSimpleMode.NONE && props.simple<TriggerSimpleMode.MAX
+	const isThick	= createMemo(() => TriggerSimpleMode[props.simple].includes('Thick'))
+	const isFull	= createMemo(() => TriggerSimpleMode[props.simple].includes('Full'))
+	const isSimple	= createMemo(() =>
+		props.simple>TriggerSimpleMode.NONE && props.simple<TriggerSimpleMode.MAX)
 
 	return <svg
 		version='1.1' xmlns='http://www.w3.org/2000/svg'
