@@ -1,5 +1,6 @@
 import { Show, Component, createSignal } from 'solid-js'
 import { clamp, wrap } from '../../helpers/math'
+import { numf } from '../../helpers/formatting'
 
 
 interface SliderProps {
@@ -13,6 +14,8 @@ interface SliderProps {
 	step?: number;
 	stepMove?: number;
 	stepMin?: number;
+	fsign?: boolean;
+	fprecision?: number;
 	width?: string;
 }
 
@@ -166,7 +169,7 @@ export const Slider: Component<SliderProps> = (props: SliderProps) => {
 				onkeydown={slideKeyDown}
 				tabindex={0}
 				>
-				{`${props.value||0}${props.unit||''}`}
+				{`${props.fprecision ? numf(props.value??0,props.fsign??false,props.fprecision) : Math.round(props.value)}${props.unit||''}`}
 			</div>
 
 			<input

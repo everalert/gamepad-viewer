@@ -7,6 +7,7 @@ import { InputReader } from './components/InputReader'
 
 const MainPage = lazy(() => import('./pages/main'))
 const DisplayPage = lazy(() => import('./pages/display'))
+const ExperimentPage = lazy(() => import('./pages/experiment'))
 
 const root = document.getElementById('root');
 
@@ -26,6 +27,7 @@ render(
 			<InputReader>
 				<Routes>
 					<Route path='/' component={MainPage} />
+					<Route path='/jikken' component={ExperimentPage} />
 					<Route path='/:layout/:edit?' component={DisplayPage} />
 				</Routes>
 			</InputReader>
