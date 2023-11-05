@@ -1,8 +1,9 @@
 import { createContext, useContext, JSX } from 'solid-js'
 import { type SetStoreFunction, createStore } from 'solid-js/store'
 import { useSearchParams, useParams } from '@solidjs/router'
-import { WIDGET_DFLT, WidgetDef, parseWidgetStr } from '../components/Widget'
-import { WIDGET_CONTAINER_DFLT, WidgetContainerDef, parseContainerStr } from '../components/containers'
+import { WIDGET_DFLT, parseWidgetStr } from '../components/Widget'
+import { WIDGET_CONTAINER_DFLT, parseContainerStr } from '../components/containers'
+import { WidgetDef, WidgetContainerDef } from '../types/widget'
 import { LAYOUTS } from '../types/layouts'
 
 

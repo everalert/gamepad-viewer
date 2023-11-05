@@ -52,6 +52,8 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
 		<For each={layout.widgets}>{w => w.hide ? null : (
 			<Dynamic
 				component={WidgetTypeMap[w.type]}
+				def={w}
+				container={layout.container}
 			/>
 		)}</For>
 	</div>

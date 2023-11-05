@@ -64,4 +64,3 @@ export const WButtonRingN64C = (props: WidgetProps): JSX.Element =>
 
 export const WButtonRingGCXY = (props: WidgetProps): JSX.Element => 
 	<WButtonRingShape p={props} s={ButtonShape.GCXY} />
-

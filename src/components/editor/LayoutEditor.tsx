@@ -3,10 +3,9 @@ import { A } from '@solidjs/router'
 import { WidgetEditor, WidgetContainerEditor } from './'
 import { Add, Reset, Confirm } from '../icons'
 import { filterParams } from '../../helpers/formatting'
-import { WidgetContainerDef,
-	parseContainerStr, genContainerStr } from '../containers'
-import { WidgetDef, WIDGET_DFLT, 
-	parseWidgetStr, genWidgetStr } from '../Widget'
+import { parseContainerStr, genContainerStr } from '../containers'
+import { WIDGET_DFLT, parseWidgetStr, genWidgetStr } from '../Widget'
+import { WidgetContainerDef, WidgetDef } from '../../types/widget'
 import { useInputLayout } from '../InputLayout'
 
 

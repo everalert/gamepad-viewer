@@ -1,4 +1,4 @@
-import type { JSXElement, Component, Accessor } from 'solid-js'
+import type { JSX, Component, Accessor } from 'solid-js'
 import { type WidgetDef} from '../../types/widget'
 import { WidgetValueDefMap } from '../../types/widgetmap'
 import { Index, Show, createSignal, createEffect, createMemo, on } from 'solid-js'
@@ -23,7 +23,7 @@ interface ValuePickerProps {
 	setVals: (w:number[]) => void;
 }
 
-export const ValuePicker = (props: ValuePickerProps): JSXElement => {
+export const ValuePicker = (props: ValuePickerProps): JSX.Element => {
 	const d = createMemo(() => WidgetValueDefMap[props.widget().type])
 	const ddefs = () => d().defs
 	const drepeat = () => d().repeatLast

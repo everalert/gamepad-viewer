@@ -1,11 +1,11 @@
-import { Show } from 'solid-js'
+import { JSX, Show } from 'solid-js'
 import { useInputReader } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'
 import { ButtonInlineMap } from '../inputs/Button'
 import { resolveColor } from '../../types/colors'
 
 
-export const WButton = (props: WidgetProps) => {
+export const WButton = (props: WidgetProps): JSX.Element => {
 	const [pad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const d1 = () => props.def.val[1] || 16

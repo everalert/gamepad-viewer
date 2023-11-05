@@ -1,6 +1,6 @@
-import type { Accessor, JSXElement } from 'solid-js'
+import type { Accessor, JSX } from 'solid-js'
 import type { GamepadInputDef } from '../../types/gamepad'
-import { type WidgetDef} from '../../types/widget'
+import type { WidgetDef } from '../../types/widget'
 import { WidgetInputDefMap } from '../../types/widgetmap'
 import { Index, Show, createSignal, createEffect, createMemo, onMount } from 'solid-js'
 import { GamepadInput, GamepadInputType } from '../../types/gamepad'
@@ -20,7 +20,7 @@ interface InputPickerProps {
 	setValFn: (w:GamepadInputDef[]) => void;
 }
 
-export const InputPicker = (props: InputPickerProps): JSXElement => {
+export const InputPicker = (props: InputPickerProps): JSX.Element => {
 	const [pad] = useInputReader();
 	const d = createMemo(()=>WidgetInputDefMap[props.widget().type])
 	const v = () => props.widget().inputs
