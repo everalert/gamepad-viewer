@@ -11,8 +11,8 @@ import { useInputLayout } from '../InputLayout'
 
 export const LayoutEditor = () => {
 	const [layout, setLayout] = useInputLayout()
-	const setContainer = (c:WidgetContainerDef) => setLayout({ container:c })
-	const setWidgets = (w:WidgetDef[]) => setLayout({ widgets:w })
+	const setContainer = (c:WidgetContainerDef) => setLayout('container', c)
+	const setWidgets = (w:WidgetDef[]) => setLayout('widgets', w)
 	const baseSettings = () =>
 		`${genContainerStr(layout.container)}|${genWidgetStr(layout.widgets)}`
 
@@ -23,23 +23,14 @@ export const LayoutEditor = () => {
 		<div class='mt-4 font-semibold'>widgets</div>
 		<div class='flex flex-col gap-y-2'>
 			<Index each={layout.widgets}>{(w,i) => {
-				const setWidget = (w:WidgetDef) => setWidgets([
-					...layout.widgets.slice(0,-layout.widgets.length+i),
-					w,
-					...layout.widgets.slice(i+1,layout.widgets.length),
-				]) 
-				const deleteWidget = () => setWidgets([
-					...layout.widgets.slice(0,-layout.widgets.length+i),
-					...layout.widgets.slice(i+1,layout.widgets.length),
-				])
-				const copyWidget = () => setWidgets([
-					...layout.widgets.slice(0,-layout.widgets.length+i),
-					w(), {...w()},
-					...layout.widgets.slice(i+1,layout.widgets.length),
-				])
+				const setWidgetVal = (key:keyof WidgetDef, v:any) =>
+					setLayout('widgets', i, key, v)
+				const deleteWidget = () => setLayout('widgets', p =>
+					[...p.slice(0,-p.length+i), ...p.slice(i+1,p.length)])
+				const copyWidget = () => setLayout('widgets', p => [...p, {...p[i]}])
 				return <WidgetEditor 
 					widget={w}
-					setWidgetFn={setWidget}
+					setValFn={setWidgetVal}
 					delFn={deleteWidget}
 					copyFn={copyWidget}
 				/>
@@ -50,8 +41,7 @@ export const LayoutEditor = () => {
 			<div
 				class='flex items-center font-bold text-blue-800
 				hover:text-blue-400 cursor-pointer group'
-				onClick={()=>setWidgets([...layout.widgets,
-					JSON.parse(JSON.stringify(WIDGET_DFLT))])}
+				onClick={()=>setLayout('widgets', p => [...p, {...WIDGET_DFLT}])}
 				>
 				<Add class='h-9 w-9 p-1' />add
 			</div>

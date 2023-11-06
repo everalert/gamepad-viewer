@@ -9,7 +9,7 @@ import { useInputLayout } from '../InputLayout'
 
 interface WidgetEditorProps {
 	widget: Accessor<WidgetDef>;
-	setWidgetFn: (w:WidgetDef) => void;
+	setValFn: (key:keyof WidgetDef, v:any) => void;
 	delFn?: () => void;
 	copyFn?: () => void;
 }
@@ -21,12 +21,12 @@ export const WidgetEditor = (props: WidgetEditorProps): JSX.Element => {
 	const ymin = () => -layout.container.h/2
 	const xmax = () => layout.container.w/2
 	const ymax = () => layout.container.h/2
-	const setVal = (c:{[key:string]:any}) => props.setWidgetFn({...props.widget(),...c}) 
 
 	return <div class='flex flex-col gap-2 p-3 bg-gray-900 rounded-md'>
 		<div class='mb-2 flex justify-between gap-4'>
 			<div class='flex gap-4 items-center'>
-				<select onInput={e=>setVal({type:Number.parseInt(e.currentTarget.value)})}
+				<select
+					onInput={e=>props.setValFn('type', Number.parseInt(e.currentTarget.value))}
 					value={props.widget().type}
 					class='px-1 py-0.5 font-semibold bg-gray-800 rounded'
 					>
@@ -42,7 +42,7 @@ export const WidgetEditor = (props: WidgetEditorProps): JSX.Element => {
 					label='hide'
 					tooltip='only use widget for value readout'
 					value={props.widget().hide}
-					setValFn={(v)=>{setVal({hide:v})}}
+					setValFn={(v)=>{props.setValFn('hide', v)}}
 				/>
 			</div>
 			<div class='flex gap-2 items-center'>
@@ -70,13 +70,13 @@ export const WidgetEditor = (props: WidgetEditorProps): JSX.Element => {
 		<div class='mb-2 flex justify-between gap-4'>
 			<InputPicker
 				widget={props.widget}
-				setValFn={(e)=>{setVal({inputs:e})}}
+				setValFn={(e)=>{props.setValFn('inputs', e)}}
 			/>
 
 			<div class={`flex flex-col gap-2 ${props.widget().hide?'opacity-25':''}`}>
 				<ValuePicker
 					widget={props.widget}
-					setVals={(e)=>{setVal({val:e})}}
+					setVals={(e)=>{props.setValFn('val', e)}}
 				/>
 			</div>
 
@@ -87,12 +87,12 @@ export const WidgetEditor = (props: WidgetEditorProps): JSX.Element => {
 					valueX={props.widget().x}
 					minX={xmin()}
 					maxX={xmax()}
-					setValFnX={(n:number)=>{setVal({x:n})}}
+					setValFnX={(n:number)=>{props.setValFn('x', n)}}
 					unitY='y'
 					valueY={props.widget().y}
 					minY={ymin()}
 					maxY={ymax()}
-					setValFnY={(n:number)=>{setVal({y:n})}}
+					setValFnY={(n:number)=>{props.setValFn('y', n)}}
 				/>
 				<Slider
 					label='rotation'
@@ -101,25 +101,25 @@ export const WidgetEditor = (props: WidgetEditorProps): JSX.Element => {
 					min={0}
 					max={360}
 					wrap={true}
-					setValFn={(n:number)=>{setVal({rot:n})}}
+					setValFn={(n:number)=>{props.setValFn('rot', n)}}
 					width='w-[3.5rem]'
 				/> 
 				<Dropdown
 					list={ColorList}
 					value={props.widget().color || 0}
-					setValFn={(v)=>{setVal({color:v})}}
+					setValFn={(v)=>{props.setValFn('color', v)}}
 					label='color'
 				/>
 				<div class='flex gap-2'>
 					<Checkbox
 						label='flip x'
 						value={props.widget().fx}
-						setValFn={(v)=>{setVal({fx:v})}}
+						setValFn={(v)=>{props.setValFn('fx', v)}}
 					/>
 					<Checkbox
 						label='flip y'
 						value={props.widget().fy}
-						setValFn={(v)=>{setVal({fy:v})}}
+						setValFn={(v)=>{props.setValFn('fy', v)}}
 					/>
 				</div>
 			</div>

@@ -1,4 +1,5 @@
-import { Show, Component, createSignal } from 'solid-js'
+import { Show, Component, createSignal, createMemo } from 'solid-js'
+import { createStore } from 'solid-js/store'
 import { clamp, wrap } from '../../helpers/math'
 import { numf } from '../../helpers/formatting'
 
@@ -33,15 +34,15 @@ const MOVE_MIN = 16
 
 export const Slider: Component<SliderProps> = (props: SliderProps) => {
 	let input, slide
-	const [dragging, setDragging] = createSignal<DragState>({dragging:false})
-	const [editing, setEditing] = createSignal<boolean>(false)
-	const min = () => isNaN(props.min) ? Number.MIN_SAFE_INTEGER : props.min
-	const max = () => isNaN(props.max) ? Number.MAX_SAFE_INTEGER : props.max
-	const range = () => max()-min()
-	const userange = () => props.min !== undefined && props.max !== undefined
-	const percent = () => clamp((1-(-min()+props.value)/range())*100,0,100)
-	const step = (e:KeyboardEvent|MouseEvent) => (props.step||1)*(e.shiftKey?10:1)
-	const stepMove = () => props.stepMove || 1
+	const [dragging, setDragging]	= createStore<DragState>({dragging:false})
+	const [editing, setEditing]		= createSignal<boolean>(false)
+	const min		= createMemo(() => isNaN(props.min) ? Number.MIN_SAFE_INTEGER : props.min)
+	const max		= createMemo(() => isNaN(props.max) ? Number.MAX_SAFE_INTEGER : props.max)
+	const range		= createMemo(() => max()-min())
+	const userange	= createMemo(() => props.min !== undefined && props.max !== undefined)
+	const percent	= createMemo(() => clamp((1-(-min()+props.value)/range())*100,0,100))
+	const step		= (e:KeyboardEvent|MouseEvent) => (props.step||1)*(e.shiftKey?10:1)
+	const stepMove	= createMemo(() => props.stepMove || 1)
 
 	const realSetVal = (n:number) =>
 		props.setValFn(props?.wrap ?
@@ -69,73 +70,83 @@ export const Slider: Component<SliderProps> = (props: SliderProps) => {
 	}
 
 	const startDragging = (e:MouseEvent) => {
-		setDragging({
-			dragging: true,
-			editable: false,
-			startVal: props.value,
-			startPosX: e.clientX,
-			startPosY: e.clientY,
-			bigstep: false,
+		requestAnimationFrame(() => {
+			setDragging({
+				dragging: true,
+				editable: false,
+				startVal: props.value,
+				startPosX: e.clientX,
+				startPosY: e.clientY,
+				bigstep: false,
+			})
+			window.addEventListener('mousemove', whileDragging, true)
+			window.addEventListener('mouseup', endDragging, true)
 		})
-		window.addEventListener('mousemove', whileDragging, true)
-		window.addEventListener('mouseup', endDragging, true)
 	}
 
 	const whileDragging = (e:MouseEvent) => {
-		if (dragging().dragging) {
-			if (dragging().bigstep !== e.shiftKey) setDragging({
-				...dragging(),
-				bigstep:e.shiftKey,
-				startVal:props.value,
-				startPosX:e.clientX-e.movementX,
-				startPosY:e.clientY-e.movementY,
-			})
-			const difX = e.clientX-dragging().startPosX
-			const difY = e.clientY-dragging().startPosY
+		requestAnimationFrame(() => {
+			const d = dragging
+			if (d.dragging) {
+				if (d.bigstep !== e.shiftKey) setDragging({
+					bigstep:e.shiftKey,
+					startVal:props.value,
+					startPosX:e.clientX-e.movementX,
+					startPosY:e.clientY-e.movementY,
+				})
+				const difX = e.clientX-d.startPosX
+				const difY = e.clientY-d.startPosY
 
-			if (!dragging().editable && (
-				Math.abs(difX)>=MOVE_MIN ||
-				Math.abs(difY)>=MOVE_MIN ||
-				e.ctrlKey ||
-				e.altKey)
-			) setDragging({ ...dragging(), editable:true })
+				if (!d.editable && (
+					Math.abs(difX)>=MOVE_MIN ||
+						Math.abs(difY)>=MOVE_MIN ||
+						e.ctrlKey ||
+					e.altKey)
+				) setDragging('editable', true)
 
-			if (dragging().editable) {
-				const amount = Math.round(difX/stepMove())
-				if (amount !== 0) {
-					realSetVal(dragging().startVal+amount*step(e))
-					setDragging({ ...dragging(),
-						startPosX:dragging().startPosX+amount*stepMove(),
-						startVal:props?.wrap ?
-							wrap(dragging().startVal+amount*step(e),min(),range()) :
-							Math.max(min(),Math.min(max(),dragging().startVal+amount*step(e)))
-					})
+				if (d.editable) {
+					const amount = Math.round(difX/stepMove())
+					if (amount !== 0) {
+						realSetVal(d.startVal+amount*step(e))
+					setDragging({
+							startPosX:d.startPosX+amount*stepMove(),
+							startVal:props?.wrap ?
+								wrap(d.startVal+amount*step(e),min(),range()) :
+								Math.max(min(),Math.min(max(),d.startVal+amount*step(e)))
+						})
+					}
 				}
 			}
-		}
+		})
 	}
 
 	const endDragging = (e:MouseEvent) => {
-		if (dragging().dragging) {
-			if (!dragging().editable) startEditing()
+		requestAnimationFrame(() => {
+			if (dragging.dragging) {
+				if (!dragging.editable) startEditing()
 
-			setDragging({ dragging:false })
-			slide.blur()
-			window.removeEventListener('mousemove', whileDragging, true)
-			window.removeEventListener('mouseup', endDragging, true)
-		}
+				setDragging('dragging', false)
+				slide.blur()
+				window.removeEventListener('mousemove', whileDragging, true)
+				window.removeEventListener('mouseup', endDragging, true)
+			}
+		})
 	}
 
 	const slideKeyDown = (e:KeyboardEvent) => {
-		if (e.code === 'Enter') startEditing()
-		if (e.code === 'ArrowUp' || e.code === 'ArrowRight') inc(e)
-		if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') dec(e)
+		requestAnimationFrame(() => {
+			if (e.code === 'Enter') startEditing()
+			if (e.code === 'ArrowUp' || e.code === 'ArrowRight') inc(e)
+			if (e.code === 'ArrowDown' || e.code === 'ArrowLeft') dec(e)
+		})
 	}
 
 	const inputKeyDown = (e:KeyboardEvent) => {
-		if (e.code === 'Enter') endEditing()
-		if (e.code === 'ArrowUp') inc(e)
-		if (e.code === 'ArrowDown') dec(e)
+		requestAnimationFrame(() => {
+			if (e.code === 'Enter') endEditing()
+			if (e.code === 'ArrowUp') inc(e)
+			if (e.code === 'ArrowDown') dec(e)
+		})
 	}
 
 	return <div
