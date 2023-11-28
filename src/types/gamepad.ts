@@ -1,3 +1,6 @@
+import { reconcile, SetStoreFunction } from 'solid-js/store'
+
+
 export enum GamepadInputType {
 	NONE	= -2,
 	BLANK	= -1,
@@ -27,6 +30,9 @@ export const inputDefCmp = (d1:GamepadInputDef, d2:GamepadInputDef) => {
 	return 0
 }
 
+export const inputDefHash = (d:GamepadInputDef[]) => d
+	.map(def => `${GamepadInputType[def.type].substring(0,2)}${def.index}`).join('')
+
 
 export class GamepadInput {
 	type: GamepadInputType; 
@@ -36,7 +42,7 @@ export class GamepadInput {
 	free: boolean;
 
 	constructor() {
-		this.reset()
+		GamepadInput.reset(this)
 	}
 
 	init(type:GamepadInputType, index:number, axis:number, button?:boolean) {
@@ -47,88 +53,116 @@ export class GamepadInput {
 		this.free = false
 	}
 
-	reset() {
-		this.free = true
+	static reset(input:GamepadInput) {
+		input.free = true
 	}
-	
-	get ascalar():number {
-		return this.type===GamepadInputType.Axis ? this.axis : this.axis*2-1
+
+	static ascalar(input:GamepadInput):number {
+		if (input === null) return 0
+		return input.type===GamepadInputType.Axis ? input.axis : input.axis*2-1
 	}
-	
-	get bscalar():number {
-		return this.type===GamepadInputType.Button ? this.axis : (this.axis+1)*0.5
+
+	static bscalar(input:GamepadInput):number {
+		if (input === null) return 0.5
+		return input.type===GamepadInputType.Button ? input.axis : (input.axis+1)*0.5
 	}
-	
-	get pressed():boolean {
-		return this.type===GamepadInputType.Button ? this.button : Math.abs(this.axis)>=0.5
+
+	static pressed(input:GamepadInput):boolean {
+		if (input === null) return false
+		return input.type===GamepadInputType.Button ? input.button : Math.abs(input.axis)>=0.5
 	}
 }
 
-//FIXME: revisit using a pool/not constantly instantiating objects, for gamepadstate too
-//FIXME: also, need to store input maps and not regenerate them every widget redraw
 export class GamepadState {
-	index: number;
+	index: number = -1;
 	timestamp: DOMHighResTimeStamp;
 	inputs: GamepadInput[] = [];
-	private inputMap: {};
-	private inputToRemap: boolean;
-	private firstPressedCache:{t:DOMHighResTimeStamp,v:number} = {t:null,v:null};
+	inputMap: {[key:string]:GamepadInput[]} = {};
+	inputToRemap: boolean = false;
+	firstPressedCache:{t:DOMHighResTimeStamp,v:number} = {t:null,v:null};
 	
-	constructor(index:number) {
-		this.index = index
-		this.inputToRemap = true
+	constructor() {
+		//this.index = null
+		//this.inputToRemap = false
 	}
 
-	update(pad:Gamepad) {
-		this.timestamp = pad.timestamp
-		
-		this.resetPool()
-		this.resizePool(pad.axes.length+pad.buttons.length)
-		pad.axes.forEach((a,i) => this.inputs.find(p => p.free)
-			.init(GamepadInputType.Axis,i,a))
-		pad.buttons.forEach((b,i) => this.inputs.find(p => p.free)
-			.init(GamepadInputType.Button,i,b.value,b.pressed))
+	static update(pad:Gamepad, state:GamepadState, setFn:SetStoreFunction<GamepadState>) {
+		if (!pad.connected) {
+			setFn('index', -1)
+			return
+		}
+		if (pad.timestamp === state.timestamp) {
+			return
+		}
 
-		if (this.firstPressedCache.v !== this.firstPressedIndex) {
+		setFn({ index:pad.index, timestamp:pad.timestamp })
+		
+		GamepadState.resetPool(state, setFn)
+		GamepadState.resizePool(pad.axes.length+pad.buttons.length, state, setFn)
+		pad.axes.forEach((a,i) => setFn('inputs', state.inputs.findIndex(i => i.free), {
+			type: GamepadInputType.Axis,
+			index: i,
+			axis: a,
+			button: false,
+			free: false,
+		}))
+		pad.buttons.forEach((b,i) => setFn('inputs', state.inputs.findIndex(i => i.free), {
+			type: GamepadInputType.Button,
+			index: i,
+			axis: b.value,
+			button: b.pressed,
+			free: false,
+		}))
+
+		if (state.firstPressedCache.v !== GamepadState.firstPressedIndex(state, setFn)) {
 			document.dispatchEvent(new CustomEvent('pad:newFirstPressed', {
 				detail: {
-					index: this.firstPressedIndex,
-					value: this.firstPressed,
+					index: GamepadState.firstPressedIndex(state, setFn),
+					value: GamepadState.firstPressed(state, setFn),
 				}
 			}))
 		}
 	}
 
-	mapInputs(defs:GamepadInputDef[]): GamepadInput[] {
+	static mapInputs(defs:GamepadInputDef[], state:GamepadState): GamepadInput[] {
 		return defs?.map(d =>
-			this.inputs?.find(i => d.type===i.type && d.index===i.index) ?? null)
+			state.inputs.find(i => d.type===i.type && d.index===i.index) ?? null)
 	}
 
-	getInputMap(defs:GamepadInputDef[]): GamepadInput[] {
-		if (this.inputToRemap)
-			this.inputMap = {}
-		const id = defs
-			.map(def => `${GamepadInputType[def.type].substring(0,2)}${def.index}`)
-			.join('')
-		if (this.inputMap[id] === undefined)
-			this.inputMap[id] = this.mapInputs(defs)
-		return this.inputMap[id]
-	}
+	static getInputMap(defs:GamepadInputDef[], state:GamepadState, setFn:SetStoreFunction<GamepadState>): GamepadInput[] {
+		if (state.index < 0 || state.inputs.length <= 0)
+			return new Array(defs.length).fill(null)
 
-	resizePool(size:number):void {
-		while (this.inputs.length < size) this.inputs.push(new GamepadInput())
-		while (this.inputs.length > size) this.inputs.pop()
-	}
-
-	resetPool():void { this.inputs.forEach(i => i.reset()) }
-
-	get firstPressedIndex():number {
-		if (this.firstPressedCache.t !== this.timestamp) {
-			this.firstPressedCache.t = this.timestamp
-			this.firstPressedCache.v = this.inputs.findIndex(i => i.pressed)
+		if (state.inputToRemap) {
+			setFn('inputMap', reconcile({}))
+			setFn('inputToRemap', false)
 		}
-		return this.firstPressedCache.v
+
+		const id = inputDefHash(defs)
+		if (!state.inputMap[id]) {
+			setFn('inputMap', id, GamepadState.mapInputs(defs, state))
+		}
+		return state.inputMap[id]
 	}
 
-	get firstPressed():GamepadInput { return this.inputs[this.firstPressedIndex] }
+	static resizePool(size:number, state:GamepadState, setFn:SetStoreFunction<GamepadState>):void {
+		while (state.inputs.length < size) setFn('inputs', p => [...p, new GamepadInput()])
+		if (state.inputs.length > size) setFn('inputs', p => [...p.slice(0,size)])
+	}
+
+	static resetPool(state:GamepadState, setFn:SetStoreFunction<GamepadState>):void {
+		setFn('inputs', {}, 'free', true)
+	}
+
+	static firstPressedIndex(state:GamepadState, setFn:SetStoreFunction<GamepadState>):number {
+		if (state.firstPressedCache.t !== state.timestamp) {
+			setFn('firstPressedCache',
+				{ t:state.timestamp, v:state.inputs.findIndex(i => GamepadInput.pressed(i)) })
+		}
+		return state.firstPressedCache.v
+	}
+
+	static firstPressed(state:GamepadState, setFn:SetStoreFunction<GamepadState>):GamepadInput {
+		return state.inputs[GamepadState.firstPressedIndex(state, setFn)]
+	}
 }

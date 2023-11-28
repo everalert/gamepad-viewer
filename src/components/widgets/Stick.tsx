@@ -3,19 +3,19 @@ import { useInputReader } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'
 import { Stick, NICE_FACTOR, ROUND_FACTOR } from '../inputs/Stick'
 import { resolveColor } from '../../types/colors'
+import { GamepadState, GamepadInput } from '../../types/gamepad'
 
 
 export const WStick = (props: WidgetProps): JSX.Element => {
-	const [pad] = useInputReader()
+	const [pad, setPad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => pad()?.getInputMap(props.def.inputs)
-		|| new Array(props.def.inputs.length).fill(false)
+	const inputs = () => GamepadState.getInputMap(props.def.inputs, pad, setPad)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x		= { inputs()[0]?.ascalar || 0 }
-			y		= { inputs()[1]?.ascalar || 0 }
-			button	= { inputs()[2]?.pressed || false }
+			x		= { GamepadInput.ascalar(inputs()[0] || null) }
+			y		= { GamepadInput.ascalar(inputs()[1] || null) }
+			button	= { GamepadInput.pressed(inputs()[2] || null) }
 			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
 			a		= { props.def.val[1]>0 ? props.def.val[1] : 67.5 }
 			ar		= { props.def.val[2]>=0 ? props.def.val[2] : 64 }
@@ -27,16 +27,15 @@ export const WStick = (props: WidgetProps): JSX.Element => {
 }
 
 export const WStickCircle = (props: WidgetProps): JSX.Element => {
-	const [pad] = useInputReader()
+	const [pad, setPad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => pad()?.getInputMap(props.def.inputs)
-		|| new Array(props.def.inputs.length).fill(false)
+	const inputs = () => GamepadState.getInputMap(props.def.inputs, pad, setPad)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x		= { inputs()[0]?.ascalar || 0 }
-			y		= { inputs()[1]?.ascalar || 0 }
-			button	= { inputs()[2]?.pressed || false }
+			x		= { GamepadInput.ascalar(inputs()[0] || null) }
+			y		= { GamepadInput.ascalar(inputs()[1] || null) }
+			button	= { GamepadInput.pressed(inputs()[2] || null) }
 			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
 			a		= { 67.5 }
 			ar		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
@@ -48,16 +47,15 @@ export const WStickCircle = (props: WidgetProps): JSX.Element => {
 }
 
 export const WStickSquare = (props: WidgetProps): JSX.Element => {
-	const [pad] = useInputReader()
+	const [pad, setPad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => pad()?.getInputMap(props.def.inputs)
-		|| new Array(props.def.inputs.length).fill(false)
+	const inputs = () => GamepadState.getInputMap(props.def.inputs, pad, setPad)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x		= { inputs()[0]?.ascalar || 0 }
-			y		= { inputs()[1]?.ascalar || 0 }
-			button	= { inputs()[2]?.pressed || false }
+			x		= { GamepadInput.ascalar(inputs()[0] || null) }
+			y		= { GamepadInput.ascalar(inputs()[1] || null) }
+			button	= { GamepadInput.pressed(inputs()[2] || null) }
 			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
 			a		= { 90 }
 			ar		= { 0 }
@@ -69,16 +67,15 @@ export const WStickSquare = (props: WidgetProps): JSX.Element => {
 }
 
 export const WStickN64 = (props: WidgetProps): JSX.Element => {
-	const [pad] = useInputReader()
+	const [pad, setPad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => pad()?.getInputMap(props.def.inputs)
-		|| new Array(props.def.inputs.length).fill(false)
+	const inputs = () => GamepadState.getInputMap(props.def.inputs, pad, setPad)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x		= { inputs()[0]?.ascalar || 0 }
-			y		= { inputs()[1]?.ascalar || 0 }
-			button	= { inputs()[2]?.pressed || false }
+			x		= { GamepadInput.ascalar(inputs()[0] || null) }
+			y		= { GamepadInput.ascalar(inputs()[1] || null) }
+			button	= { GamepadInput.pressed(inputs()[2] || null) }
 			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
 			a		= { 75 } //TODO: confirm from notes
 			ar		= { props.def.val[0]>0 ? props.def.val[0]*NICE_FACTOR : 48*NICE_FACTOR}
@@ -90,16 +87,15 @@ export const WStickN64 = (props: WidgetProps): JSX.Element => {
 }
 
 export const WStickHori = (props: WidgetProps): JSX.Element => {
-	const [pad] = useInputReader()
+	const [pad, setPad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => pad()?.getInputMap(props.def.inputs)
-		|| new Array(props.def.inputs.length).fill(false)
+	const inputs = () => GamepadState.getInputMap(props.def.inputs, pad, setPad)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x		= { inputs()[0]?.ascalar || 0 }
-			y		= { inputs()[1]?.ascalar || 0 }
-			button	= { inputs()[2]?.pressed || false }
+			x		= { GamepadInput.ascalar(inputs()[0] || null) }
+			y		= { GamepadInput.ascalar(inputs()[1] || null) }
+			button	= { GamepadInput.pressed(inputs()[2] || null) }
 			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
 			a		= { 73 } //TODO: confirm from notes
 			ar		= { props.def.val[0]>0 ? props.def.val[0]*NICE_FACTOR : 48*NICE_FACTOR }
@@ -111,16 +107,15 @@ export const WStickHori = (props: WidgetProps): JSX.Element => {
 }
 
 export const WStickGC = (props: WidgetProps): JSX.Element => {
-	const [pad] = useInputReader()
+	const [pad, setPad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => pad()?.getInputMap(props.def.inputs)
-		|| new Array(props.def.inputs.length).fill(false)
+	const inputs = () => GamepadState.getInputMap(props.def.inputs, pad, setPad)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x		= { inputs()[0]?.ascalar || 0 }
-			y		= { inputs()[1]?.ascalar || 0 }
-			button	= { inputs()[2]?.pressed || false }
+			x		= { GamepadInput.ascalar(inputs()[0] || null) }
+			y		= { GamepadInput.ascalar(inputs()[1] || null) }
+			button	= { GamepadInput.pressed(inputs()[2] || null) }
 			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
 			a		= { 67.5 }
 			ar		= { props.def.val[0]>0 ? props.def.val[0]*NICE_FACTOR : 48*NICE_FACTOR }
@@ -132,16 +127,15 @@ export const WStickGC = (props: WidgetProps): JSX.Element => {
 }
 
 export const WStickRound = (props: WidgetProps): JSX.Element => {
-	const [pad] = useInputReader()
+	const [pad, setPad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => pad()?.getInputMap(props.def.inputs)
-		|| new Array(props.def.inputs.length).fill(false)
+	const inputs = () => GamepadState.getInputMap(props.def.inputs, pad, setPad)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<Stick
-			x		= { inputs()[0]?.ascalar || 0 }
-			y		= { inputs()[1]?.ascalar || 0 }
-			button	= { inputs()[2]?.pressed || false }
+			x		= { GamepadInput.ascalar(inputs()[0] || null) }
+			y		= { GamepadInput.ascalar(inputs()[1] || null) }
+			button	= { GamepadInput.pressed(inputs()[2] || null) }
 			r		= { props.def.val[0]>0 ? props.def.val[0] : 48 }
 			a		= { 67.5 }
 			ar		= { props.def.val[0]>0 ? props.def.val[0]*ROUND_FACTOR : 48*ROUND_FACTOR }

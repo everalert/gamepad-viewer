@@ -3,17 +3,17 @@ import { useInputReader } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'
 import { ButtonInlineMap } from '../inputs/Button'
 import { resolveColor } from '../../types/colors'
+import { GamepadState, GamepadInput } from '../../types/gamepad'
 
 
 export const WButton = (props: WidgetProps): JSX.Element => {
-	const [pad] = useInputReader()
+	const [pad, setPad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
 	const d1 = () => props.def.val[1] || 16
 	const d2 = () => props.def.val[2] || 16
 	const m = () => props.container.line*2
 	const w = () => (m()+Math.max(d1(),d2())*2)*2
-	const inputs = () => pad()?.getInputMap(props.def.inputs)
-		|| new Array(props.def.inputs.length).fill(false)
+	const inputs = () =>  GamepadState.getInputMap(props.def.inputs, pad, setPad)
 	const Btn = ButtonInlineMap[props.def.val[0]] || null
 	return <Widget
 		widget={props.def} container={props.container}>
@@ -26,7 +26,7 @@ export const WButton = (props: WidgetProps): JSX.Element => {
 				<Btn
 					x		= { w()/2 }
 					y		= { w()/2 }
-					on		= { inputs()[0]?.pressed || false }
+					on		= { GamepadInput.pressed(inputs()[0] || null) }
 					d1		= { d1() }
 					d2		= { d2() }
 					d3		= { props.def.val[3] || 0 }

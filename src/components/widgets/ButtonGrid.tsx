@@ -4,17 +4,17 @@ import { ButtonGrid } from '../inputs/ButtonGrid'
 import { useInputReader } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'
 import { resolveColor } from '../../types/colors'
+import { GamepadState, GamepadInput } from '../../types/gamepad'
 
 
 export const WButtonGrid = (props: WidgetProps): JSX.Element => {
-	const [pad] = useInputReader()
+	const [pad, setPad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => pad()?.getInputMap(props.def.inputs)
-		|| new Array(props.def.inputs.length).fill(false)
+	const inputs = () =>  GamepadState.getInputMap(props.def.inputs, pad, setPad)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<ButtonGrid
-			on		= { inputs().map(i => i?.pressed) }
+			on		= { inputs().map(i => GamepadInput.pressed(i)) }
 			cols	= { props.def.val[0] || props.def.inputs.length }
 			stepx	= { props.def.val[1] || 41 }
 			stepy	= { props.def.val[2] || 41 }
@@ -30,14 +30,13 @@ export const WButtonGrid = (props: WidgetProps): JSX.Element => {
 }
 
 const WButtonGridShape = (props: {p:WidgetProps,s:ButtonShape}): JSX.Element => {
-	const [pad] = useInputReader()
+	const [pad, setPad] = useInputReader()
 	const color = () => resolveColor(props.p.def, props.p.container)
-	const inputs = () => pad()?.getInputMap(props.p.def.inputs)
-		|| new Array(props.p.def.inputs.length).fill(false)
+	const inputs = () =>  GamepadState.getInputMap(props.p.def.inputs, pad, setPad)
 	return <Widget
 		widget={props.p.def} container={props.p.container}>
 		<ButtonGrid
-			on		= { inputs().map(i => i?.pressed) }
+			on		= { inputs().map(i => GamepadInput.pressed(i)) }
 			cols	= { props.p.def.val[0] || props.p.def.inputs.length }
 			stepx	= { props.p.def.val[1] || 41 }
 			stepy	= { props.p.def.val[2] || 41 }

@@ -3,7 +3,7 @@ import type { GamepadInputDef } from '../../types/gamepad'
 import type { WidgetDef } from '../../types/widget'
 import { WidgetInputDefMap } from '../../types/widgetmap'
 import { Index, Show, createSignal, createEffect, createMemo, onMount } from 'solid-js'
-import { GamepadInput, GamepadInputType } from '../../types/gamepad'
+import { GamepadState, GamepadInput, GamepadInputType } from '../../types/gamepad'
 import { clamp } from '../../helpers/math'
 import { Dropdown, Tooltip } from './'
 import { useInputReader } from '../InputReader'
@@ -21,7 +21,7 @@ interface InputPickerProps {
 }
 
 export const InputPicker = (props: InputPickerProps): JSX.Element => {
-	const [pad] = useInputReader();
+	const [pad, setPad] = useInputReader()
 	const d = createMemo(()=>WidgetInputDefMap[props.widget().type])
 	const v = () => props.widget().inputs
 	const max = () => d().max || Number.MAX_SAFE_INTEGER
@@ -29,7 +29,7 @@ export const InputPicker = (props: InputPickerProps): JSX.Element => {
 	const label = (i:number) => d()?.labels[i]
 
 	const inputList = () => {
-		const inputs = pad()?.inputs.map((k,i) => { return {
+		const inputs = pad.inputs.map((k,i) => { return {
 			value: {type:k.type, index:k.index},
 			label: `${GamepadInputType[k.type]} ${k.index}`,
 		} } )
@@ -62,11 +62,11 @@ export const InputPicker = (props: InputPickerProps): JSX.Element => {
 	const [padReady, setPadReady] = createSignal<boolean>(false)
 
 	const checkPadReady = (i:number) => {
-		const p = pad().firstPressedIndex
+		const p = GamepadState.firstPressedIndex(pad, setPad)
 		if (!padReady() && p<0) {
 			setPadReady(true)
 		} else if (padReady() && p>=0) {
-			const b:GamepadInput = pad().firstPressed
+			const b:GamepadInput = GamepadState.firstPressed(pad, setPad)
 			setVal({ type:b.type, index:b.index }, i)
 			setPadReady(false)
 		}
@@ -97,7 +97,7 @@ export const InputPicker = (props: InputPickerProps): JSX.Element => {
 		</div>
 
 		<Show
-			when={pad()?.inputs}
+			when={pad.inputs}
 			fallback={<div class='text-sm text-gray-500 leading-4'>
 				activate a controller<br/>to set inputs</div>}
 			>

@@ -4,17 +4,17 @@ import { ButtonRing } from '../inputs/ButtonRing'
 import { useInputReader } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'
 import { resolveColor } from '../../types/colors'
+import { GamepadState, GamepadInput } from '../../types/gamepad'
 
 
 export const WButtonRing = (props: WidgetProps): JSX.Element => {
-	const [pad] = useInputReader()
+	const [pad, setPad] = useInputReader()
 	const color = () => resolveColor(props.def, props.container)
-	const inputs = () => pad()?.getInputMap(props.def.inputs)
-		|| new Array(props.def.inputs.length).fill(false)
+	const inputs = () =>  GamepadState.getInputMap(props.def.inputs, pad, setPad)
 	return <Widget
 		widget={props.def} container={props.container}>
 		<ButtonRing
-			on		= { inputs().map(i => i?.pressed) }
+			on		= { inputs().map(i => GamepadInput.pressed(i)) }
 			r		= { props.def.val[0] || 28 }
 			rx		= { props.def.val[1] || 16 }
 			ry		= { props.def.val[2] || 16 }
@@ -29,14 +29,13 @@ export const WButtonRing = (props: WidgetProps): JSX.Element => {
 }
 
 const WButtonRingShape = (props: {p:WidgetProps,s:ButtonShape}): JSX.Element => {
-	const [pad] = useInputReader()
+	const [pad, setPad] = useInputReader()
 	const color = () => resolveColor(props.p.def, props.p.container)
-	const inputs = () => pad()?.getInputMap(props.p.def.inputs)
-		|| new Array(props.p.def.inputs.length).fill(false)
+	const inputs = () =>  GamepadState.getInputMap(props.p.def.inputs, pad, setPad)
 	return <Widget
 		widget={props.p.def} container={props.p.container}>
 		<ButtonRing
-			on		= { inputs().map(i => i?.pressed) }
+			on		= { inputs().map(i => GamepadInput.pressed(i)) }
 			r  		= { props.p.def.val[0] || 28 }
 			rx 		= { props.p.def.val[1] || 16 }
 			ry 		= { props.p.def.val[2] || 16 }
