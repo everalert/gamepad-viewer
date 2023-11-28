@@ -21,7 +21,7 @@ export const DisplayContainer = (props: DisplayContainerProps): JSX.Element => {
 
 	return <div
 		class={`flex flex-col gap-4 ${modeEdit() ?
-			'bg-black min-w-full min-h-screen items-center' : 'items-start'}`}
+			'min-w-full min-h-screen items-center' : 'items-start'}`}
 		>
 		<div
 			class={`inline-flex flex-col items-center sticky top-0 z-10 overflow-hidden

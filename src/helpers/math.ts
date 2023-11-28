@@ -6,6 +6,12 @@ export const clamp = (n:number, min:number, max:number) =>
 export const wrap = (n:number, start:number, range:number) =>
 	start+((start+n)%range+range)%range
 
+export const lerp = (n:number, target:number, rate:number) =>
+	n + (target-n)*rate
+
+export const damp = (n:number, target:number, rate:number, dt:number) =>
+	lerp(n, target, 1 - rate ** dt)
+
 
 export const deg2rad = (d:number) => d * Math.PI / 180
 export const rad2deg = (r:number) => r * 180 / Math.PI

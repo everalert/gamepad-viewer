@@ -63,7 +63,7 @@ export class GamepadInput {
 	}
 
 	static bscalar(input:GamepadInput):number {
-		if (input === null) return 0.5
+		if (input === null) return 0
 		return input.type===GamepadInputType.Button ? input.axis : (input.axis+1)*0.5
 	}
 

@@ -52,7 +52,7 @@ export const MainPage: Component = () => {
 		return active.length > 0 ? `?${active.join('&')}` : ''
 	}
 
-	return <div class='flex gap-8 justify-center p-[32px] min-h-screen select-none bg-black'>
+	return <div class='flex gap-8 justify-center p-[32px] min-h-screen select-none'>
 		<div class='flex flex-col justify-start'>
 			<div class='mb-2'>
 				<div class='text-gray-400'>select</div>

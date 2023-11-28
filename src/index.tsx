@@ -4,6 +4,7 @@ import { lazy } from 'solid-js';
 import { render } from 'solid-js/web';
 import { Router, Route, Routes } from '@solidjs/router'
 import { InputReader } from './components/InputReader'
+import { Background } from './components/Background'
 
 const MainPage = lazy(() => import('./pages/main'))
 const DisplayPage = lazy(() => import('./pages/display'))
@@ -25,9 +26,10 @@ render(
 				rel="stylesheet"
 			/>
 			<InputReader>
+				<Background/>
 				<Routes>
 					<Route path='/' component={MainPage} />
-					<Route path='/jikken' component={ExperimentPage} />
+					<Route path='/secret' component={ExperimentPage} />
 					<Route path='/:layout/:edit?' component={DisplayPage} />
 				</Routes>
 			</InputReader>

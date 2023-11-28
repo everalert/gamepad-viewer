@@ -2,6 +2,7 @@ import { type Component, createSignal } from 'solid-js';
 import { Stick, Trigger, TriggerSimpleMode } from '../components/inputs'
 import { useInputReader } from '../components/InputReader'
 import { Slider, Checkbox } from '../components/ui'
+import { GamepadState, GamepadInput } from '../types/gamepad'
 import { Color } from '../types/colors'
 import { ang, mag, clamp } from '../helpers/math'
 import { numf } from '../helpers/formatting'
@@ -15,8 +16,8 @@ export const ExperimentPage: Component = () => {
 	const [dzOut, setDzOut] = createSignal<number>(0.03)
 
 	const [pad] = useInputReader()
-	const x = () => pad()?.inputs[0].ascalar ?? 0
-	const y = () => pad()?.inputs[1].ascalar ?? 0
+	const x = () => GamepadInput.ascalar(pad.inputs[0] || null)
+	const y = () => GamepadInput.ascalar(pad.inputs[1] || null)
 	const a = () => ang(-y(), x())
 	const as = () => Math.sign(a())
 	const m = () => mag(x(), y())
@@ -35,7 +36,7 @@ export const ExperimentPage: Component = () => {
 	}
 
 	return <div
-		class='w-screen h-screen flex gap-4 items-center place-content-center bg-black'
+		class='w-screen h-screen flex gap-4 items-center place-content-center'
 		>
 		<div class='grid grid-cols-2 auto-cols-min'>
 			<span>{numf(a(),true,3)}&deg;</span><span>ang in</span>
