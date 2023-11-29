@@ -20,12 +20,12 @@ export const DisplayContainer = (props: DisplayContainerProps): JSX.Element => {
 	const modeEdit = () => useParams().edit !== undefined
 
 	return <div
-		class={`flex flex-col gap-4 ${modeEdit() ?
-			'min-w-full min-h-screen items-center' : 'items-start'}`}
+		class={`flex flex-col gap-8 relative ${modeEdit() ?
+			'min-w-full min-h-screen items-center py-4' : 'items-start'}`}
 		>
 		<div
-			class={`inline-flex flex-col items-center sticky top-0 z-10 overflow-hidden
-				${modeEdit() ? 'bg-gray-900 outline outline-4 outline-black' : ''}
+			class={`inline-flex flex-col items-center sticky z-10 overflow-hidden
+				${modeEdit() ? 'bg-gray-900 outline outline-4 outline-black top-4' : 'top-0'}
 				${setNoGuide() || modeEdit() ? '' : 'outline outline-4 outline-red-500'}`}
 			style={`padding:${layout.container.m}px; gap:${layout.container.m/2}px;`}
 			>

@@ -6,7 +6,7 @@ import { useInputLayout } from '../InputLayout'
 
 export const WidgetContainerEditor = (): JSX.Element => {
 	const [layout, setLayout] = useInputLayout()
-	return <div class='flex gap-4'>
+	return <div class='flex flex-col gap-4'>
 		<Slider2D
 			label='size'
 			unitX='w'
