@@ -1,6 +1,5 @@
 import { type Component, createMemo } from 'solid-js'
-import type { InputPickerDef, ValuePickerDef } from '../ui'
-import { Slider, Checkbox, Dropdown } from '../ui'
+import { ButtonShape } from '../../types/inputs'
 import { deg2rad, ang, mag, rotVec2x, rotVec2y } from '../../helpers/math'
 import { Color, getColorDef } from '../../types/colors'
 
@@ -16,42 +15,6 @@ interface ButtonInlineProps {
 	w: number;
 	on: boolean;
 	color?: Color;
-}
-
-//NOTE: same deal as with widget types,
-//don't change values so that codes keep working across revisions
-export enum ButtonShape {
-	NONE	= 0,
-	Circle	= 1,
-	TriIso	= 2,
-	TriEqu	= 3,
-	Rect	= 4,
-	//Trapezium,
-	N64C	= 5,
-	GCXY	= 6,
-	MAX
-}
-
-export const ButtonInputGroupDef: InputPickerDef = {
-	max: 1,
-	labels:[]
-}
-
-const ButtonShapeList = Object.keys(ButtonShape)
-.filter(k => Number.isInteger(parseInt(k)) && parseInt(k)<ButtonShape.MAX)
-.map(k => {
-	return { value:parseInt(k), label:ButtonShape[k], faded:parseInt(k)===ButtonShape.NONE }})
-
-export const ButtonValueDef: ValuePickerDef = {
-	defs: [
-		{ celement:Dropdown, label:'shape',
-			cprops:{ list:ButtonShapeList, width:'w-[6.35rem]', max:ButtonShape.MAX-1 } },
-		{ celement:Slider, cprops:{ min:0 }, label:'dimension 1' },
-		{ celement:Slider, cprops:{ min:0 }, label:'dimension 2' },
-		{ celement:Slider, cprops:{ min:0, max:5, stepMove:8 }, label:'dimension 3' },
-		{ celement:Slider, cprops:{ min:0, max:360, wrap:true, unit:'°' }, label:'rotation' },
-		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
-	],
 }
 
 

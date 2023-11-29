@@ -1,19 +1,8 @@
 import { type JSX, createMemo } from 'solid-js'
 import { Show } from 'solid-js'
-import type { InputPickerDef, ValuePickerDef } from '../ui'
-import { Slider, Dropdown } from '../ui'
+import { TriggerSimpleMode } from '../../types/inputs'
 import { rc2rad, rc2deg } from '../../helpers/math'
 import { Color, getColorDef } from '../../types/colors'
-
-
-export enum TriggerSimpleMode {
-	NONE,
-	Full,
-	Split,
-	FullThick,
-	SplitThick,
-	MAX
-}
 
 
 interface TriggerProps {
@@ -28,51 +17,6 @@ interface TriggerProps {
 	class?: string;
 }
 
-export const TriggerInputGroupDef: InputPickerDef = {
-	min: 1,
-	max: 2,
-	labels: [
-		'trigger',
-		'bumper',
-	],
-}
-
-const SModeList = Object.keys(TriggerSimpleMode)
-.filter(k => Number.isInteger(parseInt(k)) && parseInt(k)<TriggerSimpleMode.MAX)
-.map(k => {
-	return { value:parseInt(k), label:TriggerSimpleMode[k], faded:parseInt(k)===TriggerSimpleMode.NONE }})
-
-export const TriggerValueDef: ValuePickerDef = {
-	defs: [
-		{ celement:Slider, cprops:{ min:0 }, label:'height' },
-		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
-		{
-			celement:Dropdown,
-			cprops:{
-				list:SModeList,
-				max:SModeList.length-1,
-				width:'w-[6.35rem]'
-			},
-			label:'simple mode'
-		},
-	],
-}
-
-export const TriggerFlatValueDef: ValuePickerDef = {
-	defs: [
-		{ celement:Slider, cprops:{ min:0 }, label:'height' },
-		{ celement:null },
-		{
-			celement:Dropdown,
-			cprops:{
-				list:SModeList,
-				max:SModeList.length-1,
-				width:'w-[6.35rem]'
-			},
-			label:'simple mode'
-		},
-	],
-}
 
 const MARK_HSCALE = 2.25
 const MARK_VSCALE = 4/7

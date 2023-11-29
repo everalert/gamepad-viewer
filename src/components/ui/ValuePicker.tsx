@@ -5,23 +5,11 @@ import { Index, Show, createSignal, createEffect, createMemo, on } from 'solid-j
 import { clamp } from '../../helpers/math'
 
 
-type BCElem = Component<{value:any;setValFn:(v:boolean)=>void;[key:string]:any}>;
-type NCElem = Component<{value:any;setValFn:(v:number)=>void;[key:string]:any}>;
-
-export type ValuePickerDef = {
-	defs: {
-		label?: string;
-		celement: BCElem|NCElem;
-		cprops?: {[key:string]:any};
-		isBool?: boolean;
-	}[];
-	repeatLast?: boolean;
-}
-
-interface ValuePickerProps {
+export interface ValuePickerProps {
 	widget: Accessor<WidgetDef>;
 	setVals: (w:number[]) => void;
 }
+
 
 export const ValuePicker = (props: ValuePickerProps): JSX.Element => {
 	const d = createMemo(() => WidgetValueDefMap[props.widget().type])

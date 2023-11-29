@@ -1,8 +1,9 @@
 import type { JSX } from 'solid-js'
 import { useInputReader } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'
-import { Trigger, TriggerSimpleMode } from '../inputs/Trigger'
+import { Trigger } from '../inputs/Trigger'
 import { resolveColor } from '../../types/colors'
+import { TriggerSimpleMode  } from '../../types/inputs'
 import { GamepadState, GamepadInput } from '../../types/gamepad'
 
 const filterTriggerInput = (i:GamepadInput, mode:number) => 

@@ -9,12 +9,6 @@ import { Dropdown, Tooltip } from './'
 import { useInputReader } from '../InputReader'
 
 
-export type InputPickerDef = {
-	min?: number;
-	max?: number;
-	labels?: string[];
-}
-
 interface InputPickerProps {
 	widget: Accessor<WidgetDef>;
 	setValFn: (w:GamepadInputDef[]) => void;

@@ -1,5 +1,5 @@
 import type { JSX } from 'solid-js'
-import { ButtonShape } from '../inputs/Button'
+import { ButtonShape } from '../../types/inputs'
 import { ButtonGrid } from '../inputs/ButtonGrid'
 import { useInputReader } from '../InputReader'
 import { Widget, WidgetProps } from '../Widget'

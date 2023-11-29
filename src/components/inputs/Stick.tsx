@@ -1,6 +1,4 @@
 import { createMemo } from 'solid-js'
-import { type InputPickerDef, type ValuePickerDef } from '../ui'
-import { Slider, Checkbox } from '../ui'
 import { AbC2a, AbC2h } from '../../helpers/math'
 import { Color, getColorDef } from '../../types/colors'
 
@@ -17,34 +15,6 @@ interface StickProps {
 	color?: Color;
 	class?: string;
 	style?: string;
-}
-
-export const StickInputGroupDef: InputPickerDef = {
-	min: 3,
-	max: 3,
-	labels: [
-		'x-axis',
-		'y-axis',
-		'button',
-	],
-}
-
-export const StickValueDef: ValuePickerDef = {
-	defs: [
-		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
-		{ celement:Slider, cprops:{ min:0, max:90 }, label:'seg angle' },
-		{ celement:Slider, cprops:{ min:0 }, label:'seg radius' },
-		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
-	],
-}
-
-export const StickShapeValueDef: ValuePickerDef = {
-	defs: [
-		{ celement:Slider, cprops:{ min:0 }, label:'radius' },
-		{ celement:null },
-		{ celement:null },
-		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
-	],
 }
 
 export const DOT_RSCALE	= 1.25	// radius

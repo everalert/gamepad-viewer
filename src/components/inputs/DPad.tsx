@@ -1,5 +1,5 @@
 import { type JSX, Index, createMemo } from 'solid-js'
-import type { InputPickerDef, ValuePickerDef } from '../ui'
+import { ValuePickerDef } from '../../types/ui'
 import { Slider, Checkbox } from '../ui'
 import { deg2rad, rotVec2x, rotVec2y } from '../../helpers/math'
 import { Color, getColorDef } from '../../types/colors'
@@ -14,19 +14,6 @@ interface DPadProps {
 	color?: Color;
 	class?: string;
 	style?: string;
-}
-
-export const DPadInputGroupDef: InputPickerDef = {
-	min: 2,
-	labels: ['right button','clockwise'],
-}
-
-export const DPadValueDef: ValuePickerDef = {
-	defs: [
-		{ celement:Slider, cprops:{ min:0 }, label:'length' },
-		{ celement:Slider, cprops:{ min:0 }, label:'thickness' },
-		{ celement:Checkbox, cprops:{ label:'simple' }, isBool:true },
-	],
 }
 
 const RADIUS_FACTOR = 0.30  // original design = 8px/28px = 0.285

@@ -1,6 +1,6 @@
 import { GamepadInputType as GIT, inputDef } from '../gamepad'
 import { WidgetType, WidgetDef, WidgetContainerDef } from '../widget'
-import { TriggerSimpleMode } from '../../components/inputs'
+import { TriggerSimpleMode } from '../inputs'
 import { XBoxButton as XBB } from './xbox'
 
 

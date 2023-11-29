@@ -1,9 +1,10 @@
 import { type Component, createSignal } from 'solid-js';
-import { Stick, Trigger, TriggerSimpleMode } from '../components/inputs'
+import { Stick, Trigger } from '../components/inputs'
 import { useInputReader } from '../components/InputReader'
 import { Slider, Checkbox } from '../components/ui'
 import { GamepadState, GamepadInput } from '../types/gamepad'
 import { Color } from '../types/colors'
+import { TriggerSimpleMode } from '../types/inputs'
 import { ang, mag, clamp } from '../helpers/math'
 import { numf } from '../helpers/formatting'
 
