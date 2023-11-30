@@ -56,3 +56,18 @@ export const sr2c = (s:number, r:number) => 2 * Math.sqrt(2*r*s - s**2)
 export const rc2rad = (r:number, c:number) => 2 * Math.asin(c/2/r)
 
 export const rc2deg = (r:number, c:number) => rc2rad(r, c) * 180 / Math.PI
+
+
+// linear transformations
+
+export const easeIn2 = (n:number) => n**2
+export const easeIn3 = (n:number) => n**3
+export const easeIn4 = (n:number) => n**4
+
+export const easeOut2 = (n:number) => 1-(1-n)**2
+export const easeOut3 = (n:number) => 1-(1-n)**3
+export const easeOut4 = (n:number) => 1-(1-n)**4
+
+export const easeInOut2 = (n:number) => lerp( easeIn2(n)*n, easeOut2(n), n )
+export const easeInOut3 = (n:number) => lerp( easeIn3(n)*n, easeOut3(n), n )
+export const easeInOut4 = (n:number) => lerp( easeIn4(n)*n, easeOut4(n), n )
